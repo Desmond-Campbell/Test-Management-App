@@ -1,0 +1,75 @@
+/* Global */
+
+html,body {
+  height: 100%;
+  min-height: 100%;
+  font-size: 16px;
+  b/ackground: #FFF !important;
+}
+
+/* Nav */
+
+.icon-float-1 {
+	float: left;
+	margin-top: 8px;
+}
+/* Layout */
+
+.heading-row {
+	padding: 0px;
+	b/order-bottom: solid 1px #CCC !important;
+}
+
+.heading-row .heading-cell {
+}
+
+.heading-row div:nth-child(1) {
+}
+
+.main-container {
+	margin-top:-20px !important;
+	b/ackground: #FFF !important;
+}
+
+.left-menu {
+}
+
+.main-content {
+	p/adding: 15px;
+	h/eight: 100% !important;
+	b/ackground: #FFF;
+}
+
+.grid-list, .grid-list li {
+	list-style: none;
+	list-style-type: none;
+}
+
+.grid-list {
+	margin-left: -40px;
+	margin-top: 10px;
+}
+
+.grid-list li {
+	display: block;
+	float: left;
+	background: #f3f3f3;
+	padding: 10px;
+	margin-right: 30px;
+	margin-bottom: 15px;
+	margin-top: 15px;
+	max-width: 300px;
+}
+
+/* Forms */
+
+.slim-form {
+	width: 60%;
+}
+
+/* Containers, bootstrap */
+
+.Xalert-info {
+	background: #E5E7EE;
+	color: #000;
+}
