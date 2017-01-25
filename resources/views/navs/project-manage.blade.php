@@ -1,61 +1,120 @@
     <div flex="20" class="left-nav-menu">
 
         
-      <md-content layout-padding md-whiteframe="1">
+      <md-content layout-padding md-whiteframe="1" class="white-bg">
   
-          <ul class="nav n/av-stacked leading-nav-menu">
+        <md-list>
+
+          <md-list-item>
+            <md-icon><i class="fa fa-bars icon-float-1"></i></md-icon>
+            <p> <a href="/projects">{{__( "All Projects" )}}</a> </p>
+          </md-list-item>
+
+        </md-list>
+
+          <!--   <ul class="nav n/av-stacked leading-nav-menu">
 
           <li><a href="/projects"><i class="fa fa-bars icon-float-1"></i> &nbsp; &nbsp; {{__( "All Projects" )}}</a></li>
         
-        </ul>
+        </ul> -->
 
       </md-content>
 
-      <md-content layout-padding md-whiteframe="1">
+      <md-content layout-padding md-whiteframe="1" class="white-bg">
 
-
-        
-        <ul class="nav nav-stacked">
+      <md-list>
 
           <?php if ( !isset( $active ) ) $active = ''; ?>
 
           @if ( !isset( $project_id ) )
-          <li role="presentation" class="disabled"><a><i class="fa fa-home icon-float-1"></i> &nbsp; &nbsp; Project Dashboard</a></li>
-          <li role="presentation" class="disabled"><a><i class="fa fa-cog icon-float-1"></i> &nbsp; &nbsp; Project Details</a></li>
-          <li role="presentation" class="disabled"><a><i class="fa fa-book icon-float-1"></i> &nbsp; &nbsp; Requirements</a></li>
-          <li role="presentation" class="disabled"><a><i class="fa fa-code-fork icon-float-1"></i> &nbsp; &nbsp; Test Cases</a></li>
-          <li role="presentation" class="disabled"><a><i class="fa fa-user icon-float-1"></i> &nbsp; &nbsp; Team Members</a></li>
+          
+          <md-list-item>
+            <md-icon><i class="fa fa-home icon-float-1"></i></md-icon>
+            <p> Project Dashboard </p>
+          </md-list-item>
+          <md-list-item>
+            <md-icon><i class="fa fa-cog icon-float-1"></i></md-icon>
+            <p> Project Details </p>
+          </md-list-item>
+          <md-list-item>
+            <md-icon><i class="fa fa-book icon-float-1"></i></md-icon>
+            <p> Requirements </p>
+          </md-list-item>
+          <md-list-item>
+            <md-icon><i class="fa fa-code-fork icon-float-1"></i></md-icon>
+            <p> Test Cases </p>
+          </md-list-item>
+          <md-list-item>
+            <md-icon><i class="fa fa-user icon-float-1"></i></md-icon>
+            <p> Team Members </p>
+          </md-list-item>
           @else
-          <li role="presentation" class="@if ( $active == 'dashboard' ) active @endif"><a href="/projects/{{$project_id}}/dashboard"><i class="fa fa-home icon-float-1"></i> &nbsp; &nbsp; Project Dashboard</a></li>
-          <li role="presentation" class="@if ( $active == 'details' ) active @endif"><a href="/projects/{{$project_id}}/details"><i class="fa fa-cog icon-float-1"></i> &nbsp; &nbsp; Project Details</a></li>
-          <li role="presentation" class="@if ( $active == 'requirements' ) active @endif"><a href="/projects/{{$project_id}}/requirements"> <i class="fa fa-book icon-float-1"></i> &nbsp; &nbsp; Requirements</a></li>
+          <md-list-item class="@if ( $active == 'dashboard' ) active @endif">
+            <md-icon><i class="fa fa-home icon-float-1"></i></md-icon>
+            <p> <a href="/projects/{{$project_id}}/dashboard">Project Dashboard</a> </p>
+          </md-list-item>
+          <md-list-item class="@if ( $active == 'details' ) active @endif">
+            <md-icon><i class="fa fa-cog icon-float-1"></i></md-icon>
+            <p> <a href="/projects/{{$project_id}}/details">Project Details</a> </p>
+          </md-list-item>
+          <md-list-item class="@if ( $active == 'requirements' ) active @endif">
+            <md-icon><i class="fa fa-book icon-float-1"></i></md-icon>
+            <p> <a  href="/projects/{{$project_id}}/requirements">Requirements</a> </p>
+          </md-list-item>
             @if ( $active == 'requirements' )
-              <li role="separator" class="divider"></li>
-                <li role="presentation"><a href="/projects/{{$project_id}}/requirements">Manage Requirements</a>
-                <li role="presentation"><a href="/projects/{{$project_id}}/requirements/new">Add Requirements</a>
-                <li role="presentation"><a href="/projects/{{$project_id}}/requirements/import">Import</a>
-              <li role="separator" class="divider"></li>
+              <md-menu-divider></md-menu-divider>
+                <md-list-item>
+                  <md-icon></md-icon>
+                  <p><a href="/projects/{{$project_id}}/requirements">Manage Requirements</a></p>
+                </md-list-item>
+                <md-list-item>
+                  <md-icon></md-icon>
+                  <p><a href="/projects/{{$project_id}}/requirements/new">Add Requirements</a></p>
+                </md-list-item>
+                <md-list-item>
+                  <md-icon></md-icon>
+                  <p><a href="/projects/{{$project_id}}/requirements/import">Import</a></p>
+                </md-list-item>
+              <md-menu-divider></md-menu-divider>
             @endif
-          </li>
-          <li role="presentation" class="@if ( $active == 'cases' ) active @endif"><a href="/projects/{{$project_id}}/cases"><i class="fa fa-code-fork icon-float-1"></i> &nbsp; &nbsp; Test Cases</a>
+          <md-list-item class="@if ( $active == 'cases' ) active @endif">
+            <md-icon><i class="fa fa-code-fork icon-float-1"></i></md-icon>
+            <p> <a href="/projects/{{$project_id}}/cases">Test Cases</a> </p>
+          </md-list-item>
             @if ( $active == 'cases' )
-              <li role="separator" class="divider"></li>
-                <li role="presentation"><a href="/projects/{{$project_id}}/cases">View Cases</a>
-                <li role="presentation"><a href="/projects/{{$project_id}}/cases/new">Add Test Cases</a>
-                <li role="presentation"><a href="/projects/{{$project_id}}/cases/import">Import Test Cases</a>
-              <li role="separator" class="divider"></li>
+              <md-menu-divider></md-menu-divider>
+                <md-list-item>
+                  <md-icon></md-icon>
+                  <p><a href="/projects/{{$project_id}}/cases">View Cases</a></p>
+                </md-list-item>
+                <md-list-item>
+                  <md-icon></md-icon>
+                  <p><a href="/projects/{{$project_id}}/cases/new">Add Test Cases</a></p>
+                </md-list-item>
+                <md-list-item>
+                  <md-icon></md-icon>
+                  <p><a href="/projects/{{$project_id}}/cases/import">Import Test Cases</a></p>
+                </md-list-item>
+              <md-menu-divider></md-menu-divider>
             @endif
-          </li>
-          <li role="presentation" class="@if ( $active == 'team' ) active @endif"><a href="/projects/{{$project_id}}/team/members"><i class="fa fa-user icon-float-1"></i> &nbsp; &nbsp; Team Members</a>
+          <md-list-item class="@if ( $active == 'team' ) active @endif">
+            <md-icon><i class="fa fa-user icon-float-1"></i></md-icon>
+            <p> <a href="/projects/{{$project_id}}/team/members">Team Members</a></p>
+          </md-list-item>
             @if ( $active == 'team' )
-              <li role="separator" class="divider"></li>
-                <li role="presentation"><a href="/projects/{{$project_id}}/team/members">View Members</a>
-                <li role="presentation"><a href="/projects/{{$project_id}}/tesm/permissions">Manage Permissions</a>
-              <li role="separator" class="divider"></li>
+              <md-menu-divider></md-menu-divider>
+                <md-list-item>
+                  <md-icon></md-icon>
+                  <p><a href="/projects/{{$project_id}}/team/members">View Members</a></p>
+                </md-list-item>
+                <md-list-item>
+                  <md-icon></md-icon>
+                  <p><a href="/projects/{{$project_id}}/tesm/permissions">Manage Permissions</a></p>
+                </md-list-item>
             @endif
-          </li>
           @endif
-        </ul>
+        
+        </md-list>
 
         &nbsp;
       </md-content>
