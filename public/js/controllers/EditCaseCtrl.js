@@ -75,7 +75,7 @@ app.controller('EditCaseCtrl', ['$scope', '$http', '$timeout', function ( $scope
 
 			function () {
 
-				_alert( 'Failed to create test case.' );
+				_alert( 'Failed to update test case.' );
 
 			});
 

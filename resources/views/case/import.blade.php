@@ -6,11 +6,11 @@
 
 @section('content')
 
-  <div class="row-fluid">
+  <div layout="row">
 
     @include('navs.project-manage', [ 'active' => 'cases', 'project_id' => $project->id ])
 
-    <div class="col-lg-10 main-content" ng-controller="ImportCasesCtrl">
+    <div flex="80" class="main-content" ng-controller="ImportCasesCtrl">
 
       <div class="heading-cell">
         <h2>{{$project->title}} - {{___( "Import Test Cases" )}}</h2>
@@ -22,6 +22,32 @@
 
         <div class="alert alert-info">
           {{___( "This tool will allow you to either key in several test cases or import many test cases all at once. Just copy-paste any number of test cases, line by line below and a test case will be created for each." )}}
+        </div>
+
+        <div class="form-group">
+
+          <label for="case-section">{{___( "Section" )}}</label>
+
+          <span class="help-block">{{___( "It would be nice to import your cases by sections. Select a section below to apply in bulk to these cases." )}}</span>
+
+          <md-autocomplete
+            ng-disabled="isDisabled"
+            ng-model="section_name"
+            md-no-cache="noCache"
+            md-selected-item="selectedItem"
+            md-search-text-change="searchTextChange(searchText)"
+            md-search-text="searchText"
+            md-selected-item-change="selectedItemChange(item)"
+            md-items="item in querySearch(searchText)"
+            md-item-text="item.name"
+            md-min-length="0"
+            id="case-section"
+            placeholder="{{___( "Choose a section for this test case. Default section is Main." )}}">
+            <md-item-template>
+              <span md-highlight-text="searchText" md-highlight-flags="^i">@{{item.name}}</span>
+            </md-item-template>
+          </md-autocomplete>
+
         </div>
 
         <div class="form-group">

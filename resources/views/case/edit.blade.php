@@ -6,11 +6,11 @@
 
 @section('content')
 
-  <div class="row-fluid">
+  <div layout="row">
 
     @include('navs.project-manage', [ 'active' => 'cases', 'project_id' => $project->id ])
 
-    <div class="col-lg-10 main-content" ng-controller="EditCaseCtrl">
+    <div flex="80" class="main-content" ng-controller="EditCaseCtrl">
 
       <div class="heading-cell">
         <h2>{{$project->title}} - {{___( "Edit Test Case" )}}</h2>

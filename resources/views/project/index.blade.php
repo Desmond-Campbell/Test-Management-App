@@ -6,11 +6,11 @@
 
 @section('content')
 
-  <div class="row-fluid">
+  <div layout="row">
 
     @include('navs.project-list')
 
-    <div class="col-lg-10 main-content" ng-controller="ProjectListCtrl">
+    <div flex="80" class="main-content" ng-controller="ProjectListCtrl">
 
       <div class="heading-cell">
         <h2>{{___( "Projects" )}}</h2>

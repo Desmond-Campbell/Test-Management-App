@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Projects;
 use App\CaseSections;
+use App\RequirementSections;
 use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -66,8 +67,10 @@ class ProjectController extends Controller
       $result = [ 'result_id' => $id ];
 
       $section_id = CaseSections::create( [ 'name' => 'Main', 'project_id' => $id ] )->id;
+      $requirement_section_id = RequirementSections::create( [ 'name' => 'Main', 'project_id' => $id ] )->id;
 
       $p->default_section_id = $section_id;
+      $p->default_requirement_section_id = $requirement_section_id;
       $p->save();
 
     }
@@ -126,6 +129,20 @@ class ProjectController extends Controller
     if ( !$project ) return [ 'errors' => ___( "Failed to load sections." ) ];
 
     $sections = CaseSections::where( 'project_id', $project->id )->get();
+
+    return response()->json( [ 'sections' => $sections ] );
+
+  }
+
+  public function getRequirementSections( Request $r ) {
+
+    $id = $r->route( 'id' );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return [ 'errors' => ___( "Failed to load sections." ) ];
+
+    $sections = RequirementSections::where( 'project_id', $project->id )->get();
 
     return response()->json( [ 'sections' => $sections ] );
 

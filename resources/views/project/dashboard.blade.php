@@ -6,11 +6,11 @@
 
 @section('content')
 
-  <div class="row-fluid">
+  <div layout="row">
 
     @include('navs.project-manage', [ 'active' => 'dashboard', 'project_id' => $project->id ])
 
-    <div class="col-lg-10 main-content">
+    <div flex="80" class="main-content">
 
       <div class="heading-cell">
         <h2>{{$project->title}} - {{___( "Dashboard" )}}</h2>

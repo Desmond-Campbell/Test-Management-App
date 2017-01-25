@@ -1,6 +1,7 @@
 <?php
 
 define( 'MAX_TEXT_LENGTH', 1024 );
+define( 'MAX_STRING_LENGTH', 255 );
 
 function findOrFail( $args ) {
 

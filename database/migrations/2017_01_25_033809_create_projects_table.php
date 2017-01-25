@@ -20,6 +20,7 @@ class CreateProjectsTable extends Migration
             $table->smallInteger('type')->nullable();
             $table->integer('user_id');
             $table->integer('default_section_id')->nullable()->default(0);
+            $table->integer('default_requirement_section_id')->nullable()->default(0);
             $table->smallInteger('status')->default(0);
             $table->timestamps();
         });

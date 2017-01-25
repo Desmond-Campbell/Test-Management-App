@@ -6,11 +6,11 @@
 
 @section('content')
 
-  <div class="row-fluid">
+  <div layout="row">
 
     @include('navs.project-manage', [ 'active' => 'details', 'project_id' => $project->id ])
 
-    <div class="col-lg-10 main-content" ng-controller="ProjectDetailsCtrl">
+    <div flex="80" class="main-content" ng-controller="ProjectDetailsCtrl">
 
       <div class="heading-cell">
         <h2>{{$project->title}} - {{__( "Project Details" )}}</h2>

@@ -11,7 +11,7 @@ html,body {
 
 .icon-float-1 {
 	float: left;
-	margin-top: 8px;
+	margin-top: 3px;
 }
 /* Layout */
 
@@ -34,10 +34,15 @@ html,body {
 .left-menu {
 }
 
+.left-nav-menu {
+	margin-top: 25px;
+}
+
 .main-content {
 	p/adding: 15px;
 	h/eight: 100% !important;
 	b/ackground: #FFF;
+	margin-left: 50px;
 }
 
 .grid-list, .grid-list li {
@@ -73,3 +78,9 @@ html,body {
 	background: #E5E7EE;
 	color: #000;
 }
+
+
+
+/*******************************************/
+
+

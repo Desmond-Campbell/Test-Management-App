@@ -6,11 +6,11 @@
 
 @section('content')
 
-  <div class="row-fluid">
+  <div layout="row">
 
     @include('navs.project-manage')
 
-    <div class="col-lg-10 main-content" ng-controller="NewProjectCtrl">
+    <div flex="80" class="main-content" ng-controller="NewProjectCtrl">
 
       <div class="heading-cell">
         <h2>{{___( "Create Project" )}}</h2>

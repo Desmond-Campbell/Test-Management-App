@@ -125,6 +125,20 @@ class CaseController extends Controller
     $cases = explode( "\n", $cases );
 
     $saved = 0;
+
+    $section_name = $r->input( 'section_name' );
+      if ( $section_name ):
+        $section = CaseSections::where( 'project_id', $project->id )->where( 'name', $section_name )->first();
+        
+        if ( !$section ):
+          $section = CaseSections::create( [ 'project_id' => $project->id, 'name' => $section_name ] );
+        endif;
+      else:
+        $section = CaseSections::where( 'project_id', $project->id )->first();
+      endif;
+
+      $section_id = $section->id;
+      $section_name = $section->name;
     
     foreach ( $cases as $case ) {
 
@@ -143,7 +157,8 @@ class CaseController extends Controller
                     'title'         => $case, 
                     'instructions'  => '',
                     'notes'         => '',
-                    'section_id'    => intval( $section_id ),
+                    'section_id'    => $section_id,
+                    'section_name'  => $section_name,
                     'user_id'       => get_user_id() ];
 
 	      $id = Cases::create( $newcase )->id;
