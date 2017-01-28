@@ -1,124 +1,70 @@
-    <div flex="20" class="left-nav-menu">
-
         
-      <md-content layout-padding md-whiteframe="1" class="white-bg">
-  
-        <md-list>
+      <md-content m/d-whiteframe="1" class="white-bg left-side-border" id="nav-left-container">
 
-          <md-list-item>
-            <md-icon><i class="fa fa-bars icon-float-1"></i></md-icon>
-            <p> <a href="/projects">{{__( "All Projects" )}}</a> </p>
-          </md-list-item>
-
-        </md-list>
-
-          <!--   <ul class="nav n/av-stacked leading-nav-menu">
-
-          <li><a href="/projects"><i class="fa fa-bars icon-float-1"></i> &nbsp; &nbsp; {{__( "All Projects" )}}</a></li>
-        
-        </ul> -->
-
-      </md-content>
-
-      <md-content layout-padding md-whiteframe="1" class="white-bg">
-
-      <md-list>
+        <ul class="nav-list">
 
           <?php if ( !isset( $active ) ) $active = ''; ?>
 
-          @if ( !isset( $project_id ) )
+          @if ( isset( $project_id ) )
           
-          <md-list-item>
-            <md-icon><i class="fa fa-home icon-float-1"></i></md-icon>
-            <p> Project Dashboard </p>
-          </md-list-item>
-          <md-list-item>
-            <md-icon><i class="fa fa-cog icon-float-1"></i></md-icon>
-            <p> Project Details </p>
-          </md-list-item>
-          <md-list-item>
-            <md-icon><i class="fa fa-book icon-float-1"></i></md-icon>
-            <p> Requirements </p>
-          </md-list-item>
-          <md-list-item>
-            <md-icon><i class="fa fa-code-fork icon-float-1"></i></md-icon>
-            <p> Test Cases </p>
-          </md-list-item>
-          <md-list-item>
-            <md-icon><i class="fa fa-user icon-float-1"></i></md-icon>
-            <p> Team Members </p>
-          </md-list-item>
-          @else
-          <md-list-item class="@if ( $active == 'dashboard' ) active @endif">
-            <md-icon><i class="fa fa-home icon-float-1"></i></md-icon>
-            <p> <a href="/projects/{{$project_id}}/dashboard">Project Dashboard</a> </p>
-          </md-list-item>
-          <md-list-item class="@if ( $active == 'details' ) active @endif">
-            <md-icon><i class="fa fa-cog icon-float-1"></i></md-icon>
-            <p> <a href="/projects/{{$project_id}}/details">Project Details</a> </p>
-          </md-list-item>
-          <md-list-item class="@if ( $active == 'requirements' ) active @endif">
-            <md-icon><i class="fa fa-book icon-float-1"></i></md-icon>
-            <p> <a  href="/projects/{{$project_id}}/requirements">Requirements</a> </p>
-          </md-list-item>
+          <li class="main-entry nav-list-item left-side-border-bottom project-link">
+            <a href="">Project Name &nbsp; <i class="fa fa-pencil"></i></a>
+          </li>
+          <li class="main-entry nav-list-item @if ( $active == 'dashboard' ) active @endif">
+            <a href="/projects/{{$project_id}}/dashboard"><i class="fa fa-home"></i> &nbsp; Project Dashboard</a>
+          </li>
+          <li class="main-entry nav-list-item @if ( $active == 'details' ) active @endif">
+             <a href="/projects/{{$project_id}}/details"><i class="fa fa-cog"></i> &nbsp; Project Details</a>
+          </li>
+          <li class="main-entry nav-list-item @if ( $active == 'requirements' ) active @endif">
+             <a  href="/projects/{{$project_id}}/requirements"><i class="fa fa-book"></i> &nbsp; Requirements</a>
+          </li>
             @if ( $active == 'requirements' )
-              <md-menu-divider></md-menu-divider>
-                <md-list-item>
-                  <md-icon></md-icon>
-                  <p><a href="/projects/{{$project_id}}/requirements">Manage Requirements</a></p>
-                </md-list-item>
-                <md-list-item>
-                  <md-icon></md-icon>
-                  <p><a href="/projects/{{$project_id}}/requirements/new">Add Requirements</a></p>
-                </md-list-item>
-                <md-list-item>
-                  <md-icon></md-icon>
-                  <p><a href="/projects/{{$project_id}}/requirements/import">Import</a></p>
-                </md-list-item>
-              <md-menu-divider></md-menu-divider>
+            <li role="separator" class="divider"></li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/requirements">Manage Requirements</a>
+              </li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/requirements/new">Add Requirements</a>
+              </li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/requirements/import">Import</a>
+              </li>
+            <li role="separator" class="divider"></li>
             @endif
-          <md-list-item class="@if ( $active == 'cases' ) active @endif">
-            <md-icon><i class="fa fa-code-fork icon-float-1"></i></md-icon>
-            <p> <a href="/projects/{{$project_id}}/cases">Test Cases</a> </p>
-          </md-list-item>
+          <li class="main-entry nav-list-item @if ( $active == 'cases' ) active @endif">
+            <a href="/projects/{{$project_id}}/cases"><i class="fa fa-tasks"></i> &nbsp; Test Cases</a>
+          </li>
             @if ( $active == 'cases' )
-              <md-menu-divider></md-menu-divider>
-                <md-list-item>
-                  <md-icon></md-icon>
-                  <p><a href="/projects/{{$project_id}}/cases">View Cases</a></p>
-                </md-list-item>
-                <md-list-item>
-                  <md-icon></md-icon>
-                  <p><a href="/projects/{{$project_id}}/cases/new">Add Test Cases</a></p>
-                </md-list-item>
-                <md-list-item>
-                  <md-icon></md-icon>
-                  <p><a href="/projects/{{$project_id}}/cases/import">Import Test Cases</a></p>
-                </md-list-item>
-              <md-menu-divider></md-menu-divider>
+            <li role="separator" class="divider"></li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/cases">View Cases</a>
+              </li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/cases/new">Add Test Cases</a>
+              </li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/cases/import">Import Test Cases</a>
+              </li>
+            <li role="separator" class="divider"></li>
             @endif
-          <md-list-item class="@if ( $active == 'team' ) active @endif">
-            <md-icon><i class="fa fa-user icon-float-1"></i></md-icon>
-            <p> <a href="/projects/{{$project_id}}/team/members">Team Members</a></p>
-          </md-list-item>
+          <li class="main-entry nav-list-item @if ( $active == 'team' ) active @endif">
+             <a href="/projects/{{$project_id}}/team/members"><i class="fa fa-group"></i> &nbsp; Team Members</a>
+          </li>
             @if ( $active == 'team' )
-              <md-menu-divider></md-menu-divider>
-                <md-list-item>
-                  <md-icon></md-icon>
-                  <p><a href="/projects/{{$project_id}}/team/members">View Members</a></p>
-                </md-list-item>
-                <md-list-item>
-                  <md-icon></md-icon>
-                  <p><a href="/projects/{{$project_id}}/tesm/permissions">Manage Permissions</a></p>
-                </md-list-item>
+            <li role="separator" class="divider"></li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/team/members">View Members</a>
+              </li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/tesm/permissions">Manage Permissions</a>
+              </li>
+            <li role="separator" class="divider"></li>
             @endif
           @endif
         
-        </md-list>
+        </ul>
 
         &nbsp;
       </md-content>
-
-
-    </div>
 

@@ -18,6 +18,7 @@ Route::get('/projects/new', 'ProjectController@new');
 Route::post('/projects/create', 'ProjectController@create');
 Route::get('/projects/{id}/get-sections', 'ProjectController@getSections');
 Route::get('/projects/{id}/get-requirement-sections', 'ProjectController@getRequirementSections');
+Route::get('/projects/{id}', 'ProjectController@dashboard');
 Route::get('/projects/{id}/dashboard', 'ProjectController@dashboard');
 Route::get('/projects/{id}/details', 'ProjectController@details');
 	Route::post('/projects/{id}/details/update', 'ProjectController@detailsUpdate');

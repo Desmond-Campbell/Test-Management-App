@@ -24,40 +24,14 @@
       
       <div class="main-container theme-showcase" role="main">
       
-        <div layout="row">
-  
-          <div flex="15" class="left-side-border left-side-border-bottom page-top-left">
+        <div layout="row" class="push-down">
 
-            <a href="/projects"><i class="fa fa-bars"></i> &nbsp; {{__( "All Projects" )}}</a>
-
+          <div flex="20">
           </div>
-
-          <div flex="85" class="left-side-border-bottom page-top-right">
-          
-            <span class="page-heading">@yield('page-heading')</span>
-
-          </div>
-
-        </div>
-
-        <div layout="row">
-
-          <div flex="15">
-
-            @yield('left-side')
-
-          </div>
-
-          <div flex="65" class="main-content">
-
+          <div flex>
             @yield('main')
-
           </div>
-
-          <div flex="15">
-
-            @yield('right-side')
-
+          <div flex="20">
           </div>
 
         </div>
@@ -71,5 +45,5 @@
     @include('layouts.page-foot')
 
   </body>
-
+  
 </html>

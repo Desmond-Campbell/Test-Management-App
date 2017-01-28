@@ -4,7 +4,7 @@ html,body {
   height: 100%;
   min-height: 100%;
   font-size: 16px;
-  b/ackground: #FFF !important;
+  background: #FFF !important;
 }
 
 /* Nav */
@@ -28,7 +28,7 @@ html,body {
 
 .main-container {
 	margin-top:-20px !important;
-	b/ackground: #FFF !important;
+	background: #FFF !important;
 }
 
 .left-menu {
@@ -38,11 +38,119 @@ html,body {
 	margin-top: 25px;
 }
 
+
+#nav-left-container {
+	height: 1000px !important;
+	background: #fdfdfd !important;
+}
+
+.nav-list li.main-entry {
+	list-style: none;
+	list-style-type: none;
+}
+.nav-list li.main-entry a {
+	font-size: 79% !important;
+}
+
+.left-side-border {
+	border-right : solid 1px #D4D7DD;
+}
+
+.left-side-border-bottom {
+	border-bottom : solid 1px #D4D7DD;
+}
+
+.page-top-right {
+	padding: 10px;
+}
+
+.page-top-right .page-heading {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.page-top-left {
+	padding: 10px;
+	font-size: 16px;
+	background: #f7f7f7;
+}
+
+.page-top-left a {
+	color: #104A74;
+	text-decoration: none;
+}
+
+.page-top-left a:hover {
+	color: #1B7BBF;
+}
+
+.nav-list {
+	margin-left: -40px;
+}
+
+.nav-list li.nav-list-item {
+}
+
+.nav-list li.nav-list-item a {
+	display:block;
+	padding: 10px !important;
+	text-decoration: none !important;
+	color: #01233C;
+}
+
+.nav-list li.nav-list-item a:hover  {
+	background: #E5E9F3;
+}
+
+.nav-list li.active a {
+	background: #EEF2FC;
+}
+
+.nav-list li.active a {
+	font-weight: bold;
+	color: #0B86AF;
+	border-bottom: solid 1px #DDE1EA;
+}
+
+.nav-list li.nav-submenu-list-item a {
+	padding: 5px !important;
+	padding-left: 30px !important;
+	font-size: 70% !important;
+	background: #f9f9f9;
+	display: block;
+	text-decoration: none;
+	margin-top: 0 !important;
+}
+
+.nav-list li.nav-submenu-list-item a {
+	color: #3C6D93 !important;
+}
+
+.nav-list li.nav-submenu-list-item a:hover {
+	color: #5192C4 !important;
+}
+
+.nav-list li.divider {
+	border-top: solid 1px #DEE2EB;
+	display:none;
+}
+
+.nav-list li.project-link a {
+	font-weight:bold; 
+	background: none !important; 
+	cursor: default;
+}
+
+.nav-list li.project-link a i {
+	cursor: pointer;
+}
+
 .main-content {
 	p/adding: 15px;
 	h/eight: 100% !important;
 	b/ackground: #FFF;
-	margin-left: 50px;
+	padding-left: 25px;
+	padding-top: 25px;
 }
 
 .grid-list, .grid-list li {
@@ -55,15 +163,42 @@ html,body {
 	margin-top: 10px;
 }
 
-.grid-list li {
+.project-list li {
 	display: block;
 	float: left;
-	background: #f3f3f3;
-	padding: 10px;
-	margin-right: 30px;
+	b/ackground: #f3f3f3;
+	p/adding: 10px;
+	margin-right: 3%;
+	m/argin-left: 1%;
 	margin-bottom: 15px;
 	margin-top: 15px;
-	max-width: 300px;
+	width: 47%;
+	h/eight: 120px;
+	c/ursor: pointer;
+	b/order :solid 1px #E6E6E6;
+}
+
+.project-list li:hover {
+	b/ackground: #f7f7f7;
+	b/order: solid 1px #CDD1D8;
+}
+
+.project-list li a {
+	text-decoration: none;
+}
+
+.project-list .grid-headline {
+	font-weight: bold;
+	font-size: 17px;
+}
+
+.project-list .grid-subhead {
+	font-size: 13px !important;
+	color: #929292 !important;
+}
+
+.project-list md-card {
+	margin: 0px !important;
 }
 
 /* Forms */
@@ -83,8 +218,59 @@ html,body {
 	background: #FFF;
 }
 
-
+.push-down {
+	margin-top: 25px;
+}
 
 /*******************************************/
 
+.navbar .company-name strong {
+	color: #FFF;
+	font-weight: bold;
+	display: block;
+	padding-top: 13px;
+}
 
+.navbar .company-dropdown a i {
+	color: #B4C6D0 !important;
+	font-weight: bold;
+	display: block;
+	padding-top: 4px !important;
+	padding-bottom: 4px !important;
+}
+
+.navbar .company-dropdown a {
+	background: none !important;
+}
+
+.navbar .submenu ul li a {
+	background: #FFF !important;
+	color: #0C2E47 !important;
+}
+
+/********************search*********************/
+
+#search-top {
+	background: #FFF;
+	filter: alpha(opacity: 30);
+	opacity: 0.3;
+	width: 70%;
+	padding: 5px !important;
+	padding-left: 10px !important;
+	display: block;
+	margin: auto;
+	border: none !important;
+	outline: none !important;
+	margin-top: 9px !important;
+}
+
+#search-top:active,
+#search-top:focus,
+#search-top:hover {
+	filter: alpha(opacity: 90);
+	opacity: 0.9;
+}
+
+.right-link-hidden {
+	background: none !important;
+}

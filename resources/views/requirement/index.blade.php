@@ -4,17 +4,19 @@
 {{$project->title}} - {{___( "Project Requirements" )}}
 @stop
 
-@section('content')
+@section('left-side')
 
-  <div layout="row">
+  @include('navs.project-manage', [ 'active' => 'requirements', 'project_id' => $project->id ])
 
-    @include('navs.project-manage', [ 'active' => 'requirements', 'project_id' => $project->id ])
+@stop
 
-    <div flex="80" class="main-content" ng-controller="RequirementsCtrl">
+@section('page-heading')
+{{___( "Project Requirements" )}}
+@stop
 
-      <div class="heading-cell">
-        <h2>{{$project->title}} - {{___( "Project Requirements" )}}</h2>
-      </div>
+@section('main')
+
+    <div ng-controller="RequirementsCtrl">
 
       <a href="/projects/{{$project->id}}/requirements/new" type="button" class="btn btn-sm btn-default">{{___( "Add Requirement" )}}</a>
 
@@ -53,9 +55,11 @@
       </div>
 
     </div>
-
-  </div>
     
+@stop
+
+@section('right-side')
+
 @stop
 
 @section('javascript')

@@ -21,7 +21,7 @@ class ProjectController extends Controller
 
     if ( $r->input( 'format') == 'json' ) {
 
-      $projects = Projects::all();
+      $projects = Projects::all()->take(1);
 
       return response()->json( [ 'projects' => $projects ] );
 
