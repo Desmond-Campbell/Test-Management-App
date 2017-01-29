@@ -57,3 +57,30 @@ function random_colour() {
 	return '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);;
 
 }
+
+function arg( $A, $key, $default = null ) {
+
+	$A = (array) $A;
+
+	if ( !empty( $A[$key] ) ) return $A[$key];
+
+	return $default;
+
+}
+
+function try_json_decode( $string ) {
+
+	$string = @json_decode( $string );
+	
+	if ( $string ) $object = $string;
+	else $object = (object) [];
+
+	return $object;
+
+}
+
+function get_url() {
+
+	return base64_encode( $_SERVER['REQUEST_URI'] );
+
+}

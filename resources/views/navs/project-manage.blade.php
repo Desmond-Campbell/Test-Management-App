@@ -49,12 +49,15 @@
             <li role="separator" class="divider"></li>
             @endif
           <li class="main-entry nav-list-item @if ( $active == 'team' ) active @endif">
-             <a href="/projects/{{$project_id}}/team/members"><i class="fa fa-group"></i> &nbsp; Team Members</a>
+             <a href="/projects/{{$project_id}}/team"><i class="fa fa-group"></i> &nbsp; Team Members</a>
           </li>
             @if ( $active == 'team' )
             <li role="separator" class="divider"></li>
               <li class="nav-submenu-list-item">
-                <a href="/projects/{{$project_id}}/team/members">View Members</a>
+                <a href="/projects/{{$project_id}}/team">View Team</a>
+              </li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/team/new-member">Add Member</a>
               </li>
               <li class="nav-submenu-list-item">
                 <a href="/projects/{{$project_id}}/tesm/permissions">Manage Permissions</a>

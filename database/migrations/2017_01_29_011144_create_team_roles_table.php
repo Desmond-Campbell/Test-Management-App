@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesTable extends Migration
+class CreateTeamRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,10 +15,13 @@ class CreateRolesTable extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('is_owner')->nullable()->default(0);
+            $table->integer('project_id');
+            $table->integer('role_type');
             $table->string('name', 50);
             $table->string('description', 72)->nullable();
-            $table->text('permissions_include')->nullable();
-            $table->text('permissions_exclude')->nullable();
+            $table->text('keys_overrides')->nullable();
+            $table->text('keys_restrictions')->nullable();
             $table->timestamps();
         });
     }

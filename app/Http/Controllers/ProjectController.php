@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Activities;
+use App\Police;
 use App\Projects;
 use App\CaseSections;
 use App\RequirementSections;
@@ -64,21 +65,72 @@ class ProjectController extends Controller
 
       $user_id = get_user_id();
 
-      $p = Projects::create( [ 'title' => $title, 'user_id' => $user_id ] );
+      $is_owner = \App\Police::check( 'team.projects.own_projects' );
+
+      if ( $is_owner ) $owner_id = $user_id;
+      else $owner_id = User::getPrincipalId();
+
+      $newproject = [ 
+                      'title' => $title, 
+                      'user_id' => $user_id, 
+                      'owner_id' => $owner_id 
+                    ];
+
+      $p = Projects::create( $newproject );
       $id = $p->id;
 
-      $filter_hash = sha1( "create_project." . date( 'Y-m-d' ) );
-      $activity_values = [];
-      $activity_values['title'] = $title;
+      // Create owner role for this project.
 
-      $newactivity = [
-                        'project_id'    => $id,
-                        'object_type'   => 'create_project',
-                        'object_id'     => $id,
-                        'user_id'       => $user_id,
-                        'values'        => json_encode( $activity_values ),
-                        'filter_hash'   => $filter_hash
-                      ];
+      $newrole = [ 
+                  'name'          => ___( 'Owner' ), 
+                  'role_type'     => 1,
+                  'project_id'    => $id,
+                  'permissions_include' => json_encode( [ 'all_project_permissions' ] ),
+                  'description'   => ___( 'Owner has all rights on this project.' )
+                  ];
+
+      \App\TeamRoles::create( $newrole );
+
+      if ( !$is_owner ) {
+
+        // DOC-ToDo: Check if there's a default role defined for new projects. If not, create the Administrator role.
+
+          $newrole = [ 
+                    'name'          => ___( 'Administrator' ), 
+                    'role_type'     => 2,
+                    'project_id'    => $id,
+                    'permissions_include' => json_encode( [ 'all_project_admin_permissions' ] ), 
+                    'description'   => ___( 'Administrator can do most things with a project, but not all.' )
+                    ];
+
+          \App\TeamRoles::create( $newrole );
+
+      }
+
+      // Create team member for this project, adding an owner and a team member
+
+        $newteammember = [
+                          'project_id'   => $id,
+                          'user_id'   => $user_id,
+                          'user_type' => $is_owner ? 1 : 2
+                        ];
+
+        \App\TeamMembers::create( $newteammember );
+
+      // Create activity feed
+
+        $filter_hash = sha1( "create_project." . date( 'Y-m-d' ) );
+        $activity_values = [];
+        $activity_values['title'] = $title;
+
+        $newactivity = [
+                          'project_id'    => $id,
+                          'object_type'   => 'create_project',
+                          'object_id'     => $id,
+                          'user_id'       => $user_id,
+                          'values'        => json_encode( $activity_values ),
+                          'filter_hash'   => $filter_hash
+                        ];
 
       Activities::create( $newactivity );
 
@@ -179,7 +231,7 @@ class ProjectController extends Controller
 
     $activitiesCollection = Activities::where( 'project_id', $project->id )->orderBy( 'id', 'desc' )->take(10)->get();
 
-    $activites = [];
+    $activities = [];
 
     foreach ( $activitiesCollection as $a ) {
 

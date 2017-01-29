@@ -16,8 +16,8 @@ class AddPermissionFieldsToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->integer('sso_id')->after('remember_token')->nullable();
             $table->text('roles')->after('sso_id')->nullable();
-            $table->text('permissions_include')->after('roles')->nullable();
-            $table->text('permissions_exclude')->after('permissions_include')->nullable();
+            $table->text('key_overrides')->after('roles')->nullable();
+            $table->text('key_restrictions')->after('key_overrides')->nullable();
         });
     }
 
@@ -29,7 +29,7 @@ class AddPermissionFieldsToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn( [ 'sso_id', 'roles', 'permissions_include', 'permissions_exclude' ] );
+            $table->dropColumn( [ 'sso_id', 'roles', 'key_overrides', 'key_restrictions' ] );
         });
     }
 }

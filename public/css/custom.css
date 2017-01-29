@@ -324,6 +324,52 @@ md-input-container label, label.form-label {
 	color: #345A75;
 }
 
+.text-warning {
+	color: #EB4A04;
+}
+
+.text-danger {
+	color: #EB0615;
+}
+
+.text-success {
+	color: #2E7C03;
+}
+
+.text-info {
+	color: #0B79B0;
+}
+
+.text-default {
+	color: #A3A5A8;
+}
+
+.table-middle-align > tbody > tr > td {
+     vertical-align: middle;
+}
+
+.md-container {
+	width: 70%;
+}
+
+.sm-container {
+	width: 50%;
+}
+
+.xs-container {
+	width: 35%;
+}
+
+.perm-list-item span.small-description {
+	color: #93A3AE;
+	font-size: 85%;
+	display: none;
+}
+
+.perm-list-item:hover span.small-description {
+	display: inline;
+}
+
 textarea,
 input,
 button,
@@ -343,7 +389,7 @@ md-select
 }
 
 #loading-container {
-	background: #000 url('/img/loading.gif') center center no-repeat; 
+	background: url('/img/loading.gif') center center no-repeat; 
 	position: fixed; 
 	height: 100%; 
 	width: 100%; 

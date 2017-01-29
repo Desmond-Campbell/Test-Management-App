@@ -24,11 +24,11 @@
 
 	    <div flex="60">
 
-	    	<h1 class="no-margin-top">Activities</h1>
+	    	<h1 class="no-margin-top">{{___( "Activities") }}</h1>
 
 	    	<div ng-show="!activities.length">
 
-	    		{{___( "There are no acitivites on this project as yet." )}}
+	    		{{___( "There are no activities on this project as yet." )}}
 
 	    	</div>
 

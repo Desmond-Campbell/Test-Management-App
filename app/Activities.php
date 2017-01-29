@@ -72,7 +72,7 @@ class Activities extends Model
     	$type = $activity->object_type;
     	$content = ___( 'Nothing found.' );
     	$templates = self::getTemplates( $type );
-    	$template = $templates['default'];
+    	$template  = @$templates['default'];
     	$values = (array) @json_decode( $activity->values );
 
     	$fields = [];
@@ -84,8 +84,6 @@ class Activities extends Model
     	switch ( $type ):
 
     		case 'create_project':
-
-    			$content = $template;
 
     		break;
 
@@ -106,13 +104,11 @@ class Activities extends Model
 
     			endif;
 
-    			$content = self::translate( $template, $fields );
-
     		break;
 
     	endswitch;
 
-    	return $content;
+    	return self::translate( $template, $fields );
 
     }
 

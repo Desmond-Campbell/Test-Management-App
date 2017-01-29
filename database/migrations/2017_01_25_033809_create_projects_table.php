@@ -19,6 +19,7 @@ class CreateProjectsTable extends Migration
             $table->string('description')->nullable();
             $table->string('type', 32)->nullable()->default('Other');
             $table->string('colour', 16)->nullable();
+            $table->integer('owner_id');
             $table->integer('user_id');
             $table->integer('default_section_id')->nullable()->default(0);
             $table->integer('default_requirement_section_id')->nullable()->default(0);
