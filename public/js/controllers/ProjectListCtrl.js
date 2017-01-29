@@ -1,4 +1,4 @@
-app.controller('ProjectListCtrl', ['$scope', '$http', function ( $scope, $http ) {
+app.controller('ProjectListCtrl', ['$scope', '$http', '$mdDialog', '$timeout', function ( $scope, $http, $mdDialog, $timeout ) {
 
 	$scope.projects = [];
 
@@ -31,5 +31,54 @@ app.controller('ProjectListCtrl', ['$scope', '$http', function ( $scope, $http )
 	};
 
 	$scope.getProjects();
+
+	$scope.project = {};
+
+	// New project
+
+  $scope.newProjectMode = false;
+
+	$scope.newProject = function() {
+    $scope.newProjectMode = true;
+    $timeout( $('#new-project-title').focus(), 1000 );
+  };
+
+  $scope.cancelNewProject = function() {
+    $scope.newProjectMode = false;
+  };
+
+	// Create project
+
+	$scope.createProject = function () {
+
+		$http.post( '/projects/create', $scope.project ).then( 
+			
+			function ( r ) {
+				
+				if ( typeof r.data.errors != 'undefined' ) {
+
+					_error( r.data.errors, 1 );
+
+				} else if ( typeof r.data.url != 'undefined' ) {
+					
+					location.assign( r.data.url );
+
+				} else {
+				
+					$scope.project = {};
+  				$scope.cancelNewProject();
+					$scope.getProjects();
+
+				}
+			
+			},
+
+			function () {
+
+				_alert( 'Failed to create project.' );
+
+			});
+
+	};
 
 }]);

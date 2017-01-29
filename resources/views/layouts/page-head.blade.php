@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="/js/vendor/node_modules/angular-material/angular-material.css">
 
     <!-- Custom styles for this template -->
-    <link href="/c\ss/app.css" rel="stylesheet">
     <link href="/css/custom.css" rel="stylesheet">
     <link href="/css/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    @yield('load-css')
+
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="/js/vendor/bootstrap/ie-emulation-modes-warning.js"></script>

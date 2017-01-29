@@ -22,9 +22,7 @@ class ListController extends Controller
 
     $lists = $data = [];
 
-    $lists['project-types'] = [];
-    $lists['project-types'][] = [ 'id' => 1, 'label' => 'Custom 1' ];
-    $lists['project-types'][] = [ 'id' => 2, 'label' => 'Custom 2' ];
+    $lists['project-types'] = [ 'Other', 'Mobile App', 'Web Application', 'Website' ];
 
     if ( !empty( $lists[$slug] ) ) $data = $lists[$slug];
 

@@ -44,6 +44,8 @@
 
     @include('layouts.page-foot')
 
+    <br /><br /><br />
+
   </body>
   
 </html>

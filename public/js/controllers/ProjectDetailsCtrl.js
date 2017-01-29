@@ -1,6 +1,6 @@
-app.controller('ProjectDetailsCtrl', ['$scope', '$http', function ( $scope, $http ) {
+app.controller('ProjectDetailsCtrl', ['$scope', '$http', 'fileUpload', function ( $scope, $http, fileUpload ) {
 
-	$scope.project_types = [ { id : 1, label : 'Custom' } ];
+	$scope.project_types = [ 'Custom' ];
 
 	// Load project types
 
@@ -34,12 +34,15 @@ app.controller('ProjectDetailsCtrl', ['$scope', '$http', function ( $scope, $htt
 
 	$scope.getProject = function () {
 
+		l(1);
+
 		$id = $scope.project_id;
 
 		$http.get( '/projects/' + $id + '/details?format=json' ).then( 
 			
 			function ( r ) {
 				
+				l(0);
 				if ( typeof r.data.errors != 'undefined' ) {
 
 					_alert( r.data.errors, 1 );
@@ -54,6 +57,7 @@ app.controller('ProjectDetailsCtrl', ['$scope', '$http', function ( $scope, $htt
 
 			function () {
 
+				l(0);
 				_alert( 'Failed to load project.' );
 
 			});
@@ -62,21 +66,45 @@ app.controller('ProjectDetailsCtrl', ['$scope', '$http', function ( $scope, $htt
 
 	if ( $scope.project_id ) $scope.getProject();
 
-	$scope.save = function () {
+	$scope.saveAndExit = function () {
+
+		$scope.save( 1 );
+
+	};
+
+	$scope.justSave = function () {
+
+		$scope.save( 0 );
+
+	}
+
+	$scope.save = function ( mode ) {
+
+		l(1);
+
+		console.log('save...');
 
 		$id = $scope.project_id;
 
 		$http.post( '/projects/' + $id + '/details/update', $scope.project ).then( 
 			
 			function ( r ) {
+
+				l(0);
 				
 				if ( typeof r.data.errors != 'undefined' ) {
 
 					_alert( r.data.errors, 1 );
 
 				} else {
+
+					if ( mode ) {
+
+						location.assign( '/projects/' + $id + '/dashboard' );
+
+					}
 					
-					_notify( 'Project details saved successfully.' );
+					_notifySuccess( 'Project details saved successfully.', 'success' );
 
 				}
 			
@@ -84,10 +112,24 @@ app.controller('ProjectDetailsCtrl', ['$scope', '$http', function ( $scope, $htt
 
 			function () {
 
+				l(0);
 				_alert( 'Failed to update project details.' );
 
 			});
 
 	};
+
+	// Handle logo requests
+
+	$scope.logoFile = null;
+	$scope.logoPath = '/img/icon.png';
+
+	$scope.saveLogo = function(){
+	  var file = $scope.logoFile;
+	  console.log('file is ' );
+	  console.dir(file);
+	  var uploadUrl = '/projects/' + $scope.project_id + '/upload-logo';
+	  fileUpload.uploadFileToUrl(file, uploadUrl);
+  };
 
 }]);

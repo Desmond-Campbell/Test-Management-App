@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Activities;
 use App\Projects;
 use App\CaseSections;
 use App\RequirementSections;
@@ -21,7 +22,7 @@ class ProjectController extends Controller
 
     if ( $r->input( 'format') == 'json' ) {
 
-      $projects = Projects::all()->take(1);
+      $projects = Projects::all();
 
       return response()->json( [ 'projects' => $projects ] );
 
@@ -44,7 +45,7 @@ class ProjectController extends Controller
 
     if ( !$title ) {
 
-      $err = [ 'errors' => ___( 'Please enter a title.' ), 'target' => 'title' ];
+      $err = [ 'errors' => ___( 'Please enter a title for your project.' ), 'target' => 'title' ];
 
     } elseif ( strlen( $title ) > 50 ) {
 
@@ -61,10 +62,27 @@ class ProjectController extends Controller
 
     } else {
 
-      $p = Projects::create( [ 'title' => $title, 'user_id' => get_user_id() ] );
+      $user_id = get_user_id();
+
+      $p = Projects::create( [ 'title' => $title, 'user_id' => $user_id ] );
       $id = $p->id;
 
-      $result = [ 'result_id' => $id ];
+      $filter_hash = sha1( "create_project." . date( 'Y-m-d' ) );
+      $activity_values = [];
+      $activity_values['title'] = $title;
+
+      $newactivity = [
+                        'project_id'    => $id,
+                        'object_type'   => 'create_project',
+                        'object_id'     => $id,
+                        'user_id'       => $user_id,
+                        'values'        => json_encode( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
+
+      $result = [ 'result_id' => $id, 'url' => '/projects/' . $id ];
 
       $section_id = CaseSections::create( [ 'name' => 'Main', 'project_id' => $id ] )->id;
       $requirement_section_id = RequirementSections::create( [ 'name' => 'Main', 'project_id' => $id ] )->id;
@@ -111,12 +129,68 @@ class ProjectController extends Controller
     $title = $r->input( 'title' );
     $description = $r->input( 'description' );
     $type = $r->input( 'type' );
+    $colour = $r->input( 'colour' );
 
     $changes = [ 'title' => $title,
                 'description' => $description,
-                'type' => $type['id'] ];
+                'type' => $type,
+                'colour' => validate_html_color( $colour ),
+                 ];
 
-    Projects::find( $id )->update( $changes );
+    $project = Projects::find( $id );
+
+    $user_id = get_user_id();
+
+    $filter_hash = sha1( "update_project.$title." . date( 'Y-m-d' ) );
+    $activity_values = [ 'old' => [], 'new' => [] ];
+    $activity_values['old']['title'] = $project->title;
+    $activity_values['old']['description'] = $project->description;
+    $activity_values['old']['type'] = $project->type;
+    $activity_values['old']['colour'] = $project->colour;
+    $activity_values['new']['title'] = $title;
+    $activity_values['new']['description'] = $description;
+    $activity_values['new']['type'] = $type;
+    $activity_values['new']['colour'] = $colour;
+
+    $newactivity = [
+                      'project_id'    => $id,
+                      'object_type'   => 'update_project',
+                      'object_id'     => $id,
+                      'user_id'       => $user_id,
+                      'values'        => Activities::prepareValues( $activity_values ),
+                      'filter_hash'   => $filter_hash
+                    ];
+
+    Activities::create( $newactivity );
+
+    $project->update( $changes );
+
+    return response()->json( $project );
+
+  }
+
+  public function getActivities( Request $r ) {
+
+    $id = $r->route( 'id' );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return [ 'errors' => ___( "Failed to load activities." ) ];
+
+    $activitiesCollection = Activities::where( 'project_id', $project->id )->orderBy( 'id', 'desc' )->take(10)->get();
+
+    $activites = [];
+
+    foreach ( $activitiesCollection as $a ) {
+
+      $content = Activities::getContent( $a );
+      $activities[] = [ 'id'      => $a->id, 
+                        'content' => $content,
+                        'record'  => $a ];
+
+    }
+
+    return response()->json( [ 'activities' => $activities ] );
 
   }
 

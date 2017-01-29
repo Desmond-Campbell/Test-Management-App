@@ -192,9 +192,21 @@ html,body {
 	font-size: 17px;
 }
 
+.project-list .grid-headline a {
+	color: #1D2A34;
+}
+
 .project-list .grid-subhead {
 	font-size: 13px !important;
 	color: #929292 !important;
+	padding-top: 10px;
+}
+
+.project-modified-date {
+	color: #9AB0BA;
+	float: right;
+	padding-top: 10px;
+	font-size: 70%;
 }
 
 .project-list md-card {
@@ -220,6 +232,10 @@ html,body {
 
 .push-down {
 	margin-top: 25px;
+}
+
+.light-bg {
+	background: #F7FDF5;
 }
 
 /*******************************************/
@@ -273,4 +289,78 @@ html,body {
 
 .right-link-hidden {
 	background: none !important;
+}
+
+md-input-container label, label.form-label {
+
+	font-size: 20px;
+	font-weight: 200;
+
+}
+
+.md-no-underline {
+	border-bottom: dotted 1px #ccc !important;
+}
+
+.md-toast-info .md-toast-content {
+	background: #4C6F83 !important;
+}
+
+.md-toast-error .md-toast-content {
+    background-color: #AD0608 !important;
+}
+
+.md-toast-success .md-toast-content {
+    background-color: #35680F !important;
+}
+
+.alert-info-inverse {
+	border: solid 1px #A2BAC4;
+	color: #345A75;
+}
+
+.alert-info-light {
+	background: #F0F5F9;
+	color: #345A75;
+}
+
+textarea,
+input,
+button,
+select,
+.btn,
+md-select
+{
+    outline:0px !important;
+    -webkit-appearance:none !important;
+    box-shadow: none !important;
+		-moz-box-shadow: none !important;
+		-webkit-box-shadow: none !important;
+}
+
+.no-margin-top {
+	margin-top: 0px !important;
+}
+
+#loading-container {
+	background: #000 url('/img/loading.gif') center center no-repeat; 
+	position: fixed; 
+	height: 100%; 
+	width: 100%; 
+	top: 0px; 
+	left: 0px; 
+	filter: alpha(opacity=53); 
+	opacity: 0.53; 
+	display: none;
+}
+
+/*****************/
+
+.activity-feed .activity-date {
+	font-size: 12px;
+	color: #919AA1;
+}
+
+.activity-feed .view-link {
+	color: #465F74 !important;
 }

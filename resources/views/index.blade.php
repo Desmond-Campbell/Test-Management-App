@@ -26,13 +26,25 @@
       
         <div layout="row">
   
-          <div flex="15" class="left-side-border left-side-border-bottom page-top-left">
+          <div flex="15" class="left-side-border left-side-border-bottom page-top-left hidden-xs">
 
             <a href="/projects"><i class="fa fa-bars"></i> &nbsp; {{__( "All Projects" )}}</a>
 
           </div>
 
-          <div flex="85" class="left-side-border-bottom page-top-right">
+          <div flex="15" class="left-side-border left-side-border-bottom page-top-left visible-xs">
+
+            <a href="/projects"><i class="fa fa-bars"></i></a>
+
+          </div>
+
+          <div flex class="left-side-border-bottom page-top-right hidden-xs">
+          
+            <span class="page-heading">@yield('page-heading')</span>
+
+          </div>
+
+          <div flex class="left-side-border-bottom page-top-right visible-xs">
           
             <span class="page-heading">@yield('page-heading')</span>
 
@@ -48,13 +60,13 @@
 
           </div>
 
-          <div flex="65" class="main-content">
+          <div flex class="main-content">
 
             @yield('main')
 
           </div>
 
-          <div flex="15">
+          <div flex="5">
 
             @yield('right-side')
 
@@ -69,6 +81,10 @@
     </div>
 
     @include('layouts.page-foot')
+
+    <div id="loading-container">
+    &nbsp;
+    </div>
 
   </body>
 
