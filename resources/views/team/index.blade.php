@@ -14,6 +14,16 @@
 {{___( "Project Team" )}}
 @stop
 
+<?php $layout_toolbar = 1; ?>
+
+@section('toolbar')
+  <div id="header-toolbar">
+    <ul class="toolbar">
+      <li><a href="/projects/{{$project->id}}/team/new-member"><img src="/img/toolbar/new.png" class="toolbar-icon" /> {{___( "Add Member" )}}</a></li>
+    </ul>
+  </div>
+@stop
+
 @section('main')
 
   <div ng-controller="ProjectTeamListCtrl">
@@ -21,10 +31,6 @@
     <input type="hidden" id="project_id" value="{{$project->id}}" />
     
     <h1 class="no-margin-top">{{___( "Team Members" )}}</h1>
-
-    <a href="/projects/{{$project->id}}/team/new-member" type="button" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> &nbsp; {{___( "Add Member" )}}</a>
-
-    <br /><br />
 
     <table class="table table-middle-align push-down sm-container">
 

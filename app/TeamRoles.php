@@ -4,7 +4,7 @@ namespace App;
 
 use \App\Model;
 
-class Roles extends Model
+class TeamRoles extends Model
 {    
     /**
      * This contains an array of attributes that you do not want to be mass assignable
@@ -15,6 +15,6 @@ class Roles extends Model
      * This is the name of the database table for this Model
      * @var string
      */
-    protected $table = "roles";
+    protected $table = "team_roles";
     
 }

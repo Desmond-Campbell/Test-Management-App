@@ -118,3 +118,39 @@ app.service('fileUpload', ['$http', function ($http) {
 app.config(function ($sceProvider) {
     $sceProvider.enabled(false);
 });
+
+app.directive('onEnter',function() {
+
+  var linkFn = function(scope,element,attrs) {
+    element.bind("keypress", function(event) {
+      if(event.which === 13) {
+        scope.$apply(function() {
+      scope.$eval(attrs.onEnter);
+        });
+        event.preventDefault();
+      }
+    });
+  };
+
+  return {
+    link:linkFn
+  };
+});
+
+app.directive('onEscape',function() {
+
+  var linkFn = function(scope,element,attrs) {
+    element.bind("keypress", function(event) {
+      if(event.which === 27) {
+        scope.$apply(function() {
+      scope.$eval(attrs.onEnter);
+        });
+        event.preventDefault();
+      }
+    });
+  };
+
+  return {
+    link:linkFn
+  };
+});

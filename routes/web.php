@@ -40,6 +40,17 @@
 	Route::get('/projects/{project_id}/team/new-member', 'TeamController@newMember');
 	Route::post('/projects/{project_id}/team/create-member', 'TeamController@createMember');
 
+// Team > Roles
+
+	Route::get('/projects/{project_id}/team/roles', 'TeamController@roles');
+	Route::get('/projects/{project_id}/team/new-role', 'TeamController@newRole');
+	Route::get('/projects/{project_id}/team/{role_id}/get-role', 'TeamController@getRole');
+	Route::post('/projects/{project_id}/team/create-role', 'TeamController@createRole');
+	Route::get('/projects/{project_id}/team/{role_id}/get-permissions', 'TeamController@getPermissions');
+	Route::get('/projects/{project_id}/team/{role_id}/edit-role', 'TeamController@editRole');
+	Route::post('/projects/{project_id}/team/{role_id}/save-role', 'TeamController@saveRole');
+	Route::post('/projects/{project_id}/team/{role_id}/save-permissions', 'TeamController@savePermissions');
+
 // Cases
 
 	Route::get('/projects/{project_id}/cases', 'CaseController@index');

@@ -12,6 +12,7 @@ app.controller('ProjectTeamEditAccessCtrl', ['$scope', '$http', '$mdDialog', '$t
 
 		$scope.getRoles = function ( filter ) {
 
+	  	$scope.dirty_roles = false;
 			$id = $scope.project_id;
 			$member_id = $scope.member_id;
 
@@ -68,6 +69,7 @@ app.controller('ProjectTeamEditAccessCtrl', ['$scope', '$http', '$mdDialog', '$t
 	  };
 
 	  $scope.toggleAll = function() {
+	  	$scope.dirty_roles = true;
 	    if ($scope.selected.length === $scope.roles.length) {
 	      $scope.selected = [];
 	    } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
@@ -120,6 +122,7 @@ app.controller('ProjectTeamEditAccessCtrl', ['$scope', '$http', '$mdDialog', '$t
 
 		$scope.getOverrides = function ( filter ) {
 
+	  	$scope.dirty_overrides = false;
 			$id = $scope.project_id;
 			$member_id = $scope.member_id;
 
@@ -176,6 +179,7 @@ app.controller('ProjectTeamEditAccessCtrl', ['$scope', '$http', '$mdDialog', '$t
 	  };
 
 	  $scope.toggleAllO = function() {
+	  	$scope.dirty_overrides = true;
 	    if ($scope.selectedO.length === $scope.overrides.length) {
 	      $scope.selectedO = [];
 	    } else if ($scope.selectedO.length === 0 || $scope.selectedO.length > 0) {
@@ -228,6 +232,7 @@ app.controller('ProjectTeamEditAccessCtrl', ['$scope', '$http', '$mdDialog', '$t
 
 		$scope.getRestrictions = function ( filter ) {
 
+	  	$scope.dirty_restrictions = false;
 			$id = $scope.project_id;
 			$member_id = $scope.member_id;
 
@@ -284,6 +289,7 @@ app.controller('ProjectTeamEditAccessCtrl', ['$scope', '$http', '$mdDialog', '$t
 	  };
 
 	  $scope.toggleAllR = function() {
+	  	$scope.dirty_restrictions = true;
 	    if ($scope.selectedR.length === $scope.restrictions.length) {
 	      $scope.selectedR = [];
 	    } else if ($scope.selectedR.length === 0 || $scope.selectedR.length > 0) {

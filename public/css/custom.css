@@ -7,6 +7,16 @@ html,body {
   background: #FFF !important;
 }
 
+a, a:visited, a:active, a:focus {
+	color: #0C568E;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #2497D1;
+	text-decoration: none;
+}
+
 /* Nav */
 
 .icon-float-1 {
@@ -360,6 +370,11 @@ md-input-container label, label.form-label {
 	width: 35%;
 }
 
+.small-description {
+	color: #93A3AE;
+	font-size: 12px;
+}
+
 .perm-list-item span.small-description {
 	color: #93A3AE;
 	font-size: 85%;
@@ -409,4 +424,61 @@ md-select
 
 .activity-feed .view-link {
 	color: #465F74 !important;
+}
+
+/******toolbar***************/
+
+#header-toolbar {
+	margin: 0;
+	margin-bottom: 15px;
+	padding: 5px;
+	padding-left: 0px;
+}
+
+#header-toolbar ul.toolbar li {
+	opacity: 0.45;
+	filter: alpha(opacity=45);
+}
+
+#header-toolbar:hover ul.toolbar li {
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+#header-toolbar ul.toolbar,
+#header-toolbar ul.toolbar li {
+	list-style: none;
+	list-style-type: none;
+}
+
+#header-toolbar ul.toolbar {
+	margin-left: -40px;
+	height: 19px;
+}
+
+#header-toolbar ul.toolbar li {
+	float: left;
+	margin-right: 15px;
+}
+
+#header-toolbar ul.toolbar li a {
+	display: block;
+	font-size: 13px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right: 10px;
+	text-decoration: none;
+	color: #1A3645;
+}
+
+#header-toolbar ul.toolbar li a .toolbar-icon {
+	margin-top: -3px;
+}
+
+.pointer-cursor {
+	cursor: pointer;
+}
+
+.no-borders {
+	border: 0px !important;
 }

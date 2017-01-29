@@ -13,11 +13,11 @@
               </button>
               <a class="navbar-brand" href="#"><img src="/img/icon.png" /></a>
               <ul class="nav navbar-nav navbar-inverse submenu">
-                <li class="company-name"><strong>Company Name</strong></li>
+                <li class="company-name"><strong>Organisation Name</strong></li>
                 <li class="company-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <span>
                     <md-tooltip md-direction="right">
-                      {{__( "Switch Company" )}}
+                      {{__( "Switch Organisation" )}}
                     </md-tooltip>
                     <i class="fa fa-arrow-circle-down"></i>
                   </span></a>
@@ -43,6 +43,9 @@
                       <li><md-tooltip md-direction="down">
                             {{__( "My Account" )}}
                           </md-tooltip><a href="/"><i class="fa fa-user"></i></a></li>
+                      <li><md-tooltip md-direction="down">
+                            {{__( "Language" )}}
+                          </md-tooltip><a href="/"><i class="fa fa-globe"></i></a></li>
                       <li><md-tooltip md-direction="down">
                             {{__( "Manage Team" )}}
                           </md-tooltip><a href="/"><i class="fa fa-group"></i></a></li>

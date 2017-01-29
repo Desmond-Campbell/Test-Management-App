@@ -74,13 +74,7 @@
 
         </div>
 
-        <br /><br /><br /><br />
-
-        <button type="submit" class="btn btn-success" ng-click="saveAndExit()">{{__( "Save, and Exit" )}}</button> &nbsp; 
-        <button type="button" class="btn btn-primary" ng-click="justSave()">{{__( "Just Save" )}}</button> &nbsp; 
-        <button type="button" class="btn btn-warning" ng-click="getProject()">{{__( "Discard Changes" )}}</button>
-
-        <div layout-gt-xs="row" style="margin-top:-170px">
+        <div layout-gt-xs="row">
 
           <md-input-container flex-gt-xs>
 
@@ -97,7 +91,7 @@
                 md-color-generic-palette="false"
                 md-color-material-palette="false"
                 md-color-clear-button="false"
-                open-on-input="true"></div>
+                open-on-input="true">
 
             </div>
 
@@ -105,7 +99,11 @@
 
         </div>
 
-        
+        <br />
+
+        <button type="submit" class="btn btn-success" ng-click="saveAndExit()">{{__( "Save, and Exit" )}}</button> &nbsp; 
+        <button type="button" class="btn btn-primary" ng-click="justSave()">{{__( "Just Save" )}}</button> &nbsp; 
+        <button type="button" class="btn btn-warning" ng-click="getProject()">{{__( "Discard Changes" )}}</button>
 
       </form>
 

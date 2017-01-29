@@ -82,8 +82,6 @@ app.controller('ProjectDetailsCtrl', ['$scope', '$http', 'fileUpload', function 
 
 		l(1);
 
-		console.log('save...');
-
 		$id = $scope.project_id;
 
 		$http.post( '/projects/' + $id + '/details/update', $scope.project ).then( 

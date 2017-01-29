@@ -20,8 +20,7 @@ class CreateTeamRolesTable extends Migration
             $table->integer('role_type');
             $table->string('name', 50);
             $table->string('description', 72)->nullable();
-            $table->text('keys_overrides')->nullable();
-            $table->text('keys_restrictions')->nullable();
+            $table->text('permissions')->nullable();
             $table->timestamps();
         });
     }

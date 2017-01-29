@@ -14,12 +14,25 @@
 {{___( "Project Team" )}}
 @stop
 
+<?php $layout_toolbar = 1; ?>
+
+@section('toolbar')
+  <div id="header-toolbar">
+    <ul class="toolbar">
+      <li><a href="javascript:;" ng-click="removeMember({{$member_id}})"><img src="/img/toolbar/remove.png" class="toolbar-icon" /> {{___( "Remove from Project" )}}</a></li>
+      <li><a href="/organisation/person/{{$member_user_id}}/view"><img src="/img/toolbar/person.png" class="toolbar-icon" /> {{___( "View in Organisation" )}}</a></li>
+      <li><a href="/projects/{{$project->id}}/team/new-member"><img src="/img/toolbar/new.png" class="toolbar-icon" /> {{___( "Add Another Member" )}}</a></li>
+    </ul>
+  </div>
+@stop
+
 @section('main')
 
   <div ng-controller="ProjectTeamEditAccessCtrl">
 
     <input type="hidden" id="project_id" value="{{$project->id}}" />
     <input type="hidden" id="member_id" value="{{$member_id}}" />
+    <input type="hidden" id="member_user_id" value="{{$member_user_id}}" />
     
     <h1 class="no-margin-top">@{{member.name}}</h1>
 
@@ -35,10 +48,12 @@
           <md-tab label="{{___( "Roles" )}}">
             <md-content class="md-padding white-bg">
               
-              <div class="text-info">{{___( "Which role or roles do you want this member to be assigned to?" )}}</div><br />
+              <div class="text-info">{{___( "Which role or roles do you want this member to be assigned to, for this project?" )}}</div><br />
 
               <div ng-show="dirty_roles">
-                <button class="btn btn-success btn-sm" ng-click="saveRoles()">{{___( "Save Changes" )}}</button><br /><br />
+                <button class="btn btn-success btn-sm" ng-click="saveRoles()">{{___( "Save Changes" )}}</button>
+                &nbsp;
+                <button class="btn btn-danger btn-sm" ng-click="getRoles()">{{___( "Undo" )}}</button><br /><br />
               </div>
 
               <fieldset class="demo-fieldset" >
@@ -67,7 +82,9 @@
               <div class="text-info">{{___( "If you want to give special access to this member but you don't wish to add that permission to any of their roles, you can configure override permissions here." )}}</div><br />
 
               <div ng-show="dirty_overrides">
-                <button class="btn btn-success btn-sm" ng-click="saveOverrides()">{{___( "Save Changes" )}}</button><br /><br />
+                <button class="btn btn-success btn-sm" ng-click="saveOverrides()">{{___( "Save Changes" )}}</button>
+                &nbsp;
+                <button class="btn btn-danger btn-sm" ng-click="getOverrides()">{{___( "Undo" )}}</button><br /><br />
               </div>
 
               <fieldset class="demo-fieldset" >
@@ -96,7 +113,9 @@
               <div class="text-info">{{___( "This works opposite to override permissions, in that, you may want to restrict a member from doing something in particular, even though their role allows it. Any permission you select here will supercede every other security setting for this member." )}}</div><br />
 
               <div ng-show="dirty_restrictions">
-                <button class="btn btn-success btn-sm" ng-click="saveRestrictions()">{{___( "Save Changes" )}}</button><br /><br />
+                <button class="btn btn-success btn-sm" ng-click="saveRestrictions()">{{___( "Save Changes" )}}</button>
+                &nbsp;
+                <button class="btn btn-danger btn-sm" ng-click="getRestrictions()">{{___( "Undo" )}}</button><br /><br />
               </div>
 
               <fieldset class="demo-fieldset" >

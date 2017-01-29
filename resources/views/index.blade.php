@@ -62,6 +62,12 @@
 
           <div flex class="main-content">
 
+          @if( isset( $layout_toolbar ) )
+
+            @yield('toolbar')
+
+          @endif
+
             @yield('main')
 
           </div>

@@ -14,6 +14,16 @@
 {{___( "Project Team" )}}
 @stop
 
+<?php $layout_toolbar = 1; ?>
+
+@section('toolbar')
+  <div id="header-toolbar">
+    <ul class="toolbar">
+      <li><a href="/projects/{{$project->id}}/team"><img src="/img/toolbar/view.png" class="toolbar-icon" /> {{___( "View Members" )}}</a></li>
+    </ul>
+  </div>
+@stop
+
 @section('main')
 
   <div ng-controller="ProjectTeamAddCtrl">

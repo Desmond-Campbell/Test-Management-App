@@ -60,7 +60,10 @@
                 <a href="/projects/{{$project_id}}/team/new-member">Add Member</a>
               </li>
               <li class="nav-submenu-list-item">
-                <a href="/projects/{{$project_id}}/tesm/permissions">Manage Permissions</a>
+                <a href="/projects/{{$project_id}}/team/roles">Manage Roles</a>
+              </li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/team/new-role">Add Role</a>
               </li>
             <li role="separator" class="divider"></li>
             @endif
