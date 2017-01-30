@@ -98,3 +98,15 @@ function pass( $args, $project_id ) {
   return \App\Police::check( $args );
 
 }
+
+function block( $args, $project_id ) {
+
+	return !pass( $args, $project_id );
+
+}
+
+function orgblock( $args, $project_id ) {
+
+	return !orgpass( $args, $project_id );
+
+}

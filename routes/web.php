@@ -44,6 +44,7 @@ Route::get('/police/organisation/check', 'PoliceController@quickCheck');
 	Route::get('/projects/{project_id}/team/{member_id}/edit-access', 'TeamController@editAccess');
 	Route::get('/projects/{project_id}/team/new-member', 'TeamController@newMember');
 	Route::post('/projects/{project_id}/team/create-member', 'TeamController@createMember');
+	Route::post('/projects/{project_id}/team/{member_id}/remove-member', 'TeamController@removeMember');
 
 // Team > Roles
 

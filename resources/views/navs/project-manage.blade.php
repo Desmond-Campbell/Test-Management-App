@@ -13,6 +13,16 @@
           <li class="main-entry nav-list-item @if ( $active == 'dashboard' ) active @endif">
             <a href="/projects/{{$project_id}}/dashboard"><i class="fa fa-home"></i> &nbsp; Dashboard</a>
           </li>
+            @if ( $active == 'dashboard' )
+            <li role="separator" class="divider"></li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/dashboard">Activity Feed</a>
+              </li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/testing">Testing Dashboard</a>
+              </li>
+            <li role="separator" class="divider"></li>
+            @endif
           <li class="main-entry nav-list-item @if ( $active == 'details' ) active @endif">
              <a href="/projects/{{$project_id}}/details"><i class="fa fa-cog"></i> &nbsp; Details</a>
           </li>

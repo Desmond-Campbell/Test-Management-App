@@ -36,6 +36,12 @@ function _notifySuccess( text, no_translate ) {
 
 }
 
+function to( u ) {
+
+  location.assign( u );
+
+}
+
 function _tt( text ) {
 
 	return text;

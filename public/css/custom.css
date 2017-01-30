@@ -354,6 +354,10 @@ md-input-container label, label.form-label {
 	color: #A3A5A8;
 }
 
+.text-struck {
+	text-decoration: line-through;
+}
+
 .table-middle-align > tbody > tr > td {
      vertical-align: middle;
 }

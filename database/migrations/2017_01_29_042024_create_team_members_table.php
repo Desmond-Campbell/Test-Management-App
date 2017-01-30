@@ -21,6 +21,7 @@ class CreateTeamMembersTable extends Migration
             $table->text('roles')->nullable();
             $table->text('key_overrides')->nullable();
             $table->text('key_restrictions')->nullable();
+            $table->boolean('is_removed')->nullable()->default(0);
             $table->timestamps();
         });
     }

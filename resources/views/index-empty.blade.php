@@ -39,7 +39,7 @@
 
         @endif
 
-        @if ( isset( $result['debug'] ) )
+        @if ( isset( $result['debug'] ) && env( 'PERMISSION_DEBUG' ) )
 
           <div class="push-down text-danger text-center">
             <?php print_r( $result['debug'] ); ?></small>

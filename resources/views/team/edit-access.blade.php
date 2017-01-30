@@ -17,9 +17,9 @@
 <?php $layout_toolbar = 1; ?>
 
 @section('toolbar')
-  <div id="header-toolbar">
+  <div id="header-toolbar" ng-controller="ProjectTeamEditAccessCtrl">
     <ul class="toolbar">
-      <li><a href="javascript:;" ng-click="removeMember({{$member_id}})"><img src="/img/toolbar/remove.png" class="toolbar-icon" /> {{___( "Remove from Project" )}}</a></li>
+      <li><a href="javascript:;" ng-click="removeMember()"><img src="/img/toolbar/remove.png" class="toolbar-icon" /> {{___( "Remove from Project" )}}</a></li>
       <li><a href="/organisation/person/{{$member_user_id}}/view"><img src="/img/toolbar/person.png" class="toolbar-icon" /> {{___( "View in Organisation" )}}</a></li>
       <li><a href="/projects/{{$project->id}}/team/new-member"><img src="/img/toolbar/new.png" class="toolbar-icon" /> {{___( "Add Another Member" )}}</a></li>
     </ul>

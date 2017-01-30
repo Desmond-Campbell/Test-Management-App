@@ -35,7 +35,14 @@ class TeamController extends Controller
 
     if ( $r->input( 'format') == 'json' ) {
 
-      $members = TeamMembers::where( 'project_id', $id )->get();
+      if ( block( 'team.view_deleted_members', $id ) ) {
+
+        $members = TeamMembers::where( 'project_id', $id )->where( 'is_removed', '0' )->get();
+
+      }
+
+      if ( empty( $members ) ) $members = TeamMembers::where( 'project_id', $id )->get();
+
       $members_filtered = [];
 
       foreach ( $members as $m ) {
@@ -121,7 +128,7 @@ class TeamController extends Controller
 
       // Check if they exist
 
-      $teammember = TeamMembers::where( 'project_id', $id )->where( 'user_id', $user_id )->count();
+      $teammember = TeamMembers::where( 'project_id', $id )->where( 'user_id', $user_id )->first();
 
       if ( !$teammember ) {
 
@@ -155,11 +162,103 @@ class TeamController extends Controller
 
         $result = [ 'success' => true, 'result_id' => $result_id ];
 
+      } elseif ( $teammember->is_removed ) {
+
+        $teammember->is_removed = 0;
+        $teammember->save();
+      
+        // Create activity feed
+
+          $filter_hash = sha1( "add_team_member." . date( 'Y-m-d' ) );
+          $activity_values = [];
+          $activity_values['user_id'] = $user_id;
+          $activity_values['name'] = $user->name;
+
+          $newactivity = [
+                            'project_id'    => $id,
+                            'object_type'   => 'add_team_member',
+                            'object_id'     => $user_id,
+                            'user_id'       => get_user_id(),
+                            'values'        => json_encode( $activity_values ),
+                            'filter_hash'   => $filter_hash
+                          ];
+
+        Activities::create( $newactivity );
+
+        $result = [ 'success' => true, 'result_id' => $teammember->id ];
+
       } else {
 
         $result = [ 'errors' => $name . ' ' . ___( 'has already been added to this project.' ) ];
 
       }
+
+    }
+
+    return response()->json( $result );
+
+  }
+
+  public function removeMember( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.remove_member', 'project_id' => $id, 'return' => 1 ] );
+ 
+    $project = Projects::find( $id );
+
+    if ( !$project ) return [ 'errors' => ___( 'Project not found.' ) ];
+
+    $member_id = $r->route( 'member_id' );
+    $teammember = TeamMembers::find( $member_id );
+
+    $err = null;
+
+    if ( !$teammember ) {
+
+      $err = [ 'errors' => ___( "Invalid team member selected." ) ];
+
+    }
+
+    if ( $err ) {
+
+      $result = $err;
+
+    } else {
+
+      // Strip access rights and set as removed
+
+      $teammember->is_removed = 1;
+      $teammember->roles = '[]';
+      $teammember->key_overrides = '[]';
+      $teammember->key_restrictions = '[]';
+      $teammember->save();
+
+      $user = User::find( $teammember->user_id );
+
+      if ( $user ) {
+      
+        // Create activity feed
+
+          $filter_hash = sha1( "remove_team_member." . date( 'Y-m-d' ) );
+          $activity_values = [];
+          $activity_values['user_id'] = $user->id;
+          $activity_values['name'] = $user->name;
+
+          $newactivity = [
+                            'project_id'    => $id,
+                            'object_type'   => 'remove_team_member',
+                            'object_id'     => $user->id,
+                            'user_id'       => get_user_id(),
+                            'values'        => json_encode( $activity_values ),
+                            'filter_hash'   => $filter_hash
+                          ];
+
+        Activities::create( $newactivity );
+
+      }
+
+      $result = [ 'success' => true, 'result_id' => $teammember->id ];
 
     }
 
@@ -476,6 +575,8 @@ class TeamController extends Controller
     $teammember = TeamMembers::find( $member_id );
 
     if ( !$teammember ) return redirect( "/projects/$id/team" );
+    
+    if ( $teammember->is_removed ) return redirect( "/projects/$id/team" );
 
     $member_user_id = $teammember->user_id;
 
@@ -496,6 +597,7 @@ class TeamController extends Controller
 
     if ( !$project ) return [ 'errors' => ___( 'Project not found.' ) ];
     if ( !$member ) return [ 'errors' => ___( 'Project team member not found.' ) ];
+    if ( $member->is_removed ) return [ 'errors' => ___( 'The team member you selected has been removed from this project.' ) ];
 
     $user = User::find( $member->user_id );
     if ( !$user ) return [ 'errors' => ___( 'The person you selected does not exist in the organisation at all.' ) ];
@@ -533,6 +635,8 @@ class TeamController extends Controller
 
     if ( $teammember ) {
 
+      if ( $teammember->is_removed ) return [ 'errors' => ___( 'The team member you selected has been removed from this project.' ) ];
+
       $selected_roles = $teammember->roles;
 
       if ( $selected_roles ) $selected_roles = try_json_decode( $selected_roles );
@@ -566,6 +670,8 @@ class TeamController extends Controller
 
     if ( $teammember ) {
 
+    if ( $teammember->is_removed ) return [ 'errors' => ___( 'The team member you selected has been removed from this project.' ) ];
+  
       $selected_roles = $r->input( 'selected_roles' );
 
       $teammember->roles = json_encode( $selected_roles );
@@ -596,6 +702,8 @@ class TeamController extends Controller
     $teammember = TeamMembers::find( $member_id );
 
     if ( $teammember ) {
+
+      if ( $member->is_removed ) return [ 'errors' => ___( 'The team member you selected has been removed from this project.' ) ];
 
       $overrides = $override_info = [];
 
@@ -641,6 +749,8 @@ class TeamController extends Controller
 
     if ( $teammember ) {
 
+      if ( $teammember->is_removed ) return [ 'errors' => ___( 'The team member you selected has been removed from this project.' ) ];
+
       $selected_overrides = $r->input( 'selected_overrides' );
 
       $teammember->key_overrides = json_encode( $selected_overrides );
@@ -671,6 +781,8 @@ class TeamController extends Controller
     $teammember = TeamMembers::find( $member_id );
 
     if ( $teammember ) {
+
+      if ( $teammember->is_removed ) return [ 'errors' => ___( 'The team member you selected has been removed from this project.' ) ];
 
       $restrictions = $restriction_info = [];
  
@@ -715,6 +827,8 @@ class TeamController extends Controller
     $teammember = TeamMembers::find( $member_id );
 
     if ( $teammember ) {
+
+      if ( $teammember->is_removed ) return [ 'errors' => ___( 'The team member you selected has been removed from this project.' ) ];
 
       $selected_restrictions = $r->input( 'selected_restrictions' );
 

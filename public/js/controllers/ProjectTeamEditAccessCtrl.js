@@ -3,6 +3,44 @@ app.controller('ProjectTeamEditAccessCtrl', ['$scope', '$http', '$mdDialog', '$t
 	$scope.project_id = $( '#project_id').val();
 	$scope.member_id = $( '#member_id').val();
 
+	// Remove member
+
+	$scope.removeMember = function () {
+
+		l(1);
+
+		$id = $scope.project_id;
+		$member_id = $scope.member_id;
+
+		$http.post( '/projects/' + $id + '/team/' + $member_id + '/remove-member' ).then( 
+			
+			function ( r ) {
+				
+				l(0);
+
+				if ( typeof r.data.errors != 'undefined' ) {
+
+					_alert( r.data.errors, 1 );
+
+				} else {
+					
+					$scope.dirty_roles = false;
+					to( '/projects/' + $id + '/team' );
+
+				}
+			
+			},
+
+			function () {
+
+				l(0);
+
+				_alert( 'Failed to remove team member.' );
+
+			});
+
+	};
+
 	// Checkbox functions for roles		
 
 		$scope.roles = [];

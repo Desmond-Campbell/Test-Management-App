@@ -1,3 +1,4 @@
+id,"key","section","category","access_type","name","description","keywords","message","updated_at"
 1,"remove_member","projects","team","w","Remove Member","Remove a member from the project team. Some content created by that user will be transferred to the project owner, while others such as comments will be anonymised.","unassign remove delete team member","You're not allowed to remove team members from this project.","2017-01-29 17:46:38"
 2,"edit_member","projects","team","w","Edit Member","Edit a team member's access rights to the project.","edit change update team member permissions","You're not allowed to modify access rights for team members on this project.","2017-01-29 17:49:29"
 3,"add_member","projects","team","w","Add Member","Add a member to the team, from people in the organisation.","assign add team member","You're not allowed to add team members to this project.","2017-01-29 17:49:17"
@@ -33,3 +34,4 @@
 35,"view_all_projects","organisation","projects","r","View All Projects","View projects in the organisation created by others.","view project list","You're not allowed to view projects in this organisation that were created by others.","2017-01-29 21:25:33"
 36,"exclusive_access","projects","projects","w","Exclusive Access","Exclusive access to project and its constituents. Please note permission restrictions may still override this permission.","administrator exclusive full access","You do not have enough permissions.","2017-01-29 23:28:04"
 37,"project_admin","projects","projects","w","Project Admin","Gives access to all project level rights, excluding team member access.","project team super admin","You do not have enough permissions.",NULL
+38,"view_deleted_members","projects","team","r","View Deleted Members","View team members that have been removed from the project.","project team member delete remove suspend","You're not allowed to remove members from this project's team.","2017-01-30 08:54:41"

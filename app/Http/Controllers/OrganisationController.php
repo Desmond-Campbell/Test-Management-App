@@ -48,7 +48,7 @@ class OrganisationController extends Controller
       foreach ( $members as $m ) {
 
         $members_filtered[] = $m->user_id;
-        $members_list[$m->user_id] = $m->id;
+        $members_list[$m->user_id] = $m;
 
       }
 
@@ -63,11 +63,26 @@ class OrganisationController extends Controller
 
       foreach ( $people as $person ) {
         
+        $teammember = null;
+        if ( !empty( $members_list[$person->id] ) ) $teammember = $members_list[$person->id];
+        
         $person->is_member = in_array( $person->id, $members_filtered );
+        $person->removed = false;
+
+        if ( $teammember ) {
+
+          if ( $teammember->is_removed ) {
+
+            $person->is_member = false;
+            $person->removed = true;
+
+          }
+
+        }
 
         if ( $person->is_member ) {
 
-          if ( !empty( $members_list[$person->id] ) ) $person->member_id = $members_list[$person->id];
+          if ( $teammember ) $person->member_id = $teammember->id;
 
         }
 

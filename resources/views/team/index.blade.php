@@ -50,9 +50,14 @@
 
       <tr ng-repeat="m in members">
         
-        <td>@{{m.name}}</td>
-        <td>@{{m.class}}</td>
-        <td><a href="/projects/{{$project->id}}/team/@{{m.id}}/edit-access"><i class="fa fa-lock"></i> {{___( "Configure Access" )}}</a></td>
+        <td ng-show="!m.is_removed">@{{m.name}}</td>
+        <td ng-show="m.is_removed" class="text-struck text-danger">@{{m.name}}</td>
+
+        <td ng-show="!m.is_removed">@{{m.class}}</td>
+        <td ng-show="m.is_removed" class="text-struck text-danger">@{{m.class}}</td>
+        
+        <td ng-show="!m.is_removed"><a href="/projects/{{$project->id}}/team/@{{m.id}}/edit-access"><i class="fa fa-lock"></i> {{___( "Configure Access" )}}</a></td>
+        <td ng-show="m.is_removed"><a href="/projects/{{$project->id}}/team/new-member"><i class="fa fa-bars"></i> {{___( "Reinstate from Organisation" )}}</a></td>
 
       </tr>
 

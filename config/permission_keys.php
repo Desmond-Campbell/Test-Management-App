@@ -289,6 +289,14 @@ $keys["projects"]["projects"]["project_admin"] =
 						"access_type" => "w" 
 					];
 
+$keys["projects"]["team"]["view_deleted_members"] = 
+					[ 
+						"name" => "View Deleted Members", 
+						"message" => "You're not allowed to remove members from this project's team.", 
+						"keywords" => "project team member delete remove suspend", 
+						"access_type" => "r" 
+					];
+
 
 
 	return $keys;
