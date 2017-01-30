@@ -26,6 +26,8 @@
 
 	    	<h1 class="no-margin-top">{{___( "Activities") }}</h1>
 
+	    	@if ( pass( "projects.view_activities", $project->id ) )
+
 	    	<div ng-show="!activities.length">
 
 	    		{{___( "There are no activities on this project as yet." )}}
@@ -44,11 +46,23 @@
 
 	    	</div>
 
+	    	@else
+
+	    	<div>
+
+	    		{{___( "You don't have access to view activity feeds." )}}
+
+	    	</div>
+
+	    	@endif
+
 	    </div>
 
 	    <div flex="5"></div>
 
 	    <div flex class="hidden-xs">
+
+	    	@if ( pass( "projects.view_properties", $project->id ) )
 
 	    	<md-content flex layout-padding md-white-frame>
 	    		
@@ -131,6 +145,8 @@
 					</ul>
 
 	    	</md-content>
+
+	    	@endif
 
 	    </div>
 

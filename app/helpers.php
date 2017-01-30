@@ -84,3 +84,17 @@ function get_url() {
 	return base64_encode( $_SERVER['REQUEST_URI'] );
 
 }
+
+function orgpass( $args ) {
+
+  return \App\Police::check( [ 'keystring' => "organisation.$args", 'quickcheck' => true ] );
+
+}
+
+function pass( $args, $project_id ) {
+
+	$args = [ 'keystring' => "projects.$args", 'quickcheck' => true, 'project_id' => $project_id ];
+
+  return \App\Police::check( $args );
+
+}

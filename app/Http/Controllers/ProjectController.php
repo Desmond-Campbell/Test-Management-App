@@ -21,6 +21,9 @@ class ProjectController extends Controller
 
   public function index( Request $r ) {
 
+    Police::check( [ 'keystring' => 'organisation.projects.view_projects', 
+                      'return' => $r->input( 'format' ) == 'json' ] );
+
     if ( $r->input( 'format') == 'json' ) {
 
       $projects = Projects::all();
@@ -40,6 +43,8 @@ class ProjectController extends Controller
   }
 
   public function create( Request $r ) {
+
+    Police::check( [ 'keystring' => 'organisation.projects.create_project', 'return' => 1 ] );
 
     $title = trim( $r->input( 'title' ) );
     $err = null;
@@ -65,7 +70,7 @@ class ProjectController extends Controller
 
       $user_id = get_user_id();
 
-      $is_owner = \App\Police::check( 'team.projects.own_projects' );
+      $is_owner = orgpass( 'projects.own_projects' );
 
       if ( $is_owner ) $owner_id = $user_id;
       else $owner_id = User::getPrincipalId();
@@ -85,8 +90,8 @@ class ProjectController extends Controller
                   'name'          => ___( 'Owner' ), 
                   'role_type'     => 1,
                   'project_id'    => $id,
-                  'permissions_include' => json_encode( [ 'all_project_permissions' ] ),
-                  'description'   => ___( 'Owner has all rights on this project.' )
+                  'permissions'   => json_encode( [ 'exclusive_access' ] ),
+                  'description'   => ___( 'Owner by default has all rights on the project and what is connected to it.' )
                   ];
 
       \App\TeamRoles::create( $newrole );
@@ -99,8 +104,8 @@ class ProjectController extends Controller
                     'name'          => ___( 'Administrator' ), 
                     'role_type'     => 2,
                     'project_id'    => $id,
-                    'permissions_include' => json_encode( [ 'all_project_admin_permissions' ] ), 
-                    'description'   => ___( 'Administrator can do most things with a project, but not all.' )
+                    'permissions' => json_encode( [ 'admin_access' ] ), 
+                    'description'   => ___( 'Administrator by default can do most things with the project itself, but not what is connected to it.' )
                     ];
 
           \App\TeamRoles::create( $newrole );
@@ -136,11 +141,11 @@ class ProjectController extends Controller
 
       $result = [ 'result_id' => $id, 'url' => '/projects/' . $id ];
 
-      $section_id = CaseSections::create( [ 'name' => 'Main', 'project_id' => $id ] )->id;
-      $requirement_section_id = RequirementSections::create( [ 'name' => 'Main', 'project_id' => $id ] )->id;
+      // $section_id = CaseSections::create( [ 'name' => 'Main', 'project_id' => $id ] )->id;
+      // $requirement_section_id = RequirementSections::create( [ 'name' => 'Main', 'project_id' => $id ] )->id;
 
-      $p->default_section_id = $section_id;
-      $p->default_requirement_section_id = $requirement_section_id;
+      // $p->default_section_id = $section_id;
+      // $p->default_requirement_section_id = $requirement_section_id;
       $p->save();
 
     }
@@ -153,6 +158,8 @@ class ProjectController extends Controller
 
     $id = $r->route( 'id' );
 
+    Police::check( [ 'keystring' => 'projects.projects.view_dashboard', 'project_id' => $id ] );
+
     $project = Projects::find( $id );
 
     if ( !$project ) return redirect( '/projects' );
@@ -164,6 +171,8 @@ class ProjectController extends Controller
   public function details( Request $r ) {
 
     $id = $r->route( 'id' );
+
+    Police::check( [ 'keystring' => 'projects.projects.view_details', 'project_id' => $id ] );
 
     $project = Projects::find( $id );
 
@@ -178,6 +187,9 @@ class ProjectController extends Controller
   public function detailsUpdate( Request $r ) {
 
     $id = $r->route( 'id' );
+
+    Police::check( [ 'keystring' => 'projects.projects.update_details', 'project_id' => $id, 'return' => 1 ] );
+
     $title = $r->input( 'title' );
     $description = $r->input( 'description' );
     $type = $r->input( 'type' );
@@ -225,11 +237,22 @@ class ProjectController extends Controller
 
     $id = $r->route( 'id' );
 
+    Police::check( [ 'keystring' => 'projects.projects.view_activities', 'project_id' => $id, 'return' => 1 ] );
+
     $project = Projects::find( $id );
 
     if ( !$project ) return [ 'errors' => ___( "Failed to load activities." ) ];
 
-    $activitiesCollection = Activities::where( 'project_id', $project->id )->orderBy( 'id', 'desc' )->take(10)->get();
+    if ( pass( 'projects.view_all_activities', $id ) ) {
+
+      $activitiesCollection = Activities::where( 'project_id', $project->id )->orderBy( 'id', 'desc' )->take(10)->get();
+
+    } else {
+
+      $user_id = get_user_id();
+      $activitiesCollection = Activities::where( 'project_id', $project->id )->where( 'user_id', $user_id )->orderBy( 'id', 'desc' )->take(10)->get();
+
+    }
 
     $activities = [];
 
@@ -246,7 +269,7 @@ class ProjectController extends Controller
 
   }
 
-  public function getSections( Request $r ) {
+  /*public function getSections( Request $r ) {
 
     $id = $r->route( 'id' );
 
@@ -272,7 +295,7 @@ class ProjectController extends Controller
 
     return response()->json( [ 'sections' => $sections ] );
 
-  }
+  }*/
 
   
 

@@ -26,9 +26,19 @@
 
         <input type="hidden" id="project_id" value="{{$project->id}}" />
 
+        @if ( pass( 'projects.update_details', $project->id ) )
+
         <div class="alert alert-info-light">
           <i class="fa fa-question-circle"></i> &nbsp; {{___( "Click on an existing value to change it. When you're done, click 'Save'." )}}
         </div>
+
+        @else
+
+        <div class="alert alert-danger">
+          <i class="fa fa-lock"></i> &nbsp; {{___( "You do not have permission to save changes to this project." )}}
+        </div>
+
+        @endif
 
         <div layout-gt-xs="row">
 
@@ -101,8 +111,10 @@
 
         <br />
 
+        @if ( pass( 'projects.update_details', $project->id ) )
         <button type="submit" class="btn btn-success" ng-click="saveAndExit()">{{__( "Save, and Exit" )}}</button> &nbsp; 
         <button type="button" class="btn btn-primary" ng-click="justSave()">{{__( "Just Save" )}}</button> &nbsp; 
+        @endif
         <button type="button" class="btn btn-warning" ng-click="getProject()">{{__( "Discard Changes" )}}</button>
 
       </form>

@@ -1,5 +1,8 @@
 <?php
 
+/*ToDo: set error messages for these */
+// Also do an integrity check
+
 $keys = [];
 $string = 'Section:Organisation
 
@@ -8,11 +11,11 @@ Category:Projects
 	create_project|Create Project|w|create add new project|Create a new project.
 	own_projects|Own Projects|w|own project|Own a new or existing project. The existing one must be transfered by original owner.
 
-Category:members
-	view_members|View Members|r|view list organisation members|View a list of members in the organisation.
-	create_member|Add Member|w|add new create member organisation|Add a member to the organisation, by invitation.
-	update_member|Update Member|w|update edit change member|Update member\'s access.
-	remove_member|Remove Member|w|delete remove member|Remove member from organisation.
+Category:people
+	view_people|View People|r|view list organisation people|View a list of people in the organisation.
+	create_person|Add Person|w|add new create person organisation|Add a person to the organisation, by invitation.
+	update_person|Update Person|w|update edit change person|Update person\'s access.
+	remove_person|Remove Person|w|delete remove person|Remove person from organisation.
 
 Section:Projects
 
@@ -26,9 +29,10 @@ Category:Projects
 	view_properties|View Project Properties|r|view dashboard properties project|View properties on project dashboard.
 
 Category:Team
-	view_project_team|View Team|r|view list team members|View a list of members in project team.
-	assign_member|Assign Member|w|assign add team member|Assign a member to project team.
-	unassign_member|Unassign Member|w|unassign remove delete team member|Unassign a member from project team.
+	view_members|View Team|r|view list team members|View a list of members in project team.
+	add_member|Add Member|w|assign add team member|Assign a member to project team.
+	edit_member|Edit Member Permissions|w|edit change update team member permissions|Update permissions for a team member.
+	remove_member|Remove Member|w|unassign remove delete team member|Unassign a member from project team.
 ';
 
 $lines = preg_split( "/\n/siU", $string );

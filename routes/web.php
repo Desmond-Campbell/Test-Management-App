@@ -11,6 +11,11 @@
 |
 */
 
+// Police
+
+Route::get('/police/project/{project_id}/check', 'PoliceController@quickCheck');
+Route::get('/police/organisation/check', 'PoliceController@quickCheck');
+
 // Projects
 
 	Route::get('/projects', 'ProjectController@index');

@@ -14,20 +14,24 @@
 
       <br />
 
-      <button class="btn btn-sm btn-success" ng-click="newProject()" id="btn-create-project" ng-show="!newProjectMode">&nbsp; <i class="fa fa-plus"></i> &nbsp; Create a Project &nbsp;</button> 
+      @if ( orgpass( "projects.create_project" ) )
+
+      <button class="btn btn-sm btn-success" ng-click="newProject()" id="btn-create-project" ng-show="!newProjectMode">&nbsp; <i class="fa fa-plus"></i> &nbsp; {{___("Create a Project")}} &nbsp;</button> 
 
       <div class="form-group" layout="row" ng-show="newProjectMode">
         <div flex="50">
-          <input type="text" class="form-control col-md-4" id="new-project-title" ng-model="project.title" placeholder="{{___( "Enter a title for your new project." )}}" />
+          <input type="text" class="form-control col-md-4" id="new-project-title" ng-model="project.title" placeholder="{{___( "Enter a title for your new project." )}}" onEnter="createProject()" />
         </div>
         <div flex>
           &nbsp;&nbsp;
-          <button class="btn btn-sm btn-success" ng-click="createProject()">&nbsp; <i class="fa fa-check"></i> &nbsp; {{___( "Continue" )}}</button> &nbsp;
-          <button class="btn btn-sm btn-danger" ng-click="cancelNewProject()">&nbsp; <i class="fa fa-times"></i> &nbsp; {{___( "Nevermind" )}}</button>
+          <button type="submit" class="btn btn-sm btn-success" ng-click="createProject()">&nbsp; <i class="fa fa-check"></i> &nbsp; {{___( "Continue" )}}</button> &nbsp;
+          <button type="button" class="btn btn-sm btn-danger" ng-click="cancelNewProject()">&nbsp; <i class="fa fa-times"></i> &nbsp; {{___( "Nevermind" )}}</button>
         </div>
       </div>
 
       <br />
+
+      @endif
 
       <ul class="grid-list project-list">
 

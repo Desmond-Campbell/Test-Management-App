@@ -3,6 +3,7 @@
 namespace App;
 
 use \App\Model;
+use Illuminate\Support\Facades\View;
 
 class Police 
 {    
@@ -10,7 +11,7 @@ class Police
   public static function getKeys() {
   	
   	$keys = [];
-  	$keys['team'] = config( 'permission_keys.team' );
+  	$keys['organisation'] = config( 'permission_keys.organisation' );
   	$keys['projects'] = config( 'permission_keys.projects' );
  
     return $keys;
@@ -40,74 +41,101 @@ class Police
 
   public static function check( $args ) {
 
-    if ( !is_array( $args ) ) {
+    if ( !is_array( $args ) || ( is_array( $args ) && !empty( $args['keystring'] ) ) ) {
 
-      $args = explode( '.', $args );
+      $keystring = !is_array( $args ) ? explode( '.', $args ) : ( !empty( $args['keystring'] ) ? explode( '.', $args['keystring'] ) : [] );
+      $args = is_array( $args ) ? $args : [];
 
-      if ( count( $args ) > 2 ) {
+      if ( count( $keystring ) > 2 ) {
 
-        $args = [ 'section' => $args[0],
-                  'category' => $args[1],
-                  'key' => $args[2],
-                ];
+        $args['section'] = $keystring[0];
+        $args['category'] = $keystring[1];
+        $args['key'] = $keystring[2];
 
-      } elseif ( count( $args ) > 1 ) {
+      } elseif ( count( $keystring ) > 1 ) {
 
-        $args = [ 'category' => $args[0],
-                  'key' => $args[1],
-                ];
+        $args['category'] = $keystring[0];
+        $args['key'] = $keystring[1];
 
       } else {
 
-        $args = [ 'key' => $args[0] ];
+        $args['key'] = $keystring[0];
+      
       }
 
     }
       
     $section = arg( $args, 'section', 'projects' );
     $category = arg( $args, 'category', 'projects' );
-    $member_id = arg( $args, 'member_id', 0 );
-    $project_id = arg( $args, 'member_id', 0 );
-    $member = TeamMembers::where( 'id', $member_id )->where( 'project_id', $project_id )->first();
-
-    if ( !$member ) return [ 'deny' => true, 'message' => ___( 'Team member was not found.' ) ];
-
     $key = arg( $args, 'key' );
+
+    if ( $section == 'organisation' ) {
+
+      $user_id = arg( $args, 'user_id', get_user_id() );
+      $user = User::find( $user_id );
+      $debug = [ 'section' => $section, 'category' => $category, 'key' => $key, 'user_id' => $user_id, 'user' => $user ];
+
+      if ( !$user ) self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Person was not found in organisation.' ), 'debug' => $debug ], 'args' => $args ] );
+
+    } else {
+
+      $member_id = arg( $args, 'member_id', get_user_id() );
+      $project_id = arg( $args, 'project_id', 0 );
+      $member = TeamMembers::where( 'id', $member_id )->where( 'project_id', $project_id )->first();
+      $debug = [ 'section' => $section, 'category' => $category, 'key' => $key, 'member_id' => $member_id, 'project_id' => $project_id, 'member' => $member ];
+
+      if ( !$member ) self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Team member was not found.' ), 'debug' => $debug ], 'args' => $args ] );
+
+    }
 
     $keys = self::getKeys();
 
-    if ( empty( $keys[$section][$category][$key] ) ) return [ 'deny' => true, 'message' => ___( 'Permission denied because of an invalid key request.' ) ];
+    $debug['keys'] = $keys;
 
-    $member_key_restrictions = (array) try_json_decode( $member->key_restrictions );
-    $member_key_overrides = (array) try_json_decode( $member->key_overrides );
+    if ( empty( $keys[$section][$category][$key] ) ) return self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Permission denied because of an invalid key request.' ), 'debug' => $debug ], 'args' => $args ] );
+
+    if ( $section == 'organisation' ) {
+
+      $member_key_restrictions = (array) try_json_decode( $user->permissions_exclude );
+      $member_key_overrides = (array) try_json_decode( $user->permissions_include );
+
+    } else {
+
+      $member_key_restrictions = (array) try_json_decode( $member->key_restrictions );
+      $member_key_overrides = (array) try_json_decode( $member->key_overrides );
+
+    }
 
     // 1st Check: deny if permission is excluded on member account
 
-    if ( in_array( $key, $member_key_restrictions ) ) return [ 'allow' => false, 'message' => ___( 'Permission denied based on an override.' ) ];
+    if ( in_array( $key, $member_key_restrictions ) ) return self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Permission denied based on an override.' ), 'debug' => $debug ], 'args' => $args ] );
 
     // 2nd Check: allow if permission is included on member account
 
-    if ( in_array( $key, $member_key_overrides ) ) return [ 'allow' => true, 'message' => ___( 'Permission granted based on an override.' ) ];
+    if ( in_array( $key, $member_key_overrides ) ) return self::handleReturn( [ 'result' => [ 'allow' => true, 'message' => ___( 'Permission granted based on an override.' ), 'debug' => $debug ], 'args' => $args ] );
 
-    // 3rd Check: deny if permission is excluded on any member role
+    // 3rd Check: deny if permission is included on any member role
 
-    $member_roles = (array) try_json_decode( $member->roles );
-	 	$role_key_overridess = [];
+    $member_roles = $section != 'organisation' ? (array) try_json_decode( $member->roles ) : (array) try_json_decode( $user->roles );
+	 	$role_key_overrides = [];
+
+    $debug['member_roles'] = [];
 
     foreach ( $member_roles as $member_role ) {
  
- 			if ( intval( $role ) ) {
+ 			if ( intval( $member_role ) ) {
 
-	 			$role = TeamRoles::find( $role );
+	 			$role = TeamRoles::find( $member_role );
 
 	 			if ( $role ) {
 
-		 			$role_key_restrictions = (array) try_json_decode( $role->key_restrictions );
-		 			$role_key_overridess[] = (array) try_json_decode( $role->key_overrides );
+          $debug['member_roles'][] = $role;
 
-		 			if ( in_array( $key, $role_key_restrictions ) ) {
+		 			$role_keys = (array) try_json_decode( $role->permissions );
 
-		 				return [ 'allow' => false, 'message' => 'Permission denied based on a role restriction.' ];
+		 			if ( in_array( $key, $role_keys ) ) {
+
+		 				return self::handleReturn( [ 'result' => [ 'allow' => true, 'message' => 'Permission granted based on a role inclusion.', 'debug' => $debug ], 'args' => $args ] );
 
 		 			}
 
@@ -117,15 +145,56 @@ class Police
 
 	  }
 
-	  // 4th Check: allow if permission is included on any member role, after deny has been fully checked
+	  self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Permission denied because there were no records found that would permit.' ), 'debug' => $debug ], 'args' => $args ] );
 
-	  foreach ( $role_key_overridess as $keys ) {
+  }
 
-	  	if ( in_array( $key, $keys ) ) return [ 'allow' => true, 'message' => 'Permission granted based on a role override.' ];
+  public static function handleReturn( $A ) {
 
-	  }
+    $return = arg( arg( $A, 'args' ), 'return' );
+    $result = $A['result'];
 
-    return [ 'allow' => false, 'message' => ___( 'Permission denied because there were no records found that would permit.' ) ];
+    $accessmessage = ___( "Sorry, you do not have permission to do that. Please contact an administrator. [{$A['result']['debug']['key']}]" );
+
+    if ( arg( arg( $A, 'args' ), 'quickcheck' ) ) return $result['allow'];
+
+    if ( $return ) {
+
+      if ( !$result['allow'] ) {
+
+        $result['errors'] = $accessmessage;
+
+      } else {
+
+        return;
+
+      }
+
+      print_r( json_encode( $result ) );
+      die;
+
+    }
+
+    $redirect = arg( arg( $A, 'args' ), 'redirect' );
+
+    if ( $redirect ):
+
+      header( "Location: $redirect"); 
+      die;
+
+    endif;
+
+    if ( !$A['result']['allow'] ) {
+
+      print_r(View::make('index-empty', compact( 'result' ) )->nest('child', 'blocked')->render());
+
+      die;
+    
+    }
+
+    $result['errors'] = $accessmessage;
+
+    return arg( $A, 'result', [ 'allow' => false, 'message' => ___( 'Permission denied, possibly due to a system error.' ) ] );
 
   }
 

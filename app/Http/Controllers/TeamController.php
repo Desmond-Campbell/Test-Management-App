@@ -11,6 +11,7 @@ use App\User;
 use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class TeamController extends Controller
 {
@@ -23,6 +24,12 @@ class TeamController extends Controller
   public function index( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'project_id' => $id, 
+                      'keystring' => 'projects.team.view_project_team', 
+                      'return' => $r->input( 'format' ) == 'json' ] );
+
+    ////////////////////////////////////////////
 
     $project = Projects::find( $id );
 
@@ -65,6 +72,8 @@ class TeamController extends Controller
 
     $id = $r->route( 'project_id' );
 
+    Police::check( [ 'keystring' => 'projects.team.view_members', 'project_id' => $id ] );
+
     $project = Projects::find( $id );
 
     if ( !$project ) return redirect( '/projects' );
@@ -77,6 +86,8 @@ class TeamController extends Controller
 
     $id = $r->route( 'project_id' );
 
+    Police::check( [ 'keystring' => 'projects.team.add_member', 'project_id' => $id, 'return' => 1 ] );
+ 
     $project = Projects::find( $id );
 
     if ( !$project ) return [ 'errors' => ___( 'Project not found.' ) ];
@@ -160,6 +171,10 @@ class TeamController extends Controller
 
     $id = $r->route( 'project_id' );
 
+    Police::check( [ 'keystring' => 'projects.team.view_roles',
+                      'project_id' => $id, 
+                      'return' => $r->input( 'format' ) == 'json' ] );
+
     $project = Projects::find( $id );
 
     if ( $r->input( 'format') == 'json' ) {
@@ -196,6 +211,8 @@ class TeamController extends Controller
 
     $id = $r->route( 'project_id' );
 
+    Police::check( [ 'keystring' => 'projects.team.new_role', 'project_id' => $id ] );
+
     $project = Projects::find( $id );
 
     if ( !$project ) return redirect( '/projects' );
@@ -207,6 +224,8 @@ class TeamController extends Controller
   public function createRole( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.create_role', 'project_id' => $id, 'return' => 1 ] );
 
     $project = Projects::find( $id );
 
@@ -280,6 +299,9 @@ class TeamController extends Controller
   public function saveRole( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.update_role', 'project_id' => $id, 'return' => 1 ] );
+ 
     $role_id = $r->route( 'role_id' );
 
     $project = Projects::find( $id );
@@ -328,6 +350,9 @@ class TeamController extends Controller
   public function editRole( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.update_role', 'project_id' => $id ] );
+
     $role_id = $r->route( 'role_id' );
 
     $project = Projects::find( $id );
@@ -345,6 +370,9 @@ class TeamController extends Controller
   public function getRole( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.view_role', 'project_id' => $id, 'return' => 1 ] );
+
     $role_id = $r->route( 'role_id' );
 
     $project = Projects::find( $id );
@@ -362,6 +390,9 @@ class TeamController extends Controller
   public function getPermissions( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.view_role_permissions', 'project_id' => $id, 'return' => 1 ] );
+
     $role_id = $r->route( 'role_id' );
 
     $project = Projects::find( $id );
@@ -402,6 +433,9 @@ class TeamController extends Controller
   public function savePermissions( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.update_role_permissions', 'project_id' => $id, 'return' => 1 ] );
+
     $role_id = $r->route( 'role_id' );
 
     $project = Projects::find( $id );
@@ -430,6 +464,9 @@ class TeamController extends Controller
   public function editAccess( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.update_member', 'project_id' => $id ] );
+
     $member_id = $r->route( 'member_id' );
 
     $project = Projects::find( $id );
@@ -449,6 +486,9 @@ class TeamController extends Controller
   public function getMember( Request $r ) {
 
     $id = $r->route( 'project_id' );
+    
+    Police::check( [ 'keystring' => 'projects.team.view_member', 'project_id' => $id, 'return' => 1 ] );
+
     $member_id = $r->route( 'member_id' );
 
     $project = Projects::find( $id );
@@ -471,6 +511,9 @@ class TeamController extends Controller
   public function getRoles( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.view_member_roles', 'project_id' => $id, 'return' => 1 ] );
+
     $member_id = $r->route( 'member_id' );
 
     $project = Projects::find( $id );
@@ -510,6 +553,9 @@ class TeamController extends Controller
   public function saveRoles( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.update_member_roles', 'project_id' => $id, 'return' => 1 ] );
+
     $member_id = $r->route( 'member_id' );
 
     $project = Projects::find( $id );
@@ -538,6 +584,9 @@ class TeamController extends Controller
   public function getOverrides( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.view_member_overrides', 'project_id' => $id, 'return' => 1 ] );
+
     $member_id = $r->route( 'member_id' );
 
     $project = Projects::find( $id );
@@ -579,6 +628,9 @@ class TeamController extends Controller
   public function saveOverrides( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.update_member_overrides', 'project_id' => $id, 'return' => 1 ] );
+
     $member_id = $r->route( 'member_id' );
 
     $project = Projects::find( $id );
@@ -607,6 +659,9 @@ class TeamController extends Controller
   public function getRestrictions( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.view_member_restrictions', 'project_id' => $id, 'return' => 1 ] );
+
     $member_id = $r->route( 'member_id' );
 
     $project = Projects::find( $id );
@@ -648,6 +703,9 @@ class TeamController extends Controller
   public function saveRestrictions( Request $r ) {
 
     $id = $r->route( 'project_id' );
+
+    Police::check( [ 'keystring' => 'projects.team.update_member_restrictions', 'project_id' => $id, 'return' => 1 ] );
+
     $member_id = $r->route( 'member_id' );
 
     $project = Projects::find( $id );
