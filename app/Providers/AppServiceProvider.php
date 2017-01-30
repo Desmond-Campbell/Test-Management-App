@@ -22,24 +22,21 @@ class AppServiceProvider extends ServiceProvider
 
             if ( !$db ) $db = env( 'DB_DATABASE' );
 
-            App::bind('setDbConnection', function($app) use ($db) {
-                Config::set( "database.connections.$db", [
-                    'driver'        => env('DB_CONNECTION'),
-                    'host'          => env('DB_HOST'),
-                    'port'          => env('DB_PORT'),
-                    'database'      => "$db",
-                    'username'      => env('DB_USERNAME'),
-                    'password'      => env('DB_PASSWORD'),
-                    'charset'       => 'utf8',
-                    'collation'     => 'utf8_unicode_ci',
-                    'unix_socket'   => env('DB_SOCKET', ''),
-                    'prefix'        => '',
-                    'strict'        => false,
-                    'engine'        => null,
-                ]);
+            App::bind('client', function($app) use ($db) {
+
+                $connection = [];
+                $connection['driver'] = env( 'DB_CONNECTION' );
+                $connection['host'] = env( 'DB_HOST' );
+                $connection['port'] = env( 'DB_PORT' );
+                $connection['database'] = "$db";
+                $connection['username'] = env( 'DB_USERNAME' );
+                $connection['password'] = env( 'DB_PASSWORD' );
+
+                Config::set( "database.connections.$db", $connection );
+                
             });
 
-            App::make( 'setDbConnection', $db );
+            App::make( 'client', $db );
             Config::set( 'database.default', $db );
 
         }
