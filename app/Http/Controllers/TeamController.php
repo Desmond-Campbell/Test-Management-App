@@ -26,7 +26,7 @@ class TeamController extends Controller
     $id = $r->route( 'project_id' );
 
     Police::check( [ 'project_id' => $id, 
-                      'keystring' => 'projects.team.view_project_team', 
+                      'keystring' => 'projects.team.view_members', 
                       'return' => $r->input( 'format' ) == 'json' ] );
 
     ////////////////////////////////////////////

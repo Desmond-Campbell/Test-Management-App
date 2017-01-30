@@ -7,6 +7,7 @@ use App\Police;
 use App\Projects;
 use App\CaseSections;
 use App\RequirementSections;
+use App\User;
 use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -94,7 +95,8 @@ class ProjectController extends Controller
                   'description'   => ___( 'Owner by default has all rights on the project and what is connected to it.' )
                   ];
 
-      \App\TeamRoles::create( $newrole );
+      $roles = [];
+      $roles[] = \App\TeamRoles::create( $newrole )->id;
 
       if ( !$is_owner ) {
 
@@ -108,7 +110,7 @@ class ProjectController extends Controller
                     'description'   => ___( 'Administrator by default can do most things with the project itself, but not what is connected to it.' )
                     ];
 
-          \App\TeamRoles::create( $newrole );
+          $roles[] = \App\TeamRoles::create( $newrole )->id;
 
       }
 
@@ -117,6 +119,7 @@ class ProjectController extends Controller
         $newteammember = [
                           'project_id'   => $id,
                           'user_id'   => $user_id,
+                          'roles'     => json_encode( $roles ),
                           'user_type' => $is_owner ? 1 : 2
                         ];
 
@@ -188,7 +191,7 @@ class ProjectController extends Controller
 
     $id = $r->route( 'id' );
 
-    Police::check( [ 'keystring' => 'projects.projects.update_details', 'project_id' => $id, 'return' => 1 ] );
+    Police::check( [ 'keystring' => 'projects.projects.update_project', 'project_id' => $id, 'return' => 1 ] );
 
     $title = $r->input( 'title' );
     $description = $r->input( 'description' );

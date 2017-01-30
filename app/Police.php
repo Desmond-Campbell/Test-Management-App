@@ -79,10 +79,10 @@ class Police
 
     } else {
 
-      $member_id = arg( $args, 'member_id', get_user_id() );
+      $member_user_id = arg( $args, 'member_user_id', get_user_id() );
       $project_id = arg( $args, 'project_id', 0 );
-      $member = TeamMembers::where( 'id', $member_id )->where( 'project_id', $project_id )->first();
-      $debug = [ 'section' => $section, 'category' => $category, 'key' => $key, 'member_id' => $member_id, 'project_id' => $project_id, 'member' => $member ];
+      $member = TeamMembers::where( 'user_id', $member_user_id )->where( 'project_id', $project_id )->first();
+      $debug = [ 'section' => $section, 'category' => $category, 'key' => $key, 'member_user_id' => $member_user_id, 'project_id' => $project_id, 'member' => $member ];
 
       if ( !$member ) self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Team member was not found.' ), 'debug' => $debug ], 'args' => $args ] );
 
@@ -138,6 +138,14 @@ class Police
 		 				return self::handleReturn( [ 'result' => [ 'allow' => true, 'message' => 'Permission granted based on a role inclusion.', 'debug' => $debug ], 'args' => $args ] );
 
 		 			}
+
+          // Check for exclusive access
+
+          if ( in_array( 'exclusive_access', $role_keys ) ) {
+
+            return self::handleReturn( [ 'result' => [ 'allow' => true, 'message' => 'Permission granted based on an exclusive access permission.', 'debug' => $debug ], 'args' => $args ] );
+
+          }
 
 		 		}
 

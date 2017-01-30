@@ -26,7 +26,7 @@
 
         <input type="hidden" id="project_id" value="{{$project->id}}" />
 
-        @if ( pass( 'projects.update_details', $project->id ) )
+        @if ( pass( 'projects.update_project', $project->id ) )
 
         <div class="alert alert-info-light">
           <i class="fa fa-question-circle"></i> &nbsp; {{___( "Click on an existing value to change it. When you're done, click 'Save'." )}}
@@ -111,7 +111,7 @@
 
         <br />
 
-        @if ( pass( 'projects.update_details', $project->id ) )
+        @if ( pass( 'projects.update_project', $project->id ) )
         <button type="submit" class="btn btn-success" ng-click="saveAndExit()">{{__( "Save, and Exit" )}}</button> &nbsp; 
         <button type="button" class="btn btn-primary" ng-click="justSave()">{{__( "Just Save" )}}</button> &nbsp; 
         @endif

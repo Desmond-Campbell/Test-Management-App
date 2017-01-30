@@ -43,11 +43,12 @@ class OrganisationController extends Controller
     if ( $r->input( 'format') == 'json' ) {
 
       $members = TeamMembers::where( 'project_id', $project_id )->get();
-      $members_filtered = [];
+      $members_filtered = $members_list = [];
 
       foreach ( $members as $m ) {
 
-        $members_filtered[] = $m->user_id; 
+        $members_filtered[] = $m->user_id;
+        $members_list[$m->user_id] = $m->id;
 
       }
 
@@ -64,8 +65,15 @@ class OrganisationController extends Controller
         
         $person->is_member = in_array( $person->id, $members_filtered );
 
+        if ( $person->is_member ) {
+
+          if ( !empty( $members_list[$person->id] ) ) $person->member_id = $members_list[$person->id];
+
+        }
+
         if ( !( $filter_members == '1' && $person->is_member ) || !$person->is_member || $filter_members != '1' ) {
 
+          
           $people_filtered[] = $person;
 
         }

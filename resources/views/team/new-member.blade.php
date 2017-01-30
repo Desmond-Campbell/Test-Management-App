@@ -57,7 +57,7 @@
         
         <td>@{{p.name}}</td>
         <td ng-show="p.is_member" class="text-success"><i class="fa fa-check"></i> {{___( "Already in." )}}</td>
-        <td ng-show="p.is_member">@if ( pass( 'team.edit_member', $project->id) )<a href="/projects/{{$project->id}}/team/@{{p.id}}/edit-access"><i class="fa fa-lock"></i> {{___( "Configure Access" )}}</a>@endif &nbsp; @if ( pass( 'team.remove_member', $project->id) )<a href="javascript:;" ng-click="removeMember(p.id)" class="text-danger"><i class="fa fa-times"></i> {{___( "Remove from Team" )}}</a>@endif</td>
+        <td ng-show="p.is_member">@if ( pass( 'team.edit_member', $project->id) )<a href="/projects/{{$project->id}}/team/@{{p.member_id}}/edit-access"><i class="fa fa-lock"></i> {{___( "Configure Access" )}}</a>@endif &nbsp; @if ( pass( 'team.remove_member', $project->id) )<a href="javascript:;" ng-click="removeMember(p.member_id)" class="text-danger"><i class="fa fa-times"></i> {{___( "Remove from Team" )}}</a>@endif</td>
         <td ng-show="!p.is_member" class="text-default">{{___( "Not in yet." )}}</td>
         <td ng-show="!p.is_member">@if ( pass( 'team.add_member', $project->id) )<a href="javascript:;" ng-click="createMember(p.id)" class="text-warning"><i class="fa fa-plus"></i> {{___( "Add to Project Team" )}}</a>@endif</td>
 
