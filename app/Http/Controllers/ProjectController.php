@@ -106,7 +106,7 @@ class ProjectController extends Controller
                     'name'          => ___( 'Administrator' ), 
                     'role_type'     => 2,
                     'project_id'    => $id,
-                    'permissions' => json_encode( [ 'admin_access' ] ), 
+                    'permissions' => json_encode( [ 'project_admin' ] ), 
                     'description'   => ___( 'Administrator by default can do most things with the project itself, but not what is connected to it.' )
                     ];
 
