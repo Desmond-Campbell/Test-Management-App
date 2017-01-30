@@ -8,7 +8,6 @@ $keys["projects"]["projects"] = [];
 $keys["organisation"] = [];
 $keys["organisation"]["people"] = [];
 $keys["organisation"]["projects"] = [];
-$keys["projects"]["NULL"] = [];
 
 $keys["projects"]["team"]["remove_member"] = 
 					[ 
@@ -274,12 +273,20 @@ $keys["organisation"]["projects"]["view_all_projects"] =
 						"access_type" => "r" 
 					];
 
-$keys["projects"]["NULL"]["exclusive_access"] = 
+$keys["projects"]["projects"]["exclusive_access"] = 
 					[ 
 						"name" => "Exclusive Access", 
 						"message" => "You do not have enough permissions.", 
-						"keywords" => "administrator exclusive full access?", 
-						"access_type" => "NULL" 
+						"keywords" => "administrator exclusive full access", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["projects"]["project_admin"] = 
+					[ 
+						"name" => "Project Admin", 
+						"message" => "You do not have enough permissions.", 
+						"keywords" => "project team super admin", 
+						"access_type" => "w" 
 					];
 
 

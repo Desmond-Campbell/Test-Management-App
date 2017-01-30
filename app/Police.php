@@ -147,6 +147,14 @@ class Police
 
           }
 
+          // Check for admin access
+
+          if ( in_array( 'project_admin', $role_keys ) && $section == 'projects' && $category == 'projects' ) {
+
+            return self::handleReturn( [ 'result' => [ 'allow' => true, 'message' => 'Permission granted based on project administrative access permission.', 'debug' => $debug ], 'args' => $args ] );
+
+          }
+
 		 		}
 
 	    }

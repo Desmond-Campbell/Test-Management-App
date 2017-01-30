@@ -32,19 +32,19 @@
               </li>
             <li role="separator" class="divider"></li>
             @endif
-          <li class="main-entry nav-list-item @if ( $active == 'cases' ) active @endif">
-            <a href="/projects/{{$project_id}}/cases"><i class="fa fa-tasks"></i> &nbsp; Test Cases</a>
+          <li class="main-entry nav-list-item @if ( $active == 'suites' ) active @endif">
+            <a href="/projects/{{$project_id}}/suites"><i class="fa fa-tasks"></i> &nbsp; Test Suites</a>
           </li>
-            @if ( $active == 'cases' )
+            @if ( $active == 'suites' )
             <li role="separator" class="divider"></li>
               <li class="nav-submenu-list-item">
-                <a href="/projects/{{$project_id}}/cases">View Cases</a>
+                <a href="/projects/{{$project_id}}/suites">View Cases</a>
               </li>
               <li class="nav-submenu-list-item">
-                <a href="/projects/{{$project_id}}/cases/new">Add Test Cases</a>
+                <a href="/projects/{{$project_id}}/suites/new">Add Test Cases</a>
               </li>
               <li class="nav-submenu-list-item">
-                <a href="/projects/{{$project_id}}/cases/import">Import Test Cases</a>
+                <a href="/projects/{{$project_id}}/suites/import">Import Test Cases</a>
               </li>
             <li role="separator" class="divider"></li>
             @endif
