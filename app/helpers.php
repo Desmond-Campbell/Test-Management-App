@@ -110,3 +110,15 @@ function orgblock( $args, $project_id ) {
 	return !orgpass( $args, $project_id );
 
 }
+
+function police( $args ) {
+
+	return \App\Police::check( $args );
+
+}
+
+function ee( $id ) {
+
+	return " [$id]";
+
+}

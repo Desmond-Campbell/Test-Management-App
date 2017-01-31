@@ -1,9 +1,3 @@
-@if ( isset( $blocked ) )
-
-  @include('blocked')
-
-@else
-
 @extends('index')
 
 @section('title')
@@ -70,5 +64,3 @@
 @section('javascript')
   <script src="/js/controllers/ProjectTeamListCtrl.js"></script>
 @stop
-
-@endif

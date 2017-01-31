@@ -8,6 +8,7 @@ $keys["projects"]["projects"] = [];
 $keys["organisation"] = [];
 $keys["organisation"]["people"] = [];
 $keys["organisation"]["projects"] = [];
+$keys["projects"]["suites"] = [];
 
 $keys["projects"]["team"]["remove_member"] = 
 					[ 
@@ -249,14 +250,6 @@ $keys["projects"]["team"]["create_role"] =
 						"access_type" => "w" 
 					];
 
-$keys["projects"]["team"]["new_role"] = 
-					[ 
-						"name" => "Create Roles", 
-						"message" => "You're not allowed to create roles for team members on this project.", 
-						"keywords" => "create add new role team", 
-						"access_type" => "w" 
-					];
-
 $keys["projects"]["team"]["view_roles"] = 
 					[ 
 						"name" => "View Roles", 
@@ -294,6 +287,174 @@ $keys["projects"]["team"]["view_deleted_members"] =
 						"name" => "View Deleted Members", 
 						"message" => "You're not allowed to remove members from this project's team.", 
 						"keywords" => "project team member delete remove suspend", 
+						"access_type" => "r" 
+					];
+
+$keys["projects"]["suites"]["view_suites"] = 
+					[ 
+						"name" => "View Test Suites", 
+						"message" => "You're not allowed to view test suites.", 
+						"keywords" => "project test suites", 
+						"access_type" => "r" 
+					];
+
+$keys["projects"]["suites"]["view_all_suites"] = 
+					[ 
+						"name" => "View Any Test Suite", 
+						"message" => "You're not allowed to view test suites created by others.", 
+						"keywords" => "project test suites", 
+						"access_type" => "r" 
+					];
+
+$keys["projects"]["suites"]["create_suite"] = 
+					[ 
+						"name" => "Create Test Suite", 
+						"message" => "You're not allowed to create test suites in this project.", 
+						"keywords" => "project add new create test suite", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["update_suites"] = 
+					[ 
+						"name" => "Update Test Suites", 
+						"message" => "You're not allowed to update test suites created by others.", 
+						"keywords" => "project modify update change edit test suite", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["projects"]["update_all_projects"] = 
+					[ 
+						"name" => "Update All Projects", 
+						"message" => "You're not allowed to update projects created by others.", 
+						"keywords" => "edit update change project details", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["delete_suite"] = 
+					[ 
+						"name" => "Delete Test Suite", 
+						"message" => "You're not allowed to delete test suites.", 
+						"keywords" => "project delete move test suites", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["delete_all_suites"] = 
+					[ 
+						"name" => "Delete Any Test Suite", 
+						"message" => "You're not allowed to delete test suites created by others.", 
+						"keywords" => "project delete move test suites", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["copy_suite"] = 
+					[ 
+						"name" => "Copy Test Suite", 
+						"message" => "You're not allowed to copy test suites.", 
+						"keywords" => "project duplicate copy test suites", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["copy_all_suites"] = 
+					[ 
+						"name" => "Copy Any Test Suite", 
+						"message" => "You're not allowed to copy test suites that were created by others.", 
+						"keywords" => "project duplicate copy test suites", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["create_scenario"] = 
+					[ 
+						"name" => "Create Test Scenario", 
+						"message" => "You're not allowed to create test scenarios.", 
+						"keywords" => "project scenario add create new test suites", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["update_scenarios"] = 
+					[ 
+						"name" => "Update Test Scenarios", 
+						"message" => "You're not allowed to update test scenarios created by others.", 
+						"keywords" => "project edit update modify change test scenarios", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["delete_scenario"] = 
+					[ 
+						"name" => "Delete Test Scenario", 
+						"message" => "You're not allowed to delete test scenarios.", 
+						"keywords" => "project delete remove test scenarios", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["delete_all_scenarios"] = 
+					[ 
+						"name" => "Delete Any Test Scenario", 
+						"message" => "You're not allowed to delete test scenarios created by others.", 
+						"keywords" => "project delete remove test scenarios", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["create_case"] = 
+					[ 
+						"name" => "Create Test Case", 
+						"message" => "You're not allowed to create or update test cases.", 
+						"keywords" => "project create add new test case", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["update_cases"] = 
+					[ 
+						"name" => "Update Test Cases", 
+						"message" => "You're not allowed to update test cases created by others.", 
+						"keywords" => "project update modify edit change test case", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["delete_case"] = 
+					[ 
+						"name" => "Delete Test Case", 
+						"message" => "You're not allowed to delete test cases.", 
+						"keywords" => "project delete remove test cases", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["delete_all_cases"] = 
+					[ 
+						"name" => "Delete Any Test Case", 
+						"message" => "You're not allowed to delete test cases created by others.", 
+						"keywords" => "project delete remove test cases", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["suites"]["view_scenarios"] = 
+					[ 
+						"name" => "View Test Scenarios", 
+						"message" => "You're not allowed to view test scenarios.", 
+						"keywords" => "view open test scenarios", 
+						"access_type" => "r" 
+					];
+
+$keys["projects"]["suites"]["view_all_scenarios"] = 
+					[ 
+						"name" => "View Any Test Scenario", 
+						"message" => "You're not allowed to view test scenarios created by others.", 
+						"keywords" => "view open test scenarios", 
+						"access_type" => "r" 
+					];
+
+$keys["projects"]["suites"]["view_cases"] = 
+					[ 
+						"name" => "View Test Cases", 
+						"message" => "You're not allowed to view test cases.", 
+						"keywords" => "view open test cases", 
+						"access_type" => "r" 
+					];
+
+$keys["projects"]["suites"]["view_all_cases"] = 
+					[ 
+						"name" => "View Any Test Case", 
+						"message" => "You're not allowed to view test cases created by others.", 
+						"keywords" => "view open test cases", 
 						"access_type" => "r" 
 					];
 

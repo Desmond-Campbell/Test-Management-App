@@ -69,7 +69,7 @@
 
         </div>
 
-        <div class="text-info md-block">
+        <div class="text-info md-block" ng-show="roles.length > 0">
           {{___( "You can copy permissions from an existing role into this new one. Just select it from the list below." )}}
         </div>
 

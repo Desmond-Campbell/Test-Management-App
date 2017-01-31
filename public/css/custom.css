@@ -394,7 +394,8 @@ input,
 button,
 select,
 .btn,
-md-select
+md-select,
+li
 {
     outline:0px !important;
     -webkit-appearance:none !important;
@@ -485,4 +486,99 @@ md-select
 
 .no-borders {
 	border: 0px !important;
+}
+
+/******** suites ***************/
+
+.suite-list, .suite-list li {
+	list-style: none;
+	list-style-type: none;
+}
+
+.suite-list {
+	background: #F3f3f3;
+	margin-right: 10px;
+	padding: 7px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
+.suite-list md-card {
+	padding: 10px;
+	font-size: 14px;
+	margin: 0px;
+	border-bottom: 0px;
+	margin-bottom: 5px;
+	background: #FFF;
+	padding: 10px;
+	font-size: 12px;
+  outline:0px !important;
+	box-shadow: 0 1px 1px #ccc, 0 1px 1px #ccc !important;
+	-moz-box-shadow: 0 1px 1px #ccc, 0 1px 1px #ccc !important;
+	-khtml-box-shadow: 0 1px 1px #ccc, 0 1px 1px #ccc !important;
+	-webkit-box-shadow: 0 1px 1px #ccc, 0 1px 1px #ccc !important;
+  transition: all 0.2s cubic-bezier(.25,.8,.25,1) !important;
+}
+
+.suite-list h3 {
+	margin-top: 0px;
+}
+
+.suite-list md-card:last-child {
+	b/order-bottom: solid 1px #E4EAF2;
+}
+
+.suite-list md-card.active-item {
+
+	font-weight: bold;
+	color: #1A5A8B;
+
+}
+
+.suite-list md-card md-menu i.options-menu {
+
+	
+
+}
+
+.suite-list md-card md-menu {
+
+	float:right;
+	position: relative; 
+	margin-top: -12px;
+	display: none;
+
+}
+
+.suite-list md-card.active-item md-menu {
+
+	display: inline;
+
+}
+
+.DDDsuite-list md-card.active-item:after {
+
+  content: "\f069"; 
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: inherit;
+  font-size: 12px;
+  color: #1A5A8B;
+  z-index: 1;
+  float: right;
+  position: relative;
+  margin-left: 95%;
+  margin-top: -15px;
+
+}
+
+.suite-list md-card:hover {
+
+	color: #1A5A8B;
+
 }

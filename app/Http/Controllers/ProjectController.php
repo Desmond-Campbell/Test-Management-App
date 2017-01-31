@@ -11,12 +11,16 @@ use App\User;
 use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 
 class ProjectController extends Controller
 {
 
-  public function __construct()
+  public function __construct( Request $r )
   {
+
+    if ( $r->input( 'request-type' ) == 'full-template' ) Config::set( 'pageconfig', 'full-template' );
 
   }
 

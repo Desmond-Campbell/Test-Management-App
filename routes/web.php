@@ -16,6 +16,10 @@
 Route::get('/police/project/{project_id}/check', 'PoliceController@quickCheck');
 Route::get('/police/organisation/check', 'PoliceController@quickCheck');
 
+// General
+
+Route::get('/template', 'TemplateController@index');
+
 // Projects
 
 	Route::get('/projects', 'ProjectController@index');
@@ -56,6 +60,22 @@ Route::get('/police/organisation/check', 'PoliceController@quickCheck');
 	Route::get('/projects/{project_id}/team/{role_id}/edit-role', 'TeamController@editRole');
 	Route::post('/projects/{project_id}/team/{role_id}/save-role', 'TeamController@saveRole');
 	Route::post('/projects/{project_id}/team/{role_id}/save-permissions', 'TeamController@savePermissions');
+
+// Suites
+
+	Route::get('/projects/{project_id}/suites', 'SuiteController@index');
+	Route::get('/projects/{project_id}/suites/new', 'SuiteController@newSuite');
+	Route::post('/projects/{project_id}/suites/create', 'SuiteController@createSuite');
+	Route::get('/projects/{project_id}/suites/{suite_id}/manage', 'SuiteController@manageSuite');
+	Route::post('/projects/{project_id}/suites/{suite_id}/update', 'SuiteController@updateSuite');
+	Route::delete('/projects/{project_id}/suites/{suite_id}/delete', 'SuiteController@deleteSuite');
+	Route::get('/projects/{project_id}/suites/{suite_id}/get', 'SuiteController@getSuite');
+	Route::get('/projects/{project_id}/suites/{suite_id}/get-scenarios', 'SuiteController@getScenarios');
+	Route::get('/projects/{project_id}/suites/{suite_id}/get-scenario/{id}', 'SuiteController@getScenario');
+	Route::get('/projects/{project_id}/suites/{suite_id}/get-cases/{scenario_id}', 'SuiteController@getCases');
+	Route::get('/projects/{project_id}/suites/{suite_id}/get-case/{id}', 'SuiteController@getCase');
+	Route::get('/projects/{project_id}/suites/{suite_id}/edit-case/{id}', 'SuiteController@editCase');
+	Route::post('/projects/{project_id}/suites/{suite_id}/update-case/{id}', 'SuiteController@updateCase');
 
 // Cases
 

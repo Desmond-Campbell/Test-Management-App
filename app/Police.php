@@ -79,8 +79,13 @@ class Police
 
     } else {
 
-      $member_user_id = arg( $args, 'member_user_id', get_user_id() );
       $project_id = arg( $args, 'project_id', 0 );
+
+      $project = Projects::find( $project_id );
+      
+      if ( !$project ) self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Project was not found.' ), 'debug' => $debug ], 'args' => $args ] );
+
+      $member_user_id = arg( $args, 'member_user_id', get_user_id() );
       $member = TeamMembers::where( 'user_id', $member_user_id )->where( 'project_id', $project_id )->where( 'is_removed', 0 )->first();
       $debug = [ 'section' => $section, 'category' => $category, 'key' => $key, 'member_user_id' => $member_user_id, 'project_id' => $project_id, 'member' => $member ];
 
@@ -172,11 +177,21 @@ class Police
 
     $accessmessage = ___( "Sorry, you do not have permission to do that. Please contact an administrator. [{$A['result']['debug']['key']}]" );
 
+    $d = arg( $result, 'debug', [] );
+    $ks = arg( $d, 'keys', [] );
+      $k = arg( $d, 'key', '' );
+      $s = arg( $d, 'section' );
+      $c = arg( $d, 'category' );
+    $p = arg( arg( arg( $ks, $s, [] ), $c, [] ), $k ) ;
+    $m = arg( $p, 'message', '' );
+
     if ( arg( arg( $A, 'args' ), 'quickcheck' ) ) return $result['allow'];
 
     if ( $return ) {
 
       if ( !$result['allow'] ) {
+
+        if ( $m ) $accessmessage = $m;
 
         $result['errors'] = $accessmessage;
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php $hidefull = Config::get('pageconfig') == 'full-template'; ?><!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -12,18 +12,25 @@
     <title>@yield('title') - Test</title>
 
     @include('layouts.page-head')
+
   </head>
 
   <body ng-app="test" ng-cloak>
 
   <div layout="column">
     
+    @if ( !$hidefull )
+
     @include('layouts.page-top')
+
+    @endif
 
     <div flex>
       
       <div class="main-container theme-showcase" role="main">
       
+        @if ( !$hidefull )
+    
         <div layout="row">
   
           <div flex="15" class="left-side-border left-side-border-bottom page-top-left hidden-xs">
@@ -52,9 +59,21 @@
 
         </div>
 
+        @endif
+
+        @if ( $hidefull )
+
+        <br />
+
+        <style>
+        html, body { border :none !important; }
+        </style>
+
+        @endif
+
         <div layout="row">
 
-          <div flex="15">
+          <div flex="<?= !$hidefull ? 15 : 0; ?>">
 
             @yield('left-side')
 
@@ -62,7 +81,7 @@
 
           <div flex class="main-content">
 
-          @if( isset( $layout_toolbar ) )
+          @if( isset( $layout_toolbar ) && !$hidefull )
 
             @yield('toolbar')
 
@@ -72,7 +91,7 @@
 
           </div>
 
-          <div flex="5">
+          <div flex="<?= !$hidefull ? 5 : 0; ?>">
 
             @yield('right-side')
 

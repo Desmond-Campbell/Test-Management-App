@@ -16,11 +16,13 @@ class CreateCasesTable extends Migration
         Schema::create('cases', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id');
-            $table->integer('section_id');
-            $table->string('section_name', 50);
-            $table->string('title', 128);
+            $table->integer('suite_id');
+            $table->integer('scenario_id');
+            $table->string('name');
             $table->string('instructions')->nullable();
-            $table->text('notes')->nullable();
+            $table->text('description')->nullable();
+            $table->string('pass_criteria')->nullable();
+            $table->string('failure_criteria')->nullable();
             $table->decimal('item_position', 4, 2)->nullable()->default(0);
             $table->integer('user_id');
             $table->smallInteger('status')->default(1);

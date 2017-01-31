@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTeamRolesTable extends Migration
+class CreateSuitesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateTeamRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('team_roles', function (Blueprint $table) {
+        Schema::create('suites', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('is_owner')->nullable()->default(0);
             $table->integer('project_id');
-            $table->integer('role_type');
             $table->string('name', 50);
-            $table->string('description', 128)->nullable();
-            $table->text('permissions')->nullable();
+            $table->string('description')->nullable();
+            $table->integer('children')->nullable()->default(0);
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ class CreateTeamRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('team_roles');
+        Schema::dropIfExists('suites');
     }
 }
