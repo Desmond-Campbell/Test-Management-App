@@ -85,6 +85,15 @@
         </md-tab>
         <md-tab label="{{___( "Test Steps" )}}">
           <div class="md-padding push-down">
+
+            <div ng-repeat="s in steps" ng-click="editStep($index)" class="push-down no-outlines" layout-padding>
+             <span ng-show="!checkIndex($index)">@{{s.name}}</span>
+             <span ng-show="checkIndex($index)"><textarea ng-model="s.name"></textarea> <button class="btn btn-success" ng-click="cancelEditStep()"><i class="fa fa-check"></i></button></span>
+            </div>
+
+            <br />
+
+            <textarea ng-model="newstep" ng-blur="addStep()" onEnter="addStep(); return false"></textarea>
             
           </div>
         </md-tab>

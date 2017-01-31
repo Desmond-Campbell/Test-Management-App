@@ -83,6 +83,33 @@ app.controller('ProjectSuitesEditCaseCtrl', ['$scope', '$http', '$mdDialog', '$t
 
 	$scope.cancel = function ( result ) {
 		parent.passResult( result );
+	};
+
+	$scope.steps = [];
+	$scope.steps.push( { name : 'Step 1' } );
+	$scope.steps.push( { name : 'Step 2' } );
+	$scope.steps.push( { name : 'Step 3' } );
+
+	$scope.newstep = "";
+	$scope.editindex = -1;
+
+	$scope.addStep = function () {
+		$scope.steps.push( { name : $scope.newstep } );
+		$scope.newstep = '';
+	};
+
+	$scope.editStep = function ( i ) {
+		$scope.editindex = i;
+	};
+
+	$scope.checkIndex = function ( i ) {
+		return $scope.editindex == i;
 	}
+
+	$scope.cancelEditStep = function () {
+		console.log($scope.editindex, 'before');
+		$scope.editindex = 2;
+		console.log($scope.editindex, 'after');
+	};
 
 }]);

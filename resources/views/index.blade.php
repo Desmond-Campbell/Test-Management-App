@@ -35,7 +35,11 @@
   
           <div flex="15" class="left-side-border left-side-border-bottom page-top-left hidden-xs">
 
-            <a href="/projects"><i class="fa fa-bars"></i> &nbsp; {{__( "All Projects" )}}</a>
+            <a href="/projects"><i class="fa fa-bars"></i> &nbsp; 
+
+              <md-truncate flex>{{__( "All Projects" )}}</md-truncate>
+              
+            </a>
 
           </div>
 

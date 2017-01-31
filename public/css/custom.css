@@ -395,7 +395,10 @@ button,
 select,
 .btn,
 md-select,
-li
+li,
+.no-outlines,
+.no-outlines:focus,
+.no-outlines:active
 {
     outline:0px !important;
     -webkit-appearance:none !important;
