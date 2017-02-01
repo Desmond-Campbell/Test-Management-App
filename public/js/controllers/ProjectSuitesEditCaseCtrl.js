@@ -91,25 +91,69 @@ app.controller('ProjectSuitesEditCaseCtrl', ['$scope', '$http', '$mdDialog', '$t
 	$scope.steps.push( { name : 'Step 3' } );
 
 	$scope.newstep = "";
-	$scope.editindex = -1;
+	$scope.editindex = null;
+	$scope.editmode = false;
 
 	$scope.addStep = function () {
 		$scope.steps.push( { name : $scope.newstep } );
 		$scope.newstep = '';
 	};
 
+	$scope.stash = {};
+
 	$scope.editStep = function ( i ) {
 		$scope.editindex = i;
+			original = angular.copy( $scope.steps[i] );
+		$scope.stash = original;
+		$scope.editmode = true;
+	};
+
+	$scope.resetStep = function ( i ) {
+		stash = angular.copy( $scope.stash );
+		$scope.steps[i] = stash;
+		$scope.cancelEditStep();
 	};
 
 	$scope.checkIndex = function ( i ) {
-		return $scope.editindex == i;
+		return $scope.editindex == i && $scope.editmode;
 	}
 
 	$scope.cancelEditStep = function () {
-		console.log($scope.editindex, 'before');
-		$scope.editindex = 2;
-		console.log($scope.editindex, 'after');
+		$scope.editmode = false;
 	};
+
+	$scope.moveStep = function ( i, d ) {
+
+		steps = $scope.steps;
+		old = steps[i];
+    j = d ? i + 1 : i -1;
+
+    if ( j < 0 ) j = 0;
+    if ( j >= steps.length ) j = steps.length - 1;
+
+    steps[i] = steps[j]; steps[j] = old;
+    $scope.editStep(j);
+
+		$scope.steps = steps;
+
+	};
+
+	$scope.moveUpStep = function ( i ) {
+		return $scope.moveStep( i, 0 );
+	};
+
+	$scope.moveDownStep = function ( i ) {
+		return $scope.moveStep( i, 1 );
+	};
+
+	$scope.copyStep = function ( i ) {
+
+		var step = angular.copy( $scope.steps[i] );
+		step.name += ' -copy';
+		$scope.steps.push(step);
+		$scope.editStep($scope.steps.length-1);
+
+	};
+
 
 }]);

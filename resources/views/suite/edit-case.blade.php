@@ -86,9 +86,22 @@
         <md-tab label="{{___( "Test Steps" )}}">
           <div class="md-padding push-down">
 
-            <div ng-repeat="s in steps" ng-click="editStep($index)" class="push-down no-outlines" layout-padding>
-             <span ng-show="!checkIndex($index)">@{{s.name}}</span>
-             <span ng-show="checkIndex($index)"><textarea ng-model="s.name"></textarea> <button class="btn btn-success" ng-click="cancelEditStep()"><i class="fa fa-check"></i></button></span>
+            <div ng-repeat="s in steps" class="push-down no-outlines" layout-padding layout="row">
+
+              <div ng-click="editStep($index)" flex>
+               <span ng-show="!checkIndex($index)">@{{s.name}}</span>
+               <span ng-show="checkIndex($index)"><textarea ng-model="s.name"></textarea> </span>
+              </div>
+
+              <div flex="15">
+                <button class="btn btn-success" ng-show="checkIndex($index)" ng-click="cancelEditStep()"><i class="fa fa-check"></i></button> &nbsp; 
+                <button class="btn btn-default" ng-show="checkIndex($index) && $index > 0" ng-click="moveUpStep($index)"><i class="fa fa-arrow-up"></i></button> &nbsp; 
+                <button class="btn btn-default" ng-show="checkIndex($index) && $index < ( steps.length - 1 )" ng-click="moveDownStep($index)"><i class="fa fa-arrow-down"></i></button> &nbsp; 
+                <button class="btn btn-primary" ng-show="checkIndex($index)" ng-click="copyStep($index)"><i class="fa fa-copy"></i></button> &nbsp; 
+                <button class="btn btn-danger" ng-show="checkIndex($index)" ng-click="resetStep($index)"><i class="fa fa-times"></i></button>
+
+              </div>
+
             </div>
 
             <br />
