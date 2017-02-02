@@ -6,10 +6,12 @@ use App\Projects;
 use App\Suites;
 use App\Scenarios;
 use App\Cases;
+use App\Steps;
 use App\Police;
 use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
 class SuiteController extends Controller
@@ -219,6 +221,121 @@ class SuiteController extends Controller
 
   }
 
+  public function createScenario( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $suite_id = $r->route( 'suite_id' );
+
+    police( [ 'keystring' => 'projects.suites.create_scenario', 'project_id' => $id, 'return' => 1 ] );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return [ 'errors' => ___( 'Project not found.' ) ];
+
+    $suite = Suites::find( $suite_id );
+
+    if ( !$suite ) return [ 'errors' => ___( 'Suite not found.' ) ];
+
+    $name = $r->input( 'name' );
+    $err = null;
+
+    if ( !$name ) {
+
+      $err = [ 'errors' => ___( 'Please enter a name/heading for this scenario.' ) ];
+
+    } else {
+
+      $count = Scenarios::where( 'suite_id', $suite_id )->where( 'name', $name )->count();
+
+      if ( $count > 0 ) {
+
+        $err = [ 'errors' => ___( 'The name you entered is already being used for a scenario in this test suite.' ) ];
+
+      }
+
+    }
+
+    if ( $err ) {
+
+      $result = $err;
+
+    } else {
+
+      $newscenario = [
+                      'name'          => $name,
+                      'project_id'    => $id,
+                      'suite_id'      => $suite_id
+                    ];
+
+      $result_id = Scenarios::create( $newscenario )->id;
+
+      Suites::find( $suite_id )->update( [ 'children' => DB::raw( 'children + 1' ) ] );
+
+      $result = [ 'success' => true, 'result_id' => $result_id ];
+
+    }
+
+    return response()->json( $result );
+
+  }
+
+  public function editScenario( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $suite_id = $r->route( 'suite_id' );
+    $scenario_id = $r->route( 'id' );
+
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.update_scenarios' ] );
+
+    $project = Projects::find( $id );
+
+    $suite = Suites::find( $suite_id );
+
+    if ( !$suite ) return view('blocked');
+
+    if ( $suite->project_id != $id ) return view('blocked');
+    
+    $scenario = Scenarios::find( $scenario_id );
+
+    if ( !$scenario ) return view('blocked');
+
+    if ( $scenario->suite_id != $suite_id || $scenario->project_id != $id ) return view('blocked');
+
+    return view( 'suite.edit-scenario', compact( 'project', 'scenario', 'suite' ) );
+
+  }
+
+  public function deleteScenario( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $suite_id = $r->route( 'suite_id' );
+    $scenario_id = $r->route( 'scenario_id' );
+
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.delete_scenario', 'return' => 1 ] );
+
+    $project = Projects::find( $id );
+
+    $suite = Suites::find( $suite_id );
+
+    if ( !$suite ) return [ 'errors' => ___( 'Suite not found.' ) ];;
+
+    if ( $suite->project_id != $id ) return [ 'errors' => ___( 'Suite not found.' ) ];;
+
+    $scenario = Scenarios::find( $scenario_id );
+
+    if ( !$scenario ) return [ 'errors' => ___( 'Scenario not found.' ) ];
+    
+    if ( $suite->scenario_id != $scenario->id ) return [ 'errors' => ___( 'Scenario not found.' ) ];;
+
+    $scenario->delete();
+    $grand_children = Cases::where( 'scenario_id', $scenario_id );
+    $suites->update( [ 'grand_children' => DB::raw( "grand_children - " . $grand_children->count() ), 'children' => DB::raw( 'children - 1' ) ] );
+    $grand_children->delete();
+
+    return response()->json( $result );
+
+  }
+
   public function getCases( Request $r ) {
 
     $id = $r->route( 'project_id' );
@@ -269,6 +386,73 @@ class SuiteController extends Controller
 
   }
 
+  public function createCase( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $suite_id = $r->route( 'suite_id' );
+    $scenario_id = $r->route( 'scenario_id' );
+
+    police( [ 'keystring' => 'projects.suites.create_case', 'project_id' => $id, 'return' => 1 ] );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return [ 'errors' => ___( 'Project not found.' ) ];
+
+    $suite = Suites::find( $suite_id );
+
+    if ( !$suite ) return [ 'errors' => ___( 'Suite not found.' ) ];
+
+    $scenario = Scenarios::find( $scenario_id );
+
+    if ( !$scenario ) return [ 'errors' => ___( 'Scenario not found.' ) ];
+
+    $name = $r->input( 'name' );
+    $err = null;
+
+    if ( !$name ) {
+
+      $err = [ 'errors' => ___( 'Please enter a name/heading for this test case. You will be able to add more information after you create it.' ) ];
+
+    } else {
+
+      $count = Cases::where( 'scenario_id', $scenario_id )->where( 'name', $name )->count();
+
+      if ( $count > 0 ) {
+
+        $err = [ 'errors' => ___( 'The name you entered is already being used for a test case in the selected test scenario.' ) ];
+
+      }
+
+    }
+
+    if ( $err ) {
+
+      $result = $err;
+
+    } else {
+
+      $newcase = [
+                      'name'          => $name,
+                      'project_id'    => $id,
+                      'suite_id'      => $suite_id,
+                      'scenario_id'      => $scenario_id
+                    ];
+
+      $result_id = Cases::create( $newcase )->id;
+
+      // Adjust case count on scenario
+
+      Scenarios::find( $scenario_id )->update( [ 'children' => DB::raw( 'children + 1' ) ] );
+      Suites::find( $suite_id )->update( [ 'grand_children' => DB::raw( 'grand_children + 1' ) ] );
+
+      $result = [ 'success' => true, 'result_id' => $result_id ];
+
+    }
+
+    return response()->json( $result );
+
+  }
+
   public function editCase( Request $r ) {
 
     $id = $r->route( 'project_id' );
@@ -291,7 +475,15 @@ class SuiteController extends Controller
 
     if ( $case->suite_id != $suite_id || $case->project_id != $id ) return view('blocked');
 
-    return view( 'suite.edit-case', compact( 'project', 'case', 'suite' ) );
+    $scenario = Scenarios::find( $case->scenario_id );
+
+    if ( !$scenario ) return view('blocked');
+    
+    if ( $scenario->project_id != $id || $scenario->project_id != $case->project_id ) return view('blocked');
+
+    $suite_params = '?suite_id=' . $suite_id . '&scenario_id=' . $scenario->id;
+
+    return view( 'suite.edit-case', compact( 'project', 'case', 'suite', 'suite_params' ) );
 
   }
 
@@ -350,6 +542,127 @@ class SuiteController extends Controller
     }
 
     return response()->json( $result );
+
+  }
+
+  public function deleteCase( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $suite_id = $r->route( 'suite_id' );
+    $scenario_id = $r->route( 'scenario_id' );
+    $case_id = $r->route( 'id' );
+
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.delete_cases', 'return' => 1 ] );
+
+    $project = Projects::find( $id );
+
+    $suite = Suites::find( $suite_id );
+
+    if ( !$suite ) return [ 'errors' => ___( 'Suite not found.' ) ];;
+
+    if ( $suite->project_id != $id ) return [ 'errors' => ___( 'Suite not found.' ) ];;
+
+    $scenario = Scenarios::find( $scenario_id );
+
+    if ( !$scenario ) return [ 'errors' => ___( 'Scenario not found.' ) ];
+    
+    if ( $suite->scenario_id != $scenario->id ) return [ 'errors' => ___( 'Scenario not found.' ) ];;
+
+    $case = Cases::find( $case_id );
+
+    if ( !$case ) return [ 'errors' => ___( 'Case not found.' ) ];
+
+    if ( $case->suite_id != $suite_id || $case->project_id != $id ) return [ 'errors' => ___( 'Case not found.' ) ];
+
+    $case->delete();
+    $scenario->update( [ 'children' => DB::raw( 'children - 1' ) ] );
+    $suites->update( [ 'grand_children' => DB::raw( 'grand_children - 1' ) ] );
+
+    return response()->json( $result );
+
+  }
+
+  public function getSteps( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $suite_id = $r->route( 'suite_id' );
+    $case_id = $r->route( 'case_id' );
+
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_cases', 'return' => 1 ] );
+
+    $suite = Suites::find( $suite_id );
+
+    if ( !$suite ) return response()->json( [ 'errors' => ___( "Requested test steps not found." ) . ee( 'invalid_test_suite' ) ] );
+
+    if ( $suite->project_id != $id ) return response()->json( [ 'errors' => ___( "Requested test steps not found." ) . ee( 'invalid_project' ) ] );
+    
+    $case = Cases::find( $case_id );
+
+    if ( !$case ) return response()->json( [ 'errors' => ___( "Requested test steps not found." ) ] );
+
+    $scenario = Scenarios::find( $case->scenario_id );
+
+    if ( !$scenario ) return response()->json( [ 'errors' => ___( "Requested test steps not found." ) ] );
+
+    if ( $scenario->suite_id != $suite_id || $scenario->project_id != $id ) return response()->json( [ 'errors' => ___( "Requested test steps not found." ) . ee( 'invalid_test_suite_or_project' ) ] );
+
+    $steps = Steps::where( 'case_id', $case_id )->get();
+
+    return response()->json( [ 'steps' => $steps ] );
+
+  }
+
+  public function saveSteps( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $suite_id = $r->route( 'suite_id' );
+    $case_id = $r->route( 'case_id' );
+
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.update_cases', 'return' => 1 ] );
+
+    $suite = Suites::find( $suite_id );
+
+    if ( !$suite ) return response()->json( [ 'errors' => ___( "Requested test steps not found." ) . ee( 'invalid_test_suite' ) ] );
+
+    if ( $suite->project_id != $id ) return response()->json( [ 'errors' => ___( "Requested test steps not found." ) . ee( 'invalid_project' ) ] );
+    
+    $case = Cases::find( $case_id );
+
+    if ( !$case ) return response()->json( [ 'errors' => ___( "Requested test steps not found." ) ] );
+
+    $scenario = Scenarios::find( $case->scenario_id );
+
+    if ( !$scenario ) return response()->json( [ 'errors' => ___( "Requested test steps not found." ) ] );
+
+    if ( $scenario->suite_id != $suite_id || $scenario->project_id != $id ) return response()->json( [ 'errors' => ___( "Requested test steps not found." ) . ee( 'invalid_test_suite_or_project' ) ] );
+
+    $steps = $r->input( 'steps' );
+
+    if ( $steps ) {
+
+      Steps::where( 'case_id', $case_id )->delete();
+
+      $i = 0;
+
+      foreach ( $steps as $step ) {
+
+        if ( !empty( $step['name'] ) ) {
+
+          $newstep = [ 'project_id' => $id, 
+                        'user_id' => get_user_id(), 
+                        'suite_id' => $suite_id, 
+                        'scenario_id' => $scenario->id, 
+                        'case_id' => $case_id ];
+          $newstep['name'] = $step['name'];
+          $newstep['item_position'] = $i;
+          Steps::create( $newstep );
+          $i++;
+
+        }
+
+      }
+
+    }
 
   }
 

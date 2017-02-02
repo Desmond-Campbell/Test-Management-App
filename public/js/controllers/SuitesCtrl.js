@@ -25,6 +25,14 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 					
 					$scope.suites = r.data.suites;
 
+					target_suite_id = $( '#suite_id').val();
+					
+					if ( target_suite_id ) {
+
+						$scope.getSuite( target_suite_id );
+
+					}
+
 				}
 			
 			},
@@ -66,7 +74,7 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 					} else {
 						
 						$scope.suite = r.data.suite;
-						$scope.getScenarios( id );
+						$scope.getScenarios();
 
 					}
 				
@@ -84,7 +92,7 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 
 		$scope.scenarios = [];
 
-		$scope.getScenarios = function () {
+		$scope.getScenarios = function ( id ) {
 
 			$scope.scenarios = [];
 			$scope.scenario = {};
@@ -111,6 +119,16 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 					} else {
 						
 						$scope.scenarios = r.data.scenarios;
+
+						if ( id ) $scope.getScenario( id );
+
+						target_scenario_id = $( '#scenario_id').val();
+					
+						if ( target_scenario_id ) {
+
+							$scope.getScenario( target_scenario_id );
+
+						}
 
 					}
 				
@@ -165,6 +183,83 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 				});
 
 		};
+
+	// Edit scenario
+
+		$scope.editScenario = function(id) {
+
+    	$scenariourl = $scope.suites_url + $scope.suite.id + '/edit-scenario/' + id;
+	    $mdDialog.show({
+	      controller: FrameDialogCtrl,
+	      templateUrl: '/template?w=' + $(window).width() + '&h=' + $(window).height() + '&url=' + $scenariourl,
+	      parent: angular.element(document.body),
+	      clickOutsideToClose:true,
+	      fullscreen: true
+	    })
+	    .then(function(answer) {
+	    }, function() {
+	    });
+	  };
+
+	  $scope.addScenario = function(ev) {
+
+	  	err = 0;
+
+	  	if ( typeof $scope.suite === 'undefined' || $scope.suite === null ) err = 1;
+			if ( typeof $scope.suite.id === 'undefined' ) err = 1;
+
+			if ( err ) {
+
+				_alert( 'Please select a test suite first.' );
+
+				return;
+
+			}
+
+    	var confirm = $mdDialog.prompt()
+	      .title(_tt('Name your new scenario below.'))
+	      .textContent(_tt('Afterwards, you can add more information, including photos.'))
+	      .placeholder('')
+	      .ariaLabel(_tt('Scenario name'))
+	      .targetEvent(ev)
+	      .ok(_tt('Create'))
+	      .cancel(_tt('Cancel'));
+
+	    $mdDialog.show(confirm).then(function(result) {
+	      
+	      $http.post( $scope.suites_url + $scope.suite.id + '/create-scenario', { name : result } ).then( 
+					
+					function ( r ) {
+						
+						if ( typeof r.data.errors != 'undefined' ) {
+
+							_alert( r.data.errors, 1 );
+
+						} else {
+							
+							if ( typeof r.data.result_id != 'undefined' ) {
+
+								$scope.getScenarios( r.data.result_id );
+
+							} else {
+
+								$scope.getScenarios();
+
+							}
+
+						}
+					
+					},
+
+					function () {
+
+						_alert( 'Failed to create test scenario.' );
+
+					});
+	    }, function() {
+	    });
+	  
+	  };
 
 	// Load cases
 
@@ -338,7 +433,7 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 
     ///////////////
 
-    function EditCaseCtrl($scope, $mdDialog) {
+    function FrameDialogCtrl($scope, $mdDialog) {
 	    $scope.hide = function() {
 	      $mdDialog.hide();
 	    };
@@ -357,7 +452,7 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 
     	$caseurl = $scope.suites_url + $scope.suite.id + '/edit-case/' + id;
 	    $mdDialog.show({
-	      controller: EditCaseCtrl,
+	      controller: FrameDialogCtrl,
 	      templateUrl: '/template?w=' + $(window).width() + '&h=' + $(window).height() + '&url=' + $caseurl,
 	      parent: angular.element(document.body),
 	      targetEvent: ev,
@@ -365,10 +460,80 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 	      fullscreen: true
 	    })
 	    .then(function(answer) {
-	      $scope.status = 'You said the information was "' + answer + '".';
 	    }, function() {
-	      $scope.status = 'You cancelled the dialog.';
 	    });
+	  };
+
+	  $scope.addCase = function(ev) {
+
+    	err = 0;
+
+	  	if ( typeof $scope.suite === 'undefined' || $scope.suite === null ) err = 1;
+			if ( typeof $scope.suite.id === 'undefined' ) err = 1;
+
+			if ( err ) {
+
+				_alert( 'Please select a test suite first.' );
+
+				return;
+
+			}
+
+			if ( typeof $scope.scenario === 'undefined' || $scope.scenario === null ) err = 1;
+			if ( typeof $scope.scenario.id === 'undefined' ) err = 1;
+
+			if ( err ) {
+
+				_alert( 'Please select a test scenario first.' );
+
+				return;
+
+			}
+
+    	var confirm = $mdDialog.prompt()
+	      .title(_tt('Name your new test case below.'))
+	      .textContent(_tt('A test case is an actual test for a test condition or scenario. After creating it here, you can add more information, including steps and criteria.'))
+	      .placeholder('')
+	      .ariaLabel(_tt('Test case name'))
+	      .targetEvent(ev)
+	      .ok(_tt('Create'))
+	      .cancel(_tt('Cancel'));
+
+	    $mdDialog.show(confirm).then(function(result) {
+	      
+	      $http.post( $scope.suites_url + $suite_id + '/create-case/' + $scope.scenario.id, { name : result } ).then( 
+					
+					function ( r ) {
+						
+						if ( typeof r.data.errors != 'undefined' ) {
+
+							_alert( r.data.errors, 1 );
+
+						} else {
+							
+							if ( typeof r.data.result_id != 'undefined' ) {
+
+								$scope.getCases();
+								$scope.editCase( null, r.data.result_id );
+
+							} else {
+			
+								$scope.getCases();
+
+							}
+
+						}
+					
+					},
+
+					function () {
+
+						_alert( 'Failed to create test case.' );
+
+					});
+	    }, function() {
+	    });
+	  
 	  };
 
 }]);

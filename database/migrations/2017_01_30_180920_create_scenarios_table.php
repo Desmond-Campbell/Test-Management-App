@@ -13,7 +13,7 @@ class CreateScenariosTable extends Migration
      */
     public function up()
     {
-        Schema::create('scenarios', function (Blueprint $table) {
+        Schema::create('test_scenarios', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id');
             $table->integer('suite_id');
@@ -32,6 +32,6 @@ class CreateScenariosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scenarios');
+        Schema::dropIfExists('test_scenarios');
     }
 }

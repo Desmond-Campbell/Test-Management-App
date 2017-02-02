@@ -13,12 +13,13 @@ class CreateSuitesTable extends Migration
      */
     public function up()
     {
-        Schema::create('suites', function (Blueprint $table) {
+        Schema::create('test_suites', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id');
             $table->string('name', 50);
             $table->string('description')->nullable();
             $table->integer('children')->nullable()->default(0);
+            $table->integer('grand_children')->nullable()->default(0);
             $table->integer('user_id');
             $table->timestamps();
         });
@@ -31,6 +32,6 @@ class CreateSuitesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('suites');
+        Schema::dropIfExists('test_suites');
     }
 }

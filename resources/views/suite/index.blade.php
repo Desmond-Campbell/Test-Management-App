@@ -29,7 +29,12 @@
   <div ng-controller="SuitesCtrl">
 
     <input type="hidden" id="project_id" value="{{$project->id}}" />
-    
+    @if ( arg( $_REQUEST, 'suite_id' ) )
+    <input type="hidden" id="suite_id" value="{{arg( $_REQUEST, 'suite_id' )}}" />
+    @endif
+    @if ( arg( $_REQUEST, 'scenario_id' ) )
+    <input type="hidden" id="scenario_id" value="{{arg( $_REQUEST, 'scenario_id' )}}" />
+    @endif
     <div ng-show="suites.length < 1"><big>{{___( "No test suites were found on this project." )}}</big></div>
     
     <div layout="row" ng-show="suites.length > 0">
@@ -90,13 +95,16 @@
 
         <div class="suite-list scenarios">
 
-          <h5>{{___( "Scenarios" )}}</h5>
+          <div>
+            <h5>{{___( "Scenarios" )}}</h5>
+            <i class="fa fa-plus push-right pull-up" ng-click="addScenario()"></i>
+          </div>
         
           <md-card ng-repeat="s in scenarios" ng-class="scenarioClass(s.id)" ng-click="getScenario(s.id)">
             @{{s.name}} (@{{s.children}})
 
             <md-menu>
-            <i class="fa fa-gear" ng-click="openMenu($mdOpenMenu, $event)" class="options-menu" style="float: right;"></i>
+            <i class="fa fa-gear push-right" ng-click="openMenu($mdOpenMenu, $event)" class="options-menu"></i>
             <md-menu-content width="4">
               <md-menu-item>
                 <md-button ng-click="editScenario(s.id)">
@@ -146,7 +154,10 @@
 
         <div class="suite-list suites" ng-show="suites.length > 0">
         
-          <h5>{{___( "Cases" )}}</h5>
+          <div>
+            <h5>{{___( "Cases" )}}</h5>
+            <i class="fa fa-plus push-right pull-up" ng-click="addCase($event)"></i>
+          </div>
 
           <md-card ng-repeat="c in cases" ng-class="caseClass(c.id)" ng-click="editCase($event, c.id)">
             @{{c.name}}

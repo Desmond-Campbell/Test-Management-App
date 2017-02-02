@@ -19,7 +19,7 @@
 @section('toolbar')
   <div id="header-toolbar">
     <ul class="toolbar">
-      <li><a href="/projects/{{$project->id}}/suites"><img src="/img/toolbar/view.png" class="toolbar-icon" /> {{___( "View Suites" )}}</a></li>
+      <li><a href="/projects/{{$project->id}}/suites{{$suite_params}}"><img src="/img/toolbar/view.png" class="toolbar-icon" /> {{___( "View Suites" )}}</a></li>
     </ul>
   </div>
 @stop
@@ -37,22 +37,18 @@
 
     <br />
 
-    @if ( Config::get('pageconfig') != 'full-template' )
-    <div class="alert alert-info-light md-container">
-      {{___( 'A test case is an actual test for a test condition or scenario.' )}}
-    </div>
-    @else
+    @if ( Config::get('pageconfig') == 'full-template' )
     <div class="alert alert-info-inverse md-container">
       <strong>{{___( 'Need a larger screen to configure this test case?' )}}</strong> <a href="/projects/{{$project->id}}/suites/{{$suite->id}}/edit-case/{{$case->id}}" target="_top">{{___( "Here you go" )}} <i class="fa fa-long-arrow-right"></i></a>
     </div>
     @endif
 
-    <form class="form slim-form" role="form" method="post" action="" onsubmit="return false">
-
       <md-tabs md-border-bottom md-dynamic-height>
         <md-tab label="{{___( "Properties" )}}">
           <div class="md-padding push-down">
-            
+      
+      <form class="form @if ( Config::get('pageconfig') != 'full-template' ) slim-form @endif" role="form" method="post" action="" onsubmit="return false">
+
             <div layout-gt-xs="row">
 
               <md-input-container flex-gt-xs>
@@ -82,23 +78,44 @@
             </div>
 
           </div>
+
+          <br />
+
+          <button type="submit" class="btn btn-success" ng-click="save()">{{__( "Save" )}}</button> 
+          <button type="reset" class="btn btn-danger" ng-click="cancel()">{{__( "Cancel" )}}</button> 
+
+        </form>
+
         </md-tab>
-        <md-tab label="{{___( "Test Steps" )}}">
+        <md-tab label="{{___( "Steps" )}}">
           <div class="md-padding push-down">
 
-            <div ng-repeat="s in steps" class="push-down no-outlines" layout-padding layout="row">
+            <div ng-repeat="s in steps" ng-class="getStepClass($index)" layout-padding layout="row">
 
-              <div ng-click="editStep($index)" flex>
-               <span ng-show="!checkIndex($index)">@{{s.name}}</span>
-               <span ng-show="checkIndex($index)"><textarea ng-model="s.name"></textarea> </span>
+              <div flex="5" class="number-column">
+              @{{$index+1}}
               </div>
 
-              <div flex="15">
-                <button class="btn btn-success" ng-show="checkIndex($index)" ng-click="cancelEditStep()"><i class="fa fa-check"></i></button> &nbsp; 
-                <button class="btn btn-default" ng-show="checkIndex($index) && $index > 0" ng-click="moveUpStep($index)"><i class="fa fa-arrow-up"></i></button> &nbsp; 
-                <button class="btn btn-default" ng-show="checkIndex($index) && $index < ( steps.length - 1 )" ng-click="moveDownStep($index)"><i class="fa fa-arrow-down"></i></button> &nbsp; 
-                <button class="btn btn-primary" ng-show="checkIndex($index)" ng-click="copyStep($index)"><i class="fa fa-copy"></i></button> &nbsp; 
-                <button class="btn btn-danger" ng-show="checkIndex($index)" ng-click="resetStep($index)"><i class="fa fa-times"></i></button>
+              <div flex>
+
+                <div ng-click="editStep($index)" class="no-outlines">
+                  <span ng-show="!checkIndex($index)">@{{s.name}}</span>
+                  <span ng-show="checkIndex($index)">
+                    <md-input-container class="md-block">
+                      <input ng-model="s.name" aria-label="." class="step-editor" on-enter="saveSteps(); cancelEditStep()" />
+                    </md-input-container>
+                  </span>
+                </div>
+
+                <div ng-show="checkIndex($index)" class="pull-up">
+                  <md-button class="" aria-label="." ng-click="cancelEditStep()"><i class="fa fa-check"></i></md-button>
+                  <md-button class="" aria-label="." ng-click="deleteStep($index)"><i class="fa fa-trash"></i></md-button>
+                  <md-button class="" aria-label="." ng-show="$index > 0" ng-click="moveUpStep($index)"><i class="fa fa-arrow-up"></i></md-button>
+                  <md-button class="" aria-label="." ng-show="$index < ( steps.length - 1 )" ng-click="moveDownStep($index)"><i class="fa fa-arrow-down"></i></md-button>
+                  <md-button class="" aria-label="." ng-click="copyStep($index)"><i class="fa fa-copy"></i></md-button>
+                  <md-button class="" aria-label="." ng-click="resetStep($index)"><i class="fa fa-times"></i></md-button>
+
+                </div>
 
               </div>
 
@@ -106,22 +123,25 @@
 
             <br />
 
-            <textarea ng-model="newstep" ng-blur="addStep()" onEnter="addStep(); return false"></textarea>
+            <md-input-container class="md-block">
+              <input ng-model="newstep" placeholder="{{___( "Enter a new step here..." )}}" ng-blur="addStep()" on-enter="addStep()" /> <br />
+                <button class="btn btn-success btn-sm" ng-click="addStep()"><i class="fa fa-check"></i></button> &nbsp; 
+                <button class="btn btn-warning btn-sm" ng-click="cancelAddStep()"><i class="fa fa-times"></i></button>
+            </md-input-container>
             
           </div>
         </md-tab>
-        <md-tab label="{{___( "Past Results" )}}">
+        <md-tab label="{{___( "Criteria" )}}">
           <div class="md-padding push-down">
             
           </div>
         </md-tab>
+        {{--<md-tab label="{{___( "Past Results" )}}">
+          <div class="md-padding push-down">
+            
+          </div>
+        </md-tab>--}}
       </md-tabs>
-
-
-        <button type="submit" class="btn btn-success" ng-click="save()">{{__( "Save" )}}</button> 
-        <button type="reset" class="btn btn-danger" ng-click="cancel()">{{__( "Cancel" )}}</button> 
-
-      </form>
 
   </div>
 @stop

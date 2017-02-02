@@ -423,6 +423,18 @@ li,
 	display: none;
 }
 
+.push-right {
+	float: right;
+}
+
+.push-left	 {
+	float: left	;
+}
+
+.pull-up {
+	margin-top: -25px;
+}
+
 /*****************/
 
 .activity-feed .activity-date {
@@ -584,4 +596,37 @@ li,
 
 	color: #1A5A8B;
 
+}
+
+.test-step-item {
+	padding: 5px;
+	padding-left: 0px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-size: 12px;
+}
+
+.test-step-item.active-step .number-column {
+
+	border-right: solid 3px #728DA0;
+
+}
+
+.test-step-item.active-step .number-column {
+	color: #1E323E;
+}
+
+.test-step-item.active-step md-button {
+    min-width: 1% !important;
+}
+
+.test-step-item .data-column {
+	padding-left: 5px;
+}
+
+.test-step-item .number-column {
+	padding-right: 5px;
+	border-right: solid 3px #E2EDF4;
+	color: #AABDC9;
+	font-weight: bold;
 }

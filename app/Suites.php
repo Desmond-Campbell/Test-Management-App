@@ -15,6 +15,6 @@ class Suites extends Model
      * This is the name of the database table for this Model
      * @var string
      */
-    protected $table = "suites";
+    protected $table = "test_suites";
     
 }

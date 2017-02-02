@@ -86,17 +86,43 @@ app.controller('ProjectSuitesEditCaseCtrl', ['$scope', '$http', '$mdDialog', '$t
 	};
 
 	$scope.steps = [];
-	$scope.steps.push( { name : 'Step 1' } );
-	$scope.steps.push( { name : 'Step 2' } );
-	$scope.steps.push( { name : 'Step 3' } );
 
-	$scope.newstep = "";
-	$scope.editindex = null;
-	$scope.editmode = false;
+	$scope.getSteps = function () {
+
+		$http.get( '/projects/' + $id + '/suites/' + $scope.suite_id + '/get-steps/' + $scope.case_id, $scope.case ).then( 
+			
+			function ( r ) {
+				
+				if ( typeof r.data.errors != 'undefined' ) {
+
+					_alert( r.data.errors, 1 );
+
+				} else {
+				
+					$scope.steps = r.data.steps;
+
+				}
+			
+			},
+
+			function () {
+
+				_alert( 'Failed to load test steps.' );
+
+			});
+
+	};
+
+	$scope.getSteps();
 
 	$scope.addStep = function () {
-		$scope.steps.push( { name : $scope.newstep } );
-		$scope.newstep = '';
+
+		if ( $scope.newstep != '' ) {
+			$scope.steps.push( { name : $scope.newstep } );
+			$scope.newstep = '';
+			$scope.saveSteps();
+		}
+
 	};
 
 	$scope.stash = {};
@@ -106,6 +132,8 @@ app.controller('ProjectSuitesEditCaseCtrl', ['$scope', '$http', '$mdDialog', '$t
 			original = angular.copy( $scope.steps[i] );
 		$scope.stash = original;
 		$scope.editmode = true;
+		editor = $('.step-editor:eq(' + i + ')');
+		$timeout( editor.focus(), 500 );
 	};
 
 	$scope.resetStep = function ( i ) {
@@ -120,6 +148,18 @@ app.controller('ProjectSuitesEditCaseCtrl', ['$scope', '$http', '$mdDialog', '$t
 
 	$scope.cancelEditStep = function () {
 		$scope.editmode = false;
+		$scope.editindex = -1;
+		$scope.saveSteps();
+	};
+
+	$scope.cancelAddStep = function () {
+		$scope.newstep = '';
+	};
+
+	$scope.deleteStep = function ( i ) {
+		$scope.steps.splice( i, 1 );
+		$scope.cancelEditStep();
+		$scope.saveSteps();
 	};
 
 	$scope.moveStep = function ( i, d ) {
@@ -135,6 +175,7 @@ app.controller('ProjectSuitesEditCaseCtrl', ['$scope', '$http', '$mdDialog', '$t
     $scope.editStep(j);
 
 		$scope.steps = steps;
+		$scope.saveSteps();
 
 	};
 
@@ -152,6 +193,42 @@ app.controller('ProjectSuitesEditCaseCtrl', ['$scope', '$http', '$mdDialog', '$t
 		step.name += ' -copy';
 		$scope.steps.push(step);
 		$scope.editStep($scope.steps.length-1);
+		$scope.saveSteps();
+
+	};
+
+	$scope.getStepClass = function ( i ) {
+
+		$class = "no-push-down no-outlines test-step-item";
+
+		if ( $scope.checkIndex( i ) ) { $class += " active-step"; }
+
+		return $class;
+
+
+	}
+
+	$scope.saveSteps = function () {
+
+		$http.post( '/projects/' + $id + '/suites/' + $scope.suite_id + '/save-steps/' + $scope.case_id, { steps: $scope.steps } ).then( 
+			
+			function ( r ) {
+				
+				if ( typeof r.data.errors != 'undefined' ) {
+
+					_alert( r.data.errors, 1 );
+
+				} else {
+				
+				}
+			
+			},
+
+			function () {
+
+				_alert( 'Failed to load test steps.' );
+
+			});
 
 	};
 

@@ -70,12 +70,20 @@ Route::get('/template', 'TemplateController@index');
 	Route::post('/projects/{project_id}/suites/{suite_id}/update', 'SuiteController@updateSuite');
 	Route::delete('/projects/{project_id}/suites/{suite_id}/delete', 'SuiteController@deleteSuite');
 	Route::get('/projects/{project_id}/suites/{suite_id}/get', 'SuiteController@getSuite');
+	Route::get('/projects/{project_id}/suites/{suite_id}/new-scenario', 'SuiteController@newScenario');
+	Route::post('/projects/{project_id}/suites/{suite_id}/create-scenario', 'SuiteController@createScenario');
+	Route::get('/projects/{project_id}/suites/{suite_id}/edit-scenario/{scenario_id}', 'SuiteController@editScenario');
+	Route::post('/projects/{project_id}/suites/{suite_id}/update-scenario/{scenario_id}', 'SuiteController@updateScenario');
 	Route::get('/projects/{project_id}/suites/{suite_id}/get-scenarios', 'SuiteController@getScenarios');
 	Route::get('/projects/{project_id}/suites/{suite_id}/get-scenario/{id}', 'SuiteController@getScenario');
 	Route::get('/projects/{project_id}/suites/{suite_id}/get-cases/{scenario_id}', 'SuiteController@getCases');
 	Route::get('/projects/{project_id}/suites/{suite_id}/get-case/{id}', 'SuiteController@getCase');
 	Route::get('/projects/{project_id}/suites/{suite_id}/edit-case/{id}', 'SuiteController@editCase');
 	Route::post('/projects/{project_id}/suites/{suite_id}/update-case/{id}', 'SuiteController@updateCase');
+	Route::get('/projects/{project_id}/suites/{suite_id}/new-case/{scenario_id}', 'SuiteController@newCase');
+	Route::post('/projects/{project_id}/suites/{suite_id}/create-case/{scenario_id}', 'SuiteController@createCase');
+	Route::get('/projects/{project_id}/suites/{suite_id}/get-steps/{case_id}', 'SuiteController@getSteps');
+	Route::post('/projects/{project_id}/suites/{suite_id}/save-steps/{case_id}', 'SuiteController@saveSteps');
 
 // Cases
 
