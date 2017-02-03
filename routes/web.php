@@ -61,6 +61,18 @@ Route::get('/template', 'TemplateController@index');
 	Route::post('/projects/{project_id}/team/{role_id}/save-role', 'TeamController@saveRole');
 	Route::post('/projects/{project_id}/team/{role_id}/save-permissions', 'TeamController@savePermissions');
 
+// Tests
+
+	Route::get('/projects/{project_id}/tests', 'TestController@index');
+	Route::get('/projects/{project_id}/tests/{id}/get-bundle', 'TestController@getBundle');
+	Route::get('/projects/{project_id}/tests/{id}', 'TestController@overview');
+	Route::get('/projects/{project_id}/tests/{id}/get', 'TestController@getTest');
+	Route::post('/projects/{project_id}/tests/{id}/create', 'TestController@createTest');
+	Route::post('/projects/{project_id}/tests/{id}/update', 'TestController@updateTest');
+	Route::post('/projects/{project_id}/tests/{id}/update-cases', 'TestController@updateTestCases');
+	Route::post('/projects/{project_id}/tests/{id}/update-testers', 'TestController@updateTesters');
+	Route::post('/projects/{project_id}/tests/{id}/update-schedule', 'TestController@updateSchedule');
+
 // Suites
 
 	Route::get('/projects/{project_id}/suites', 'SuiteController@index');

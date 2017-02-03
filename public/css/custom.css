@@ -244,6 +244,11 @@ a:hover {
 	margin-top: 25px;
 }
 
+.pull-left {
+	float: left !important;
+	display: inline !important;
+}
+
 .light-bg {
 	background: #F7FDF5;
 }
@@ -520,6 +525,22 @@ li,
 	-khtml-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
+}
+
+.suite-list .list-inner {
+	max-height: 500px !important;
+	overflow-y: hidden;
+}
+
+
+.suite-list .list-inner:hover {
+	overflow-y: auto;
+}
+
+.suite-list .list-inner md-checkbox {
+
+	margin: 0;
+
 }
 
 .suite-list md-card {

@@ -283,7 +283,7 @@ class SuiteController extends Controller
 
     $id = $r->route( 'project_id' );
     $suite_id = $r->route( 'suite_id' );
-    $scenario_id = $r->route( 'id' );
+    $scenario_id = $r->route( 'scenario_id' );
 
     police( [ 'project_id' => $id, 'keystring' => 'projects.suites.update_scenarios' ] );
 
@@ -293,6 +293,7 @@ class SuiteController extends Controller
 
     if ( !$suite ) return view('blocked');
 
+
     if ( $suite->project_id != $id ) return view('blocked');
     
     $scenario = Scenarios::find( $scenario_id );
@@ -301,7 +302,70 @@ class SuiteController extends Controller
 
     if ( $scenario->suite_id != $suite_id || $scenario->project_id != $id ) return view('blocked');
 
-    return view( 'suite.edit-scenario', compact( 'project', 'scenario', 'suite' ) );
+    $suite_params = '?suite_id=' . $suite_id . '&scenario_id=' . $scenario->id;
+
+    return view( 'suite.edit-scenario', compact( 'project', 'scenario', 'suite', 'suite_params' ) );
+
+  }
+
+  public function updateScenario( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+
+    police( [ 'keystring' => 'projects.suites.update_scenarios', 'project_id' => $id, 'return' => 1 ] );
+
+    $suite_id = $r->route( 'suite_id' );
+    $scenario_id = $r->route( 'scenario_id' );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return [ 'errors' => ___( 'Project not found.' ) ];
+
+    $scenario = Scenarios::find( $scenario_id );
+
+    if ( !$scenario ) return [ 'errors' => ___( 'Scenario not found.' ) ];
+
+    $name = $r->input( 'name' );
+    $description = $r->input( 'description' );
+
+    $err = null;
+
+    if ( !$name ) {
+
+      $err = [ 'errors' => ___( 'Please enter a title for this test scenario.' ) ];
+
+    } else {
+
+      $count = Scenarios::where( 'suite_id', $suite_id )->where( 'id', '<>', $scenario_id )->where( 'name', $name )->count();
+
+      if ( $count > 0 ) {
+
+        $err = [ 'errors' => ___( 'The name you entered is already being used in this test suite.' ) ];
+
+      }
+
+    }
+
+    if ( $err ) {
+
+      $result = $err;
+
+    } else {
+
+      $changes = [
+                  'name'          => $name,
+                  'description'   => $description
+                ];
+
+      Scenarios::find( $scenario_id )->update( $changes );
+
+      $changes['id'] = $scenario_id;
+
+      $result = [ 'success' => true, 'result' => $changes ];
+
+    }
+
+    return response()->json( $result );
 
   }
 
