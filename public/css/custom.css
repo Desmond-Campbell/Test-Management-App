@@ -416,6 +416,43 @@ li,
 	margin-top: 0px !important;
 }
 
+.no-margin-left {
+	margin-left: 0px !important;
+}
+
+.no-margins {
+	margin: 0px !important;
+}
+
+.side-margins {
+
+	margin-left: 10px;
+	margin-right: 10px;
+
+} 
+
+.light-success-bg {
+
+	background: #F6FBF1;
+	border: solid 1px #C3C7BF;
+
+}
+
+.light-danger-bg {
+
+	background: #FBECEC;
+	border: solid 1px #D8CBCB;
+
+}
+
+.bold-top-border {
+	border-top-width: 3px !important;
+}
+
+.smaller-text {
+	font-size: 87%;
+}
+
 #loading-container {
 	background: url('/img/loading.gif') center center no-repeat; 
 	position: fixed; 
@@ -506,6 +543,17 @@ li,
 
 .no-borders {
 	border: 0px !important;
+}
+
+.border-top {
+	border-top: solid 1px #EEE;
+}
+
+.padding-top {
+	padding-top: 15px;
+}
+.bold {
+	font-weight: bold;
 }
 
 /******** suites ***************/

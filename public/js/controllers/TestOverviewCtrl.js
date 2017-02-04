@@ -3,6 +3,7 @@ app.controller('TestOverviewCtrl', ['$scope', '$http', '$mdDialog', '$timeout', 
 	$scope.project_id = $( '#project_id').val();
 	$scope.test_id = $( '#test_id').val();
 	$scope.test = [];
+	$scope.testers = [];
 
 	// Get test
 
@@ -483,6 +484,165 @@ app.controller('TestOverviewCtrl', ['$scope', '$http', '$mdDialog', '$timeout', 
 
 			});
 
+	};
+
+	$scope.saveCases = function () {
+
+		$id = $scope.project_id;
+		casedata = { 'suites' : $scope.suites, 'scenarios' : $scope.stockscenarios, 'cases' : $scope.stockcases };
+
+		l(1);
+		$http.post( '/projects/' + $id + '/tests/' + $scope.test_id + '/update-cases', casedata ).then( 
+			
+			function ( r ) {
+				
+				l(0);
+		
+				if ( typeof r.data.errors != 'undefined' ) {
+
+					_alert( r.data.errors, 1 );
+
+				} else {
+				
+					pageconfig = $("#pageconfig").val();
+
+					if ( pageconfig != 'template-full' ) {
+
+						_notifySuccess( 'Test was updated successfully.' );
+
+					} else {
+
+						$scope.test = {};
+						$scope.cancel( r.data.result );
+
+					}
+
+				}
+			
+			},
+
+			function () {
+
+				l(0);
+		
+				_alert( 'Failed to save test.' );
+
+			});
+
+	};
+
+	// Get testers
+
+	$scope.getTesters = function () {
+
+		$id = $scope.project_id;
+
+		l(1);
+		$http.get( '/projects/' + $id + '/tests/' + $scope.test_id + '/get-testers' ).then( 
+			
+			function ( r ) {
+				
+				l(0);
+		
+				if ( typeof r.data.errors != 'undefined' ) {
+
+					_alert( r.data.errors, 1 );
+
+				} else {
+					
+					$scope.testers = r.data.testers;
+
+				}
+			
+			},
+
+			function () {
+
+				l(0);
+		
+				_alert( 'Failed to load testers.' );
+
+			});
+
+	};
+
+	$scope.getTesters();
+
+	$scope.saveTesters = function () {
+
+		$id = $scope.project_id;
+
+		l(1);
+		$http.post( '/projects/' + $id + '/tests/' + $scope.test_id + '/update-testers', { testers : $scope.testers } ).then( 
+			
+			function ( r ) {
+				
+				l(0);
+		
+				if ( typeof r.data.errors != 'undefined' ) {
+
+					_alert( r.data.errors, 1 );
+
+				} else {
+				
+					pageconfig = $("#pageconfig").val();
+
+					if ( pageconfig != 'template-full' ) {
+
+						_notifySuccess( 'Testers updated successfully.' );
+
+					} else {
+
+						$scope.cancel( r.data.result );
+
+					}
+
+				}
+			
+			},
+
+			function () {
+
+				l(0);
+		
+				_alert( 'Failed to save testers.' );
+
+			});
+
+	};
+
+	$scope.hasTesterWith = function ( id ) {
+	  	
+  	for ( t = 0; t < $scope.testers.length; t++ ) {
+
+			tester = $scope.testers[t];
+
+			if ( tester.id == id ) {
+
+				return tester.selected;
+
+			}
+
+		}
+
+		return false;
+
+  };
+
+  $scope.toggleTesterSelection = function ( id ) {
+
+  	for ( t = 0; t < $scope.testers.length; t++ ) {
+
+			tester = $scope.testers[t];
+
+			if ( tester.id == id ) {
+
+				$scope.testers[t].selected = !$scope.testers[t].selected;
+
+			}
+
+		}
+	
 	};
 
 	$scope.cancel = function ( result ) {

@@ -83,11 +83,14 @@ class Police
 
       $project = Projects::find( $project_id );
       
+      $debug = [ 'section' => $section, 'category' => $category, 'key' => $key, 'project_id' => $project_id ];
+
       if ( !$project ) self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Project was not found.' ), 'debug' => $debug ], 'args' => $args ] );
 
       $member_user_id = arg( $args, 'member_user_id', get_user_id() );
       $member = TeamMembers::where( 'user_id', $member_user_id )->where( 'project_id', $project_id )->where( 'is_removed', 0 )->first();
-      $debug = [ 'section' => $section, 'category' => $category, 'key' => $key, 'member_user_id' => $member_user_id, 'project_id' => $project_id, 'member' => $member ];
+      $debug['member_user_id'] = $member_user_id;
+      $debug['member'] = $member;
 
       if ( !$member ) self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Team member was not found.' ), 'debug' => $debug ], 'args' => $args ] );
 

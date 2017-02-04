@@ -133,6 +133,61 @@
         </md-tab>
         <md-tab label="{{___( "Criteria" )}}">
           <div class="md-padding push-down">
+
+            <form class="form @if ( Config::get('pageconfig') != 'full-template' ) slim-form @endif" role="form" method="post" action="" onsubmit="return false">
+
+            <div class="alert alert-info">
+            {{__( "Pass criteria describes how to determine whether a test should be passed. Fail criteria describes...you guessed it." )}}
+            </div>
+
+            <br />
+
+            <div layout="row" class="push-down">
+
+              <div flex="50">
+
+                <md-input-container flex-gt-xs>
+
+                  <label>{{__( "Pass Criteria" )}}</label>
+                  <textarea class="md-block input-lg md-no-underline" 
+                        id="case-pass"
+                        maxlength="72" 
+                        ng-model="case.pass">
+                  </textarea>
+
+                </md-input-container>
+
+              </div>
+
+              <div flex="5">
+
+              </div>
+
+              <div flex>
+
+                <md-input-container flex-gt-xs>
+
+                  <label>{{__( "Fail Criteria" )}}</label>
+                  <textarea class="md-block input-lg md-no-underline" 
+                        id="case-fail"
+                        maxlength="72" 
+                        ng-model="case.fail">
+                  </textarea>
+
+                </md-input-container>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <br />
+
+          <button type="submit" class="btn btn-success" ng-click="save()">{{__( "Save" )}}</button> 
+          <button type="reset" class="btn btn-danger" ng-click="cancel()">{{__( "Cancel" )}}</button> 
+
+        </form>
             
           </div>
         </md-tab>

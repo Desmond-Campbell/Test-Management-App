@@ -1,3 +1,4 @@
+<?php $hidefull = Config::get('pageconfig') == 'full-template'; ?><!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,7 +8,6 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
     <title>@yield('title') - Test</title>
 
@@ -18,21 +18,29 @@
 
   <div layout="column">
     
+    @if ( !$hidefull )
+
     @include('layouts.page-top')
+
+    @endif
 
     <div flex>
       
       <div class="main-container theme-showcase" role="main">
       
-        <div layout="row" class="push-down">
+        <div layout="row" class="">
 
-          <div flex="20">
+          @if ( !$hidefull )
+          <div flex="15" class="hidden-xs">
           </div>
+          @endif
           <div flex>
             @yield('main')
           </div>
-          <div flex="20">
+          @if ( !$hidefull )
+          <div flex="15" class="hidden-xs">
           </div>
+          @endif
 
         </div>
 

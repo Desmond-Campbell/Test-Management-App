@@ -19,7 +19,9 @@
 @section('toolbar')
   <div id="header-toolbar">
     <ul class="toolbar">
+      <li><a href="/projects/{{$project->id}}/tests/{{$test_id}}/dispatch"><img src="/img/toolbar/worker.png" class="toolbar-icon" /> {{___( "Dispatch" )}}</a></li>
       <li><a href="/projects/{{$project->id}}/tests/new"><img src="/img/toolbar/new.png" class="toolbar-icon" /> {{___( "New Test" )}}</a></li>
+      <li><a href="/projects/{{$project->id}}/tests"><img src="/img/toolbar/view.png" class="toolbar-icon" /> {{___( "View All Tests" )}}</a></li>
     </ul>
   </div>
 @stop
@@ -80,7 +82,11 @@
 
       <md-tab label="{{___( "Test Cases" )}}">
         
-        <div class="md-padding push-down">
+        <div class="md-padding">
+
+          <button type="submit" class="btn btn-success" ng-click="saveCases()">{{__( "Save" )}}</button> 
+
+          <br />&nbsp;
 
           <div layout="row" ng-show="suites.length > 0">
 
@@ -145,23 +151,29 @@
 
       </md-tab>
 
-      <md-tab label="{{___( "Schedule" )}}">
+      {{--<md-tab label="{{___( "Schedule" )}}">
         
         <div class="md-padding push-down">
 
         </div>
 
-      </md-tab>
+      </md-tab>--}}
 
       <md-tab label="{{___( "Testers" )}}">
         
-        <div class="md-padding push-down">
+        <div class="md-padding">
+
+          <div class="alert alert-info-light">
+          {{__( "If you remove a tester who is currently testing, their access will immediately be revoked. If you re-add them, they can continue from where they left off, unless you reset the test run." )}}
+          </div>
+
+          <button type="submit" class="btn btn-success" ng-click="saveTesters()">{{__( "Save" )}}</button> 
 
           <md-list>
             <md-list-item ng-repeat="t in testers">
               <md-checkbox 
                     ng-checked="hasTesterWith(t.id)"
-                    ng-click="toggleCaseSelection(c.id, 0)"
+                    ng-click="toggleTesterSelection(t.id, 0)"
                     class="pull-left" aria-label="[]"></md-checkbox> @{{t.name}}
             </md-list-item>
           </md-list>

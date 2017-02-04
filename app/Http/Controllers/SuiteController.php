@@ -568,6 +568,8 @@ class SuiteController extends Controller
 
     $name = $r->input( 'name' );
     $description = $r->input( 'description' );
+    $fail_criteria = $r->input( 'fail' );
+    $pass_criteria = $r->input( 'pass' );
     $err = null;
 
     if ( !$name ) {
@@ -593,8 +595,10 @@ class SuiteController extends Controller
     } else {
 
       $changes = [
-                  'name'          => $name,
-                  'description'   => $description
+                  'name'            => $name,
+                  'description'     => $description,
+                  'pass_criteria'   => $pass_criteria,
+                  'fail_criteria'   => $fail_criteria
                 ];
 
       Cases::find( $case_id )->update( $changes );
@@ -702,9 +706,11 @@ class SuiteController extends Controller
 
     $steps = $r->input( 'steps' );
 
+    // print_r( $steps ); die;
+
     if ( $steps ) {
 
-      Steps::where( 'case_id', $case_id )->delete();
+      //Steps::where( 'case_id', $case_id )->delete();
 
       $i = 0;
 
@@ -719,7 +725,17 @@ class SuiteController extends Controller
                         'case_id' => $case_id ];
           $newstep['name'] = $step['name'];
           $newstep['item_position'] = $i;
-          Steps::create( $newstep );
+
+          if ( !empty( $step['id'] ) ) {
+
+            Steps::find( $step['id'] )->update( $newstep );
+
+          } else {
+
+            Steps::create( $newstep );
+          
+          }
+
           $i++;
 
         }

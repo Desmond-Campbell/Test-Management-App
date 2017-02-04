@@ -67,11 +67,17 @@ Route::get('/template', 'TemplateController@index');
 	Route::get('/projects/{project_id}/tests/{id}/get-bundle', 'TestController@getBundle');
 	Route::get('/projects/{project_id}/tests/{id}', 'TestController@overview');
 	Route::get('/projects/{project_id}/tests/{id}/get', 'TestController@getTest');
-	Route::post('/projects/{project_id}/tests/{id}/create', 'TestController@createTest');
+	Route::get('/projects/{project_id}/tests/{id}/get-activity', 'TestController@getTestActivity');
+	Route::get('/projects/{project_id}/tests/{id}/get-testers', 'TestController@getTesters');
+	Route::post('/projects/{project_id}/tests/create', 'TestController@createTest');
+	Route::get('/projects/{project_id}/tests/{id}/launch', 'TestController@launchTest');
 	Route::post('/projects/{project_id}/tests/{id}/update', 'TestController@updateTest');
 	Route::post('/projects/{project_id}/tests/{id}/update-cases', 'TestController@updateTestCases');
 	Route::post('/projects/{project_id}/tests/{id}/update-testers', 'TestController@updateTesters');
 	Route::post('/projects/{project_id}/tests/{id}/update-schedule', 'TestController@updateSchedule');
+	Route::get('/projects/{project_id}/tests/{id}/activity/{activity_id}/step/{step_id}/new-issue', 'TestController@newIssue');
+	Route::post('/projects/{project_id}/tests/{id}/activity/{activity_id}/step/{step_id}/create-issue', 'TestController@createIssue');
+	Route::post('/projects/{project_id}/tests/{id}/activity/{activity_id}/step/{step_id}/{advance_type}-step', 'TestController@nextStep');
 
 // Suites
 

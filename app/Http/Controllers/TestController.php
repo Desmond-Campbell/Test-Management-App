@@ -6,9 +6,13 @@ use App\Projects;
 use App\Suites;
 use App\Scenarios;
 use App\Cases;
+use App\Issues;
 use App\Steps;
 use App\Police;
+use App\TestActivities;
 use App\Tests;
+use App\TeamMembers;
+use App\User;
 use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -31,9 +35,11 @@ class TestController extends Controller
 
     police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_cases', 'return' => 1 ] );
 
+    $project = Projects::find( $id );
+
     $tests = Tests::where( 'project_id', $id )->get();
 
-    return view( 'test.index', compact( 'tests' ) );
+    return view( 'test.index', compact( 'tests', 'project' ) );
 
   }
 
@@ -51,6 +57,26 @@ class TestController extends Controller
     $project = Projects::find( $id );
 
     return view( 'test.overview', compact( 'project', 'test_id' ) );
+
+  }
+
+  public function launchTest( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+
+    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+
+    $test_id = $r->route( 'id' );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return response()->json( [ 'errors' => __( "Project not found." ) ] );
+
+    $test = Tests::find( $test_id );
+
+    if ( !$test ) return response()->json( [ 'errors' => __( "Test run not found." ) ] );
+
+    return view( 'test.launch', compact( 'project', 'test' ) );
 
   }
 
@@ -157,6 +183,7 @@ class TestController extends Controller
 
       $newtest = [
                   'name'          => $name,
+                  'project_id'    => $id,
                   'description'   => $description
                 ];
 
@@ -276,7 +303,7 @@ class TestController extends Controller
     }
 
     $scenarios = [];
-    $selectedscenarios = $r->input( 'stockscenarios' );
+    $selectedscenarios = $r->input( 'scenarios' );
 
     foreach ( $selectedscenarios as $s ) {
 
@@ -285,7 +312,7 @@ class TestController extends Controller
     }
 
     $cases = [];
-    $selectedcases = $r->input( 'stockcases' );
+    $selectedcases = $r->input( 'cases' );
 
     foreach ( $selectedcases as $c ) {
 
@@ -294,9 +321,9 @@ class TestController extends Controller
     }
 
     $changes = [
-                  'suites'      => $suites,
-                  'scenarios'   => $description
-                  'cases'       => $cases
+                  'suites'      => json_encode( $suites ),
+                  'scenarios'   => json_encode( $scenarios ),
+                  'cases'       => json_encode( $cases )
                 ];
 
     Tests::find( $test_id )->update( $changes );
@@ -306,6 +333,53 @@ class TestController extends Controller
     $result = [ 'success' => true, 'result' => $changes ];
 
     return response()->json( $result );
+
+  }
+
+  public function getTesters( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $test_id = $r->route( 'id' );
+
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_suites', 'return' => 1 ] );
+
+    $test = Tests::find( $test_id );
+
+    if ( $test ) {
+
+      if ( $test->project_id != $id ) 
+        return response()->json( [ 'errors' => ___( 'Requested test not found on specified project.' ) ] );
+    
+    }
+
+    $selected_testers = $test->testers;
+
+    if ( !$selected_testers ) $selected_testers = '[]';
+
+    $selected_testers = json_decode( $selected_testers );
+
+    $teammembers = TeamMembers::where( 'project_id', $id )->get();
+    $testers = [];
+
+    foreach ( $teammembers as $t ) {
+
+      if ( Police::check( [ 'keystring' => 'projects.projects.update_project',  'quickcheck' => true, 'member_user_id' => $t->user_id , 'project_id' => $id ] ) ) {
+
+        $user = User::find( $t->user_id );
+
+        if ( $user ) {
+
+          $t->name = $user->name;
+          $t->selected = in_array( $t->id, $selected_testers );
+          $testers[] = $t;
+
+        }
+
+      }
+
+    }
+
+    return response()->json( [ 'testers' => $testers, 'id' => $test_id ] );
 
   }
 
@@ -335,7 +409,7 @@ class TestController extends Controller
     }
 
     $changes = [
-                  'testers'  => $testers
+                  'testers'  => json_encode( $testers )
                 ];
 
     Tests::find( $test_id )->update( $changes );
@@ -364,6 +438,159 @@ class TestController extends Controller
     if ( $test->project_id != $id ) return [ 'errors' => ___( 'Test not found.' ) ];;
 
     $test->delete();
+
+    $result = [ 'success' => true ];
+
+    return response()->json( $result );
+
+  }
+
+  public function getTestActivity( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $test_id = $r->route( 'id' );
+
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_suites', 'return' => 1 ] );
+
+    $test = Tests::find( $test_id );
+
+    if ( $test ) {
+
+      if ( $test->project_id != $id ) 
+        return response()->json( [ 'errors' => ___( 'Requested test not found on specified project.' ) ] );
+    
+    }
+
+    $step = (object) [ 'id' => 0 ];
+
+    $activity = TestActivities::where( 'project_id', $id )->where( 'test_id', $test_id )->where( 'status', '1' )->first();
+
+    if ( !$activity ) return response()->json( [ 'case' => (object) [], 'activity' => (object) [], 'scenario' => (object) [], 'step' => (object) [] ] );
+
+    $step = Steps::find( $activity->current_step );
+
+    $case = Cases::find( $activity->case_id );
+
+    $scenario = (object) [];
+
+    if ( $case ) {
+
+      $scenario = Scenarios::find( $case->scenario_id );
+
+    }
+
+    return response()->json( [ 'step' => $step, 'activity' => $activity, 'case' => $case, 'scenario' => $scenario ] );
+
+  }
+
+  public function newIssue( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $activity_id = $r->route( 'activity_id' );
+    $step_id = $r->route( 'step_id' );
+
+    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+
+    $test_id = $r->route( 'id' );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return response()->json( [ 'errors' => __( "Project not found." ) ] );
+
+    $test = Tests::find( $test_id );
+    $step = Steps::find( $step_id );
+    $activity = TestActivities::find( $activity_id );
+
+    if ( !$test ) return response()->json( [ 'errors' => __( "Test run not found." ) ] );
+
+    return view( 'test.new-issue', compact( 'project', 'test', 'activity', 'step' ) );
+
+  }
+
+  public function createIssue( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $activity_id = $r->route( 'activity_id' );
+    $step_id = $r->route( 'step_id' );
+
+    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id, 'return' => 1 ] );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return [ 'errors' => ___( 'Project not found.' ) ];
+
+    $title = $r->input( 'title' );
+    $details = $r->input( 'details' );
+    $err = null;
+
+    if ( !$title && $details ) {
+
+      $title = substr( $details, 0, 255 );
+
+    } 
+
+    if ( $title && !$details ) {
+
+      $details = $title;
+
+    } 
+
+    if ( !$title && !$details ) {
+
+      $err = [ 'errors' => ___( 'Please enter a title or write some details to create this issue/result.' ) ];
+
+    }
+
+    if ( $err ) {
+
+      $result = $err;
+
+    } else {
+
+      $newissue = [
+                    'title'         => $title,
+                    'project_id'    => $id,
+                    'activity_id'   => $activity_id,
+                    'step_id'       => $step_id,
+                    'details'       => $details,
+                    'type'          => $r->input( 'type' ) == 'result' ? 'result' : 'issue',
+                    'status'        => 1,
+                    'user_id'       => get_user_id()
+                  ];
+
+      TestActivities::advance( $activity_id );
+
+      $result_id = Issues::create( $newissue )->id;
+
+      $result = [ 'success' => true, 'result_id' => $result_id ];
+
+    }
+
+    return response()->json( $result );
+
+  }
+
+  public function nextStep( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $activity_id = $r->route( 'activity_id' );
+    $step_id = $r->route( 'step_id' );
+
+    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id, 'return' => 1 ] );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return [ 'errors' => ___( 'Project not found.' ) ];
+
+    // Find the activity, find the step and add it to skipped steps, then advance
+
+    $activity = TestActivities::find( $activity_id );
+
+    if ( !$activity ) return [ 'errors' => ___( 'Test activity not found.' ) ];
+
+    $skip = $r->route( 'advance_type' ) == 'skip';
+
+    TestActivities::advance( $activity_id, $skip );
 
     $result = [ 'success' => true ];
 
