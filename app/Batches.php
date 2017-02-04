@@ -30,7 +30,6 @@ class Batches extends Model
     if ( !$cases ) $cases = '[]';
 
     $cases = json_decode( $cases );
-    $i = 0;
 
     $new_batch = [];
     $new_batch['test_id'] = $test_id;
@@ -41,46 +40,64 @@ class Batches extends Model
 
     $batch_id = self::create( $new_batch )->id;
 
-    foreach ( $cases as $c ) {
+    $testers = $test->testers;
 
-      $case = Cases::find( $c );
+    if ( !$testers ) return;
 
-      if ( $case ) {
+    $testers = json_decode( $testers );
 
-        if ( $case->project_id == $test->project_id ) {
+    foreach ( $testers as $t ) {
 
-          $new_activity = [];
-          $new_activity['project_id'] = $test->project_id;
-          $new_activity['batch_id'] = $batch_id;
-          $new_activity['case_id'] = $c;
-          $new_activity['test_id'] = $test_id;
-          $new_activity['current_step'] = 0;
-          $new_activity['skipped_steps'] = '[]';
-          $new_activity['completed_steps'] = '[]';
-          $new_activity['status'] = $i < 1 ? 1 : 0;
-          $new_activity['user_id'] = get_user_id();
+      $i = 0;
 
-          if ( $i < 1 ) {
+      $member = TeamMembers::find( $t );
 
-            $step = Steps::where( 'case_id', $case->id )->orderBy( 'item_position', 'asc' )->first();
+      if ( $member ) {
 
-            if ( $step ) {
+        foreach ( $cases as $c ) {
 
-              $new_activity['current_step'] = $step->id;
+          $case = Cases::find( $c );
 
+          if ( $case ) {
+
+            if ( $case->project_id == $test->project_id ) {
+
+              $new_activity = [];
+              $new_activity['project_id'] = $test->project_id;
+              $new_activity['batch_id'] = $batch_id;
+              $new_activity['case_id'] = $c;
+              $new_activity['test_id'] = $test_id;
+              $new_activity['current_step'] = 0;
+              $new_activity['skipped_steps'] = '[]';
+              $new_activity['completed_steps'] = '[]';
+              $new_activity['status'] = $i < 1 ? 1 : 0;
+              $new_activity['user_id'] = $member->user_id;
+
+              if ( $i < 1 ) {
+
+                $step = Steps::where( 'case_id', $case->id )->orderBy( 'item_position', 'asc' )->first();
+
+                if ( $step ) {
+
+                  $new_activity['current_step'] = $step->id;
+
+                }
+
+              }
+
+              $i++;
+
+              TestActivities::create( $new_activity );
+              
             }
 
           }
 
-          $i++;
-
-          TestActivities::create( $new_activity );
-          
-        }
+        } 
 
       }
 
-    } 
+    }
 
   }
 

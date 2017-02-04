@@ -713,6 +713,20 @@ class TestController extends Controller
 
     $result = [ 'success' => true ];
 
+    $newissue = [
+                  'title'         => ___( "This test was passed." ),
+                  'project_id'    => $id,
+                  'activity_id'   => $activity_id,
+                  'step_id'       => $step_id,
+                  'details'       => ___( "This test was passed." ),
+                  'type'          => 'result',
+                  'status'        => 1,
+                  'user_id'       => get_user_id()
+                ];
+
+    TestActivities::advance( $activity_id );
+    Issues::create( $newissue )->id;
+
     return response()->json( $result );
 
   }
@@ -784,6 +798,147 @@ class TestController extends Controller
     $result = [ 'results' => $results ];
 
     return response()->json( $result );
+
+  }
+
+  public function getResultsAggregated( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $test_id = $r->route( 'id' );
+    $batch_id = $r->route( 'batch_id' );
+    $group_type = $r->route( 'result_type' );
+
+    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id, 'return' => 1 ] );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return [ 'errors' => ___( 'Project not found.' ) ];
+
+        if ( $group_type != 'batch' ) {
+    
+          $activities = TestActivities::where( 'test_id', $test_id )->get();
+
+        } else {
+
+          $activities = TestActivities::where( 'test_id', $test_id )->where( 'batch_id', $batch_id )->get();
+
+        }
+
+    if ( !$activities ) return [ 'errors' => ___( 'Test activity not found.' ) ];
+
+    $batch = Batches::find( $batch_id );
+
+    if ( !$batch && $group_type == 'batch' ) return [ 'errors' => ___( 'Test batch not found.' ) ];
+
+    $results = [];
+
+    /*foreach ( $activities as $a ) {
+
+      $steps = Steps::where( 'case_id', $a->case_id )->get();
+      $result = [ 'steps' => [] ];
+
+      foreach ( $steps as $s ) {
+
+        if ( $group_type != 'batch' ) {
+
+          $issues = Issues::where( 'activity_id', $a->id )->where( 'step_id', $s->id )->orderBy( 'created_at', 'desc' )->take(10)->get();
+
+        } else {
+
+          $issues = Issues::where( 'activity_id', $a->id )->where( 'step_id', $s->id )->orderBy( 'created_at', 'desc' )->take(10)->get();
+
+        }
+
+        $case = Cases::find( $a->case_id );
+
+        if ( $case ) {
+
+          $result['case'] = $case;
+
+        } else {
+
+          $result['case'] = ___( "Test case was deleted." );
+
+        }
+
+        $s['issues'] = $issues;
+
+        if ( empty( $result['steps'][$s->id] ) ) $result['steps'][$s->id] = [];
+
+        $result['steps'][$s->id][] = [ 'step_id' => $s->id, 'steps' => $s ];
+
+      }
+
+      if ( empty( $results[$a->case_id] ) ) $results[$a->case_id] = [];
+
+      $results[$a->case_id][] = [ 'case_id' => $a->case_id, 'result' => $result ];
+
+    }*/
+
+    $case_cache = [];
+    $steps_cache = [];
+    $cases = [];
+
+    foreach ( $activities as $a ) {
+
+      if ( $batch_id == $a->batch_id || $group_type != 'batch' ) {
+
+        $case_id = $a->case_id;
+        $case = empty( $case_cache[$case_id] ) ? Cases::find( $a->case_id ) : $case_cache[$case_id];
+        $steps = empty( $steps_cache[$case_id] ) ? Steps::where( 'case_id', $case_id )->get() : $steps_cache[$case_id];
+
+        if ( empty( $cases[$case_id] ) ) $cases[$case_id] = [ 'case' => $case, 'data' => [] ];
+
+        foreach ( $steps as $s ) {
+
+          if ( empty( $cases[$case_id]['data'][$s->id] ) ) $cases[$case_id]['data'][$s->id] = [ 'step' => $s, 'results' => [] ];
+          
+          $issues = Issues::where( 'activity_id', $a->id )->where( 'step_id', $s->id )->orderBy( 'created_at', 'desc' )->take(10)->get();
+
+          foreach ( $issues as $i ) {
+
+            $u = User::find( $i->user_id );
+
+            if ( $u ) $i->user_name = $u->name;
+
+            $cases[$case_id]['data'][$s->id]['results'][] = $i;
+
+          }
+
+        }
+
+      }
+
+    }
+
+    $result = [ 'results' => array_values( $cases ) ];
+
+    return response()->json( $result );
+
+  }
+
+  public function batchResults( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+
+    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+
+    $test_id = $r->route( 'id' );
+    $batch_id = $r->route( 'batch_id' );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return response()->json( [ 'errors' => __( "Project not found." ) ] );
+
+    $test = Tests::find( $test_id );
+
+    if ( !$test ) return response()->json( [ 'errors' => __( "Test run not found." ) ] );
+
+    $batch = Batches::find( $batch_id );
+
+    if ( !$batch ) return response()->json( [ 'errors' => __( "Test batch not found." ) ] );
+
+    return view( 'test.batch-results', compact( 'project', 'test', 'batch_id' ) );
 
   }
 

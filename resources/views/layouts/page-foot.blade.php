@@ -3,8 +3,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/js/vendor/bootstrap/vendor/jquery-2.2.1.min.js"><\/script>')</script>
+    <script>window.jQuery || document.write('<script src="/js/vendor/jquery-2.2.1.min.js"><\/script>')</script>
     <script src="/js/vendor/node_modules/angular/angular.js"></script> 
     <script src="/js/vendor/node_modules/angular-aria/angular-aria.js"></script> 
     <script src="/js/vendor/node_modules/angular-animate/angular-animate.js"></script> 
