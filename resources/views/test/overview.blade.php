@@ -19,8 +19,7 @@
 @section('toolbar')
   <div id="header-toolbar">
     <ul class="toolbar">
-      <li><a href="/projects/{{$project->id}}/tests/{{$test_id}}/dispatch"><img src="/img/toolbar/worker.png" class="toolbar-icon" /> {{___( "Dispatch" )}}</a></li>
-      <li><a href="/projects/{{$project->id}}/tests/new"><img src="/img/toolbar/new.png" class="toolbar-icon" /> {{___( "New Test" )}}</a></li>
+      <li><a href="/projects/{{$project->id}}/tests/{{$test_id}}/batches"><img src="/img/toolbar/worker.png" class="toolbar-icon" /> {{___( "Dispatch" )}}</a></li>
       <li><a href="/projects/{{$project->id}}/tests"><img src="/img/toolbar/view.png" class="toolbar-icon" /> {{___( "View All Tests" )}}</a></li>
     </ul>
   </div>

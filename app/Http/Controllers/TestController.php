@@ -8,6 +8,7 @@ use App\Scenarios;
 use App\Cases;
 use App\Issues;
 use App\Steps;
+use App\Batches;
 use App\Police;
 use App\TestActivities;
 use App\Tests;
@@ -60,7 +61,7 @@ class TestController extends Controller
 
   }
 
-  public function launchTest( Request $r ) {
+  public function testBatches( Request $r ) {
 
     $id = $r->route( 'project_id' );
 
@@ -76,7 +77,107 @@ class TestController extends Controller
 
     if ( !$test ) return response()->json( [ 'errors' => __( "Test run not found." ) ] );
 
-    return view( 'test.launch', compact( 'project', 'test' ) );
+    return view( 'test.batches', compact( 'project', 'test' ) );
+
+  }
+
+  public function getBatches( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $test_id = $r->route( 'id' );
+
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_suites', 'return' => 1 ] );
+
+    $test = Tests::find( $test_id );
+
+    if ( $test ) {
+
+      if ( $test->project_id != $id ) 
+        return response()->json( [ 'errors' => ___( 'Requested test not found on specified project.' ) ] );
+    
+    }
+
+    $batches = Batches::where( 'test_id', $test_id )->get();
+
+    return response()->json( [ 'batches' => $batches ] );
+
+  }
+
+  public function startBatch( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+
+    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+
+    $test_id = $r->route( 'id' );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return response()->json( [ 'errors' => __( "Project not found." ) ] );
+
+    $test = Tests::find( $test_id );
+
+    if ( !$test ) return response()->json( [ 'errors' => __( "Test run not found." ) ] );
+
+    $runningBatches = Batches::where( 'test_id', $test_id )->where( 'status', 1 )->count();
+
+    if ( $runningBatches ) return response()->json( [ 'errors' => __( "A running batch already exists. You have to stop that batch first before dispatching this test again, because you are dispatching to a set of testers who are already executing this test run. Remember you can always duplicate a test run for another set of testers." ) ] );
+
+    $success = Batches::start( $test_id );
+
+    return response()->json( [ 'success' => $success ] );
+
+  }
+
+  public function stopBatch( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+
+    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+
+    $test_id = $r->route( 'id' );
+    $batch_id = $r->route( 'batch_id' );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return response()->json( [ 'errors' => __( "Project not found." ) ] );
+
+    $test = Tests::find( $test_id );
+
+    if ( !$test ) return response()->json( [ 'errors' => __( "Test run not found." ) ] );
+
+    $batch = Batches::find( $batch_id );
+
+    if ( !$batch ) return response()->json( [ 'errors' => __( "Test batch was not found." ) ] );
+
+    $success = Batches::stop( $batch_id );
+
+    return response()->json( [ 'success' => $success ] );
+
+  }
+
+  public function launchTest( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+
+    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+
+    $test_id = $r->route( 'id' );
+    $batch_id = $r->route( 'batch_id' );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return response()->json( [ 'errors' => __( "Project not found." ) ] );
+
+    $test = Tests::find( $test_id );
+
+    if ( !$test ) return response()->json( [ 'errors' => __( "Test run not found." ) ] );
+
+    $batch = Batches::find( $batch_id );
+
+    if ( !$batch ) return response()->json( [ 'errors' => __( "Test batch not found." ) ] );
+
+    return view( 'test.launch', compact( 'project', 'test', 'batch_id' ) );
 
   }
 
@@ -449,6 +550,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
     $test_id = $r->route( 'id' );
+    $batch_id = $r->route( 'batch_id' );
 
     police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_suites', 'return' => 1 ] );
 
@@ -463,7 +565,9 @@ class TestController extends Controller
 
     $step = (object) [ 'id' => 0 ];
 
-    $activity = TestActivities::where( 'project_id', $id )->where( 'test_id', $test_id )->where( 'status', '1' )->first();
+    $activity = TestActivities::where( 'project_id', $id )->where( 'test_id', $test_id )->where('batch_id', $batch_id)->where( 'status', '1' )->first();
+
+    $batch = Batches::where( 'id', $batch_id )->where( 'status', 1 )->first();
 
     if ( !$activity ) return response()->json( [ 'case' => (object) [], 'activity' => (object) [], 'scenario' => (object) [], 'step' => (object) [] ] );
 
@@ -479,6 +583,19 @@ class TestController extends Controller
 
     }
 
+    if ( $step ) {
+
+      if ( Steps::where( 'case_id', $step->case_id )->count() == 1
+            && $step->name = 'There must be at least 1 step on a test case. This is a default that you can edit or remove.' ) {
+
+        $step->name = '';
+
+      }
+
+    }
+
+    if ( !$batch ) $activity = (object) [];
+
     return response()->json( [ 'step' => $step, 'activity' => $activity, 'case' => $case, 'scenario' => $scenario ] );
 
   }
@@ -488,6 +605,7 @@ class TestController extends Controller
     $id = $r->route( 'project_id' );
     $activity_id = $r->route( 'activity_id' );
     $step_id = $r->route( 'step_id' );
+    $batch_id = $r->route( 'batch_id' );
 
     police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
 
@@ -503,7 +621,7 @@ class TestController extends Controller
 
     if ( !$test ) return response()->json( [ 'errors' => __( "Test run not found." ) ] );
 
-    return view( 'test.new-issue', compact( 'project', 'test', 'activity', 'step' ) );
+    return view( 'test.new-issue', compact( 'project', 'test', 'activity', 'step', 'batch_id' ) );
 
   }
 
@@ -575,6 +693,7 @@ class TestController extends Controller
     $id = $r->route( 'project_id' );
     $activity_id = $r->route( 'activity_id' );
     $step_id = $r->route( 'step_id' );
+    $batch_id = $r->route( 'batch_id' );
 
     police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id, 'return' => 1 ] );
 
@@ -593,6 +712,76 @@ class TestController extends Controller
     TestActivities::advance( $activity_id, $skip );
 
     $result = [ 'success' => true ];
+
+    return response()->json( $result );
+
+  }
+
+  public function getResults( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $test_id = $r->route( 'id' );
+    $batch_id = $r->route( 'batch_id' );
+
+    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id, 'return' => 1 ] );
+
+    $project = Projects::find( $id );
+
+    if ( !$project ) return [ 'errors' => ___( 'Project not found.' ) ];
+
+    $activities = TestActivities::where( 'test_id', $test_id )->where( 'batch_id', $batch_id )->get();
+
+    if ( !$activities ) return [ 'errors' => ___( 'Test activity not found.' ) ];
+
+    $batch = Batches::find( $batch_id );
+
+    if ( !$batch ) return [ 'errors' => ___( 'Test batch not found.' ) ];
+
+    $results = [];
+
+    foreach ( $activities as $a ) {
+
+      $issues = Issues::where( 'activity_id', $a->id )->where( 'user_id', get_user_id() )->get();
+
+      if ( count( $issues ) ) {
+
+        foreach ( $issues as $i ) {
+
+          $step = Steps::find( $i->step_id );
+
+          if ( $step ) {
+
+            $i->step_name = $step->name;
+
+          } else {
+
+            $i->step_name = '[' . ___( "This step was deleted." ) . ']';
+
+          }
+
+        }
+
+        $case = Cases::find( $a->case_id );
+
+        if ( $case ) {
+
+          $result = [ 'case' => $case ];
+
+        } else {
+
+          $result = [ 'case' => ___( "Test case was deleted." ) ];
+
+        }
+
+        $result['issues'] = $issues;
+
+        $results[] = $result;
+
+      }
+
+    }
+
+    $result = [ 'results' => $results ];
 
     return response()->json( $result );
 

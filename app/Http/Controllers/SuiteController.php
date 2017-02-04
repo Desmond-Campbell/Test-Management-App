@@ -509,6 +509,17 @@ class SuiteController extends Controller
       Scenarios::find( $scenario_id )->update( [ 'children' => DB::raw( 'children + 1' ) ] );
       Suites::find( $suite_id )->update( [ 'grand_children' => DB::raw( 'grand_children + 1' ) ] );
 
+      $newstep = [ 'project_id'     => $id, 
+                    'user_id'       => get_user_id(), 
+                    'suite_id'      => $suite_id, 
+                    'scenario_id'   => $scenario_id, 
+                    'case_id'       => $result_id,
+                    'name'          => ___( "There must be at least 1 step on a test case. This is a default that you can edit or remove." ),
+                    'item_position' => 1
+                  ];
+
+      Steps::create( $newstep );
+
       $result = [ 'success' => true, 'result_id' => $result_id ];
 
     }
@@ -706,7 +717,7 @@ class SuiteController extends Controller
 
     $steps = $r->input( 'steps' );
 
-    // print_r( $steps ); die;
+    if ( !$steps ) $steps = [ 'name' => ___( "There must be at least 1 step on a test case. This is a default that you can edit or remove." ) ];
 
     if ( $steps ) {
 

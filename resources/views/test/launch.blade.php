@@ -10,6 +10,7 @@
 
       <input type="hidden" id="project_id" value="{{$project->id}}" />
       <input type="hidden" id="test_id" value="{{$test->id}}" />
+      <input type="hidden" id="batch_id" value="{{$batch_id}}" />
 
       <div class="heading-cell">
         <h2>{{$test->name}} - {{$project->title}}</h2>
@@ -25,7 +26,7 @@
 
             <div ng-show="!(activity.id > 0)">
               <h3>{{___( "No more activities left to test." )}}</h3>
-              <p>{{___( "Check test cases tab to view steps that you may have skipped." )}}</p>
+              <p>{{___( "You've either completed your testing activity or the test has been aborted." )}}</p>
             </div>
 
             <div layout="row" class="push-down" ng-show="activity.id > 0">
@@ -37,7 +38,8 @@
 
               <md-card class="no-margin-left push-down alert alert-info-inverse no-borders test-step-info">
 
-                  <big><big>@{{step.name}}</big></big>
+                  <div ng-show="step.name != null && step.name != ''"><big><big>@{{step.name}}</big></big></div>
+                  <div ng-show="step.name == null || step.name == ''"><big><big>{{__( "No step was specified here. Just execute the test case as described." )}}</big></big></div>
                 
                 </md-card>
 
@@ -87,33 +89,63 @@
         
           <div class="md-padding push-down">
 
+            <button class="btn btn-default" ng-click="getResults()">{{___( "Get Latest Results" )}}</button>
+
+            <div class="push-down" ng-show="results.length > 0">
+
+              <div ng-repeat="r in results">
+
+                <md-card class="no-margin-left">
+                
+                  <div class="panel-heading">@{{r.case.name}}</div>
+
+                  <div class="panel-body">
+                    
+                    <table class="table">
+
+                      <tr ng-repeat="i in r.issues">
+                        <td width="10%" ng-show="i.type == 'result'"><span class="label-lg label label-success label-as-badge"><i class="fa fa-check"></i></span></td>
+                        <td width="10%" ng-show="i.type == 'issue'"><span class="label-lg label label-danger label-as-badge"><i class="fa fa-times"></i></span></td>
+                        <td>@{{i.step_name}}</td>
+                      </tr>
+
+                    </table>
+
+                  </div>
+
+                </md-card>
+
+              </div>
+
+            </div>
+
           </div>
 
         </md-tab>
 
-        <md-tab label="{{___( "Issues" )}}">
+        {{--<md-tab label="{{___( "Issues" )}}">
         
           <div class="md-padding push-down">
 
           </div>
 
-        </md-tab>
+        </md-tab>--}}
 
-        <md-tab label="{{___( "Test Cases" )}}">
+        {{--<md-tab label="{{___( "Test Cases" )}}">
         
           <div class="md-padding push-down">
 
           </div>
 
-        </md-tab>
+        </md-tab>--}}
 
-        <md-tab label="{{___( "Resources" )}}">
+        {{--<md-tab label="{{___( "Resources" )}}">
         
           <div class="md-padding push-down">
 
           </div>
 
-        </md-tab>
+        </md-tab>--}}
 
       </md-tabs>
       

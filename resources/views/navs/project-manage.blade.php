@@ -61,6 +61,16 @@
           <li class="main-entry nav-list-item @if ( $active == 'tests' ) active @endif">
             <a href="/projects/{{$project_id}}/tests"><i class="fa fa-tasks"></i> &nbsp; {{___( "Test Runs" )}}</a>
           </li>
+            @if ( $active == 'tests' )
+            <li role="separator" class="divider"></li>
+              <li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/tests">{{___( "View Tests" )}}</a>
+              </li>
+              @if ( isset( $test ) )<li class="nav-submenu-list-item">
+                <a href="/projects/{{$project_id}}/tests/{{$test->id}}/batches">{{___( "Batches" )}}</a>
+              </li>@endif
+            <li role="separator" class="divider"></li>
+            @endif
           <li class="main-entry nav-list-item @if ( $active == 'team' ) active @endif">
              <a href="/projects/{{$project_id}}/team"><i class="fa fa-group"></i> &nbsp; {{___( "Team Members" )}}</a>
           </li>

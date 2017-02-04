@@ -5,13 +5,14 @@ app.controller('ProjectCreateIssueCtrl', ['$scope', '$http', '$mdDialog', '$time
 	$scope.test_id = $( '#test_id').val();
 	$scope.activity_id = $( '#activity_id').val();
 	$scope.step_id = $( '#step_id').val();
+	$scope.batch_id = $( '#batch_id').val();
 
 	$scope.save = function () {
 
 		$id = $scope.project_id;
 
 		l(1);
-		$http.post( '/projects/' + $id + '/tests/' + $scope.test_id + '/activity/' + $scope.activity_id + '/step/' + $scope.step_id + '/create-issue', $scope.issue ).then( 
+		$http.post( '/projects/' + $id + '/tests/' + $scope.test_id + '/batch/' + $scope.batch_id + '/activity/' + $scope.activity_id + '/step/' + $scope.step_id + '/create-issue', $scope.issue ).then( 
 			
 			function ( r ) {
 				

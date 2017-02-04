@@ -2,6 +2,7 @@ app.controller('ProjectTestLaunchCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 
 	$scope.project_id = $( '#project_id').val();
 	$scope.test_id = $( '#test_id').val();
+	$scope.batch_id = $( '#batch_id').val();
 	$scope.test_url = '/projects/' + $scope.project_id + '/tests/' + $( '#test_id').val();
 	$scope.step_id = 0;
 	$scope.activity_id = 0;
@@ -11,7 +12,7 @@ app.controller('ProjectTestLaunchCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 		$id = $scope.project_id;
 
 		l(1);
-		$http.get( '/projects/' + $id + '/tests/' + $scope.test_id + '/get-activity' ).then( 
+		$http.get( '/projects/' + $id + '/tests/' + $scope.test_id + '/batch/' + $scope.batch_id + '/get-activity' ).then( 
 			
 			function ( r ) {
 				
@@ -59,7 +60,7 @@ app.controller('ProjectTestLaunchCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 
     $mdDialog.show(confirm).then(function(result) {
       
-      $issueurl = $scope.test_url + '/activity/' + $scope.activity_id + '/step/' + $scope.step_id + '/create-issue';
+      $issueurl = $scope.test_url + '/batch/' + $scope.batch_id + '/activity/' + $scope.activity_id + '/step/' + $scope.step_id + '/create-issue';
 
       $http.post( $issueurl, { details : result, type : 'result' } ).then( 
 				
@@ -86,7 +87,7 @@ app.controller('ProjectTestLaunchCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 
     }, function() {
 
-    		$issueurl = $scope.test_url + '/activity/' + $scope.activity_id + '/step/' + $scope.step_id + '/next-step';
+    		$issueurl = $scope.test_url + '/batch/' + $scope.batch_id + '/activity/' + $scope.activity_id + '/step/' + $scope.step_id + '/next-step';
 
 	      $http.post( $issueurl ).then( 
 					
@@ -117,7 +118,7 @@ app.controller('ProjectTestLaunchCtrl', ['$scope', '$http', '$mdDialog', '$timeo
   $scope.skipStep = function () {
 
 		$id = $scope.project_id;
-  	$issueurl = $scope.test_url + '/activity/' + $scope.activity_id + '/step/' + $scope.step_id + '/skip-step';
+  	$issueurl = $scope.test_url + '/batch/' + $scope.batch_id + '/activity/' + $scope.activity_id + '/step/' + $scope.step_id + '/skip-step';
 
 		l(1);
 		$http.post( $issueurl ).then( 
@@ -165,7 +166,7 @@ app.controller('ProjectTestLaunchCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 
   $scope.failTest = function(ev) {
 
-  	$issueurl = $scope.test_url + '/activity/' + $scope.activity_id + '/step/' + $scope.step_id + '/new-issue';
+  	$issueurl = $scope.test_url + '/batch/' + $scope.batch_id + '/activity/' + $scope.activity_id + '/step/' + $scope.step_id + '/new-issue';
 
     $mdDialog.show({
       controller: FrameDialogCtrl,
@@ -180,5 +181,40 @@ app.controller('ProjectTestLaunchCtrl', ['$scope', '$http', '$mdDialog', '$timeo
     });
   
   };
+
+  $scope.getResults = function () {
+
+		$id = $scope.project_id;
+
+		l(1);
+		$http.get( '/projects/' + $id + '/tests/' + $scope.test_id + '/batch/' + $scope.batch_id + '/get-results' ).then( 
+			
+			function ( r ) {
+				
+				l(0);
+		
+				if ( typeof r.data.errors != 'undefined' ) {
+
+					_alert( r.data.errors, 1 );
+
+				} else {
+				
+					$scope.results = r.data.results;
+
+				}
+			
+			},
+
+			function () {
+
+				l(0);
+		
+				_alert( 'Failed to load test results.' );
+
+			});
+
+	};
+
+	$scope.getResults();
 
 }]);

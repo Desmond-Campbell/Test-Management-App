@@ -17,6 +17,7 @@ class CreateTestBatchesTable extends Migration
             $table->increments('id');
             $table->integer('project_id');
             $table->integer('test_id');
+            $table->smallInteger('status')->default(0);
             $table->timestamps();
         });
     }

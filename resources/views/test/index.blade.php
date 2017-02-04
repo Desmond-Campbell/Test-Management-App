@@ -48,7 +48,7 @@
         
         <td>{{$t->name}}</td>
         <td>{{$t->status}}</td>
-        <td><a href="/projects/{{$project->id}}/tests/{{$t->id}}/dispatch"><i class="fa fa-paper-plane"></i>&nbsp; {{___( "Dispatch" )}}</a> &nbsp; &nbsp; <a href="/projects/{{$project->id}}/tests/{{$t->id}}"><i class="fa fa-gear"></i> &nbsp;{{___( "Manage" )}}</a></td>
+        <td><a href="/projects/{{$project->id}}/tests/{{$t->id}}/batches"><i class="fa fa-paper-plane"></i>&nbsp; {{___( "Dispatch" )}}</a> &nbsp; &nbsp; <a href="/projects/{{$project->id}}/tests/{{$t->id}}"><i class="fa fa-gear"></i> &nbsp;{{___( "Manage" )}}</a></td>
 
       </tr>
 

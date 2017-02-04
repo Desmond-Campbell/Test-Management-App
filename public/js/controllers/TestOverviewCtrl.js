@@ -365,6 +365,7 @@ app.controller('TestOverviewCtrl', ['$scope', '$http', '$mdDialog', '$timeout', 
   				$scope.suites[s].selected = !$scope.suites[s].selected;
 
   				$scope.filter_select( 'stockscenarios', 'suite_id', id, $scope.suites[s].selected );
+  				$scope.filter_select( 'stockcases', 'suite_id', id, $scope.suites[s].selected );
 
   			}
 
