@@ -832,49 +832,6 @@ class TestController extends Controller
 
     $results = [];
 
-    /*foreach ( $activities as $a ) {
-
-      $steps = Steps::where( 'case_id', $a->case_id )->get();
-      $result = [ 'steps' => [] ];
-
-      foreach ( $steps as $s ) {
-
-        if ( $group_type != 'batch' ) {
-
-          $issues = Issues::where( 'activity_id', $a->id )->where( 'step_id', $s->id )->orderBy( 'created_at', 'desc' )->take(10)->get();
-
-        } else {
-
-          $issues = Issues::where( 'activity_id', $a->id )->where( 'step_id', $s->id )->orderBy( 'created_at', 'desc' )->take(10)->get();
-
-        }
-
-        $case = Cases::find( $a->case_id );
-
-        if ( $case ) {
-
-          $result['case'] = $case;
-
-        } else {
-
-          $result['case'] = ___( "Test case was deleted." );
-
-        }
-
-        $s['issues'] = $issues;
-
-        if ( empty( $result['steps'][$s->id] ) ) $result['steps'][$s->id] = [];
-
-        $result['steps'][$s->id][] = [ 'step_id' => $s->id, 'steps' => $s ];
-
-      }
-
-      if ( empty( $results[$a->case_id] ) ) $results[$a->case_id] = [];
-
-      $results[$a->case_id][] = [ 'case_id' => $a->case_id, 'result' => $result ];
-
-    }*/
-
     $case_cache = [];
     $steps_cache = [];
     $cases = [];
@@ -891,7 +848,7 @@ class TestController extends Controller
 
         foreach ( $steps as $s ) {
 
-          if ( empty( $cases[$case_id]['data'][$s->id] ) ) $cases[$case_id]['data'][$s->id] = [ 'step' => $s, 'results' => [] ];
+          if ( empty( $cases[$case_id]['data'][$s->id] ) ) $cases[$case_id]['data'][$s->id] = [ 'step' => $s, 'results' => [], 'result_type' => 0 ];
           
           $issues = Issues::where( 'activity_id', $a->id )->where( 'step_id', $s->id )->orderBy( 'created_at', 'desc' )->take(10)->get();
 
@@ -902,6 +859,8 @@ class TestController extends Controller
             if ( $u ) $i->user_name = $u->name;
 
             $cases[$case_id]['data'][$s->id]['results'][] = $i;
+
+            if ( $i->id < $cases[$case_id]['data'][$s->id] || $cases[$case_id]['data'][$s->id] < 1 ) $cases[$case_id]['data'][$s->id]['result_type'] = $i->type;
 
           }
 

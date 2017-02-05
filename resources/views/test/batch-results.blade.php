@@ -34,10 +34,13 @@
                 
                 <table class="table">
 
-                Show the final result in some colour font or a tick, referince the most recent value in the history
-
                   <tr ng-repeat="s in r.data">
-                    <td width="60%">@{{s.step.name}}</td>
+                    <td width="60%">
+                      <i class="fa fa-check result-type-result" ng-show="s.result_type == 'result'"><md-tooltip md-direction="bottom">{{___( "Passed the most recent test." )}}</md-tooltip></i> 
+                      <i class="fa fa-square-o" ng-show="s.result_type != 'result' && s.result_type != 'issue'"><md-tooltip md-direction="bottom">{{___( "No test results available.." )}}</md-tooltip></i> 
+                      <i class="fa fa-times result-type-issue" ng-show="s.result_type == 'issue'"><md-tooltip md-direction="bottom">{{___( "Failed the most recent test." )}}</md-tooltip></i> &nbsp;
+                      @{{s.step.name}}
+                    </td>
                     <td align="right">
                       <span ng-repeat="i in s.results">
                         <a href="javascript:;" ng-click="showResult(s.id, $index)">

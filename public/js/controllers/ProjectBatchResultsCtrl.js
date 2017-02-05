@@ -33,4 +33,10 @@ app.controller('ProjectBatchResultsCtrl', ['$scope', '$http', '$mdDialog', '$tim
 
 	$scope.getResults();
 
+	$scope.getResultClass = function ( _class ) {
+
+		return 'result-type-' + _class;
+
+	};
+
 }]);

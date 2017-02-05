@@ -699,3 +699,11 @@ li,
 	color: #AABDC9;
 	font-weight: bold;
 }
+
+.result-type-issue {
+	color: #9A1D11;
+}
+
+.result-type-result {
+	color: #3A7323;
+}
