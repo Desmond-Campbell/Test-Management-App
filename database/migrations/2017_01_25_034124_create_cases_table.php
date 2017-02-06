@@ -22,7 +22,7 @@ class CreateCasesTable extends Migration
             $table->string('instructions')->nullable();
             $table->text('description')->nullable();
             $table->string('pass_criteria')->nullable();
-            $table->string('failure_criteria')->nullable();
+            $table->string('fail_criteria')->nullable();
             $table->decimal('item_position', 4, 2)->nullable()->default(0);
             $table->integer('user_id');
             $table->smallInteger('status')->default(1);

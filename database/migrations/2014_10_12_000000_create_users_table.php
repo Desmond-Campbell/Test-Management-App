@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email');
             $table->string('password');
             $table->rememberToken();
-            $table->text('permssions_include')->nullable();
+            $table->text('permissions_include')->nullable();
             $table->text('permissions_exclude')->nullable();
             $table->timestamps();
         });
