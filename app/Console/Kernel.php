@@ -4,6 +4,9 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\App;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +16,11 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        MigrateNetwork::class,
+        MigrateNetworks::class,
+        // SeedNetwork::class,
+        // SeedNetworks::class,
+        CreateNetworkOwner::class
     ];
 
     /**
@@ -36,5 +43,25 @@ class Kernel extends ConsoleKernel
     protected function commands()
     {
         require base_path('routes/console.php');
+    }
+
+    public static function connection( $database ) {
+
+			App::bind('network', function( $app ) use ( $database ) {
+
+				$connection = [];
+				$connection['driver'] = env( 'DB_CONNECTION' );
+				$connection['host'] = env( 'DB_HOST' );
+				$connection['port'] = env( 'DB_PORT' );
+				$connection['database'] = "$database";
+				$connection['username'] = env( 'DB_USERNAME' );
+				$connection['password'] = env( 'DB_PASSWORD' );
+
+				Config::set( "database.connections.$database", $connection );
+			  
+			});
+
+			App::make( 'network', $database );
+
     }
 }

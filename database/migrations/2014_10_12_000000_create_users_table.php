@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('password');
-            $table->rememberToken();
+            $table->integer('sso_id');
             $table->text('permissions_include')->nullable();
             $table->text('permissions_exclude')->nullable();
             $table->timestamps();
