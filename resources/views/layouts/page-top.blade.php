@@ -11,7 +11,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#"><img src="/img/icon.png" /></a>
+              <a class="navbar-brand" href="http://{{env('APP_DOMAIN')}}/" target="_blank"><img src="/img/logo-only.png" style="height: 24px; margin-top: -2px !important" /></a>
               <ul class="nav navbar-nav navbar-inverse submenu">
                 <li class="network-name"><strong>{{ \App\Options::get( 'network_name' ) }}</strong></li>
                 <li class="network-dropdown"><a href="http://my.{{env('APP_DOMAIN')}}/networks">
@@ -19,7 +19,7 @@
                     <md-tooltip md-direction="right">
                       {{__( "Switch Network" )}}
                     </md-tooltip>
-                    <i class="fa fa-arrow-circle-right"></i>
+                    <i class="fa fa-paper-plane"></i>
                   </span></a>
                 </li>
               </ul>
@@ -35,25 +35,25 @@
                       <div layout="row">
                         <div flex="95">
                           <ul class="nav navbar-nav navbar-right">
-                      <li><md-tooltip md-direction="down">
-                            {{__( "My Account" )}}
-                          </md-tooltip><a href="/"><i class="fa fa-user"></i></a></li>
-                      <li><md-tooltip md-direction="down">
-                            {{__( "Language" )}}
-                          </md-tooltip><a href="/"><i class="fa fa-globe"></i></a></li>
-                      <li><md-tooltip md-direction="down">
-                            {{__( "Manage Team" )}}
-                          </md-tooltip><a href="/"><i class="fa fa-group"></i></a></li>
-                      <li><md-tooltip md-direction="down">
-                            {{__( "Notifications" )}}
-                          </md-tooltip><a href="/"><i class="fa fa-bell"></i></a></li>
-                      <li><md-tooltip md-direction="down">
-                            {{__( "Billing" )}}
-                          </md-tooltip><a href="/"><i class="fa fa-dollar"></i></a></li>
-                      <li><md-tooltip md-direction="down">
-                            {{__( "Log Out" )}}
-                          </md-tooltip><a href="/"><i class="fa fa-times"></i></a></li>
-                          </ul>
+                            <li><md-tooltip md-direction="down">
+                                  {{__( "My Account" )}}
+                                </md-tooltip><a href="/"><i class="fa fa-user"></i></a></li>
+                            <li><md-tooltip md-direction="down">
+                                  {{__( "Language" )}}
+                                </md-tooltip><a href="/"><i class="fa fa-globe"></i></a></li>
+                            <li><md-tooltip md-direction="down">
+                                  {{__( "Manage Team" )}}
+                                </md-tooltip><a href="/"><i class="fa fa-group"></i></a></li>
+                            <li><md-tooltip md-direction="down">
+                                  {{__( "Notifications" )}}
+                                </md-tooltip><a href="/"><i class="fa fa-bell"></i></a></li>
+                            <li><md-tooltip md-direction="down">
+                                  {{__( "Billing" )}}
+                                </md-tooltip><a href="/"><i class="fa fa-dollar"></i></a></li>
+                            <li><md-tooltip md-direction="down">
+                                  {{__( "Log Out" )}}
+                                </md-tooltip><a href="/"><i class="fa fa-times"></i></a></li>
+                                </ul>
                         </div>
                       </div>
                     </div>

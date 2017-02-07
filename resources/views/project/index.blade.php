@@ -9,7 +9,7 @@
     <div class="main-content" ng-controller="ProjectListCtrl">
 
       <div class="heading-cell">
-        <h2>{{___( "Projects" )}}</h2>
+        <h1>{{___( "Projects" )}}</h1>
       </div>
 
       <br />
@@ -48,11 +48,6 @@
 
                 </p>
               </md-card-title-text>
-              <md-card-title-media>
-                <div class="md-media-sm card-media">
-                  <img src="/img/icon2.png" />
-                </div>
-              </md-card-title-media>
             </md-card-title>
             <md-card-actions layout="row">
               <div flex="50">
@@ -64,42 +59,6 @@
             </md-card-actions>
           </md-card>
 
-        </li>
-
-        <li ng-show="projects.length < 1">
-          <md-card>
-            <md-card-title>
-              <md-card-title-text>
-                <span class="md-headline"></span>
-                <span class="md-subhead"></span>
-              </md-card-title-text>
-              <md-card-title-media>
-                <div class="md-media-sm card-media"></div>
-              </md-card-title-media>
-            </md-card-title>
-            <md-card-actions layout="row" layout-align="end center">
-              <md-button aria-label="."></md-button>
-              <md-button aria-label="."></md-button>
-            </md-card-actions>
-          </md-card>
-        </li>
-
-        <li ng-show="projects.length < 2">
-          <md-card>
-            <md-card-title>
-              <md-card-title-text>
-                <span class="md-headline"></span>
-                <span class="md-subhead"></span>
-              </md-card-title-text>
-              <md-card-title-media>
-                <div class="md-media-sm card-media"></div>
-              </md-card-title-media>
-            </md-card-title>
-            <md-card-actions layout="row" layout-align="end center">
-              <md-button aria-label="."></md-button>
-              <md-button aria-label="."></md-button>
-            </md-card-actions>
-          </md-card>
         </li>
 
       </ul>

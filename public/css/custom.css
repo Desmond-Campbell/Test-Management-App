@@ -156,9 +156,6 @@ a:hover {
 }
 
 .main-content {
-	p/adding: 15px;
-	h/eight: 100% !important;
-	b/ackground: #FFF;
 	padding-left: 25px;
 	padding-top: 25px;
 }
@@ -176,16 +173,10 @@ a:hover {
 .project-list li {
 	display: block;
 	float: left;
-	b/ackground: #f3f3f3;
-	p/adding: 10px;
 	margin-right: 3%;
-	m/argin-left: 1%;
 	margin-bottom: 15px;
 	margin-top: 15px;
-	width: 47%;
-	h/eight: 120px;
-	c/ursor: pointer;
-	b/order :solid 1px #E6E6E6;
+	width: 30%;
 }
 
 .project-list li:hover {
@@ -256,10 +247,14 @@ a:hover {
 /*******************************************/
 
 .navbar .network-name strong {
-	color: #FFF;
+	color: #2DD9FB;
 	font-weight: bold;
 	display: block;
 	padding-top: 13px;
+	padding-left: 15px;
+	padding-bottom: 15px;
+	margin-left: 5px;
+	border-left: solid 1px #536499;
 }
 
 .navbar .network-dropdown a i {
@@ -277,6 +272,16 @@ a:hover {
 .navbar .submenu ul li a {
 	background: #FFF !important;
 	color: #0C2E47 !important;
+}
+
+.navbar-inverse {
+	background: #3d4970;
+}
+
+.navbar-right li:hover a,
+.navbar-right li:focus a,
+.navbar-right li:active a {
+	background: #536499 !important;
 }
 
 /********************search*********************/
