@@ -26,7 +26,7 @@
           <li class="main-entry nav-list-item @if ( $active == 'details' ) active @endif">
              <a href="/projects/{{$project_id}}/details"><i class="fa fa-cog"></i> &nbsp; {{___( "Details" )}}</a>
           </li>
-          <li class="main-entry nav-list-item @if ( $active == 'requirements' ) active @endif">
+          {{--<li class="main-entry nav-list-item @if ( $active == 'requirements' ) active @endif">
              <a  href="/projects/{{$project_id}}/requirements"><i class="fa fa-book"></i> &nbsp; {{___( "Requirements" )}}</a>
           </li>
             @if ( $active == 'requirements' )
@@ -41,9 +41,9 @@
                 <a href="/projects/{{$project_id}}/requirements/import">{{___( "Import" )}}</a>
               </li>
             <li role="separator" class="divider"></li>
-            @endif
+            @endif--}}
           <li class="main-entry nav-list-item @if ( $active == 'suites' ) active @endif">
-            <a href="/projects/{{$project_id}}/suites"><i class="fa fa-tasks"></i> &nbsp; {{___( "Test Suites" )}}</a>
+            <a href="/projects/{{$project_id}}/suites"><i class="fa fa-briefcase"></i> &nbsp; {{___( "Test Suites" )}}</a>
           </li>
             @if ( $active == 'suites' )
             <li role="separator" class="divider"></li>

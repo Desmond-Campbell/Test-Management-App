@@ -322,7 +322,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.tests.update_test', 'project_id' => $id, 'return' => 1 ] );
+    police( [ 'keystring' => 'projects.tests.edit_test', 'project_id' => $id, 'return' => 1 ] );
 
     $test_id = $r->route( 'id' );
 

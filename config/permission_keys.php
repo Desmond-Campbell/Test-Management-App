@@ -531,6 +531,14 @@ $keys["network"]["people"]["network_owner"] =
 						"access_type" => "w" 
 					];
 
+$keys["projects"]["tests"]["create_issue"] = 
+					[ 
+						"name" => "Create Issue", 
+						"message" => "You're not allowed to create new issues.", 
+						"keywords" => "create add new test issue", 
+						"access_type" => "w" 
+					];
+
 
 
 	return $keys;
