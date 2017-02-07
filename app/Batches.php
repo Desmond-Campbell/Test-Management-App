@@ -40,6 +40,22 @@ class Batches extends Model
 
     $batch_id = self::create( $new_batch )->id;
 
+    $user_id = get_user_id();
+
+      $filter_hash = sha1( "start_batch.$batch_id." . date( 'Y-m-d' ) );
+      $activity_values = [ 'test_name' => $test->name ];
+
+      $newactivity = [
+                        'project_id'    => $test->project_id,
+                        'object_type'   => 'start_batch',
+                        'object_id'     => $batch_id,
+                        'user_id'       => $user_id,
+                        'values'        => json_encode( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
+
     $testers = $test->testers;
 
     if ( !$testers ) return;
@@ -103,7 +119,31 @@ class Batches extends Model
 
   public static function stop( $id ) {
 
-    self::find( $id )->update( [ 'status' => 0 ] );
+    $batch = self::find( $id );
+
+    $user_id = get_user_id();
+
+    if ( !$batch ) return;
+
+    $test = Tests::find( $batch->test_id );
+
+    if ( !$test ) return;
+
+      $filter_hash = sha1( "start_batch.$id." . date( 'Y-m-d' ) );
+      $activity_values = [ 'test_name' => $test->name ];
+
+      $newactivity = [
+                        'project_id'    => $test->project_id,
+                        'object_type'   => 'stop_batch',
+                        'object_id'     => $id,
+                        'user_id'       => $user_id,
+                        'values'        => json_encode( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
+
+    $batch->update( [ 'status' => 0 ] );
 
   }
   

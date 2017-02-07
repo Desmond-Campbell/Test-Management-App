@@ -100,19 +100,32 @@ class Police
 
     $debug['keys'] = $keys;
 
+    $member_key_restrictions = $member_key_overrides = [];
+
     if ( empty( $keys[$section][$category][$key] ) ) return self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Permission denied because of an invalid key request.' ), 'debug' => $debug ], 'args' => $args ] );
 
     if ( $section == 'network' ) {
 
-      $member_key_restrictions = (array) try_json_decode( $user->permissions_exclude );
-      $member_key_overrides = (array) try_json_decode( $user->permissions_include );
+      if ( $user ) {
+
+        $member_key_restrictions = (array) try_json_decode( $user->permissions_exclude );
+        $member_key_overrides = (array) try_json_decode( $user->permissions_include );
+
+      }
 
     } else {
 
-      $member_key_restrictions = (array) try_json_decode( $member->key_restrictions );
-      $member_key_overrides = (array) try_json_decode( $member->key_overrides );
+      if ( $member ) {
 
+        $member_key_restrictions = (array) try_json_decode( $member->key_restrictions );
+        $member_key_overrides = (array) try_json_decode( $member->key_overrides );
+
+      }
+    
     }
+
+    // if ( $member_key_restrictions === null ) $member_key_restrictions = [];
+    // if ( $member_key_overrides === null ) $member_key_overrides = [];
 
     // 1st Check: deny if permission is excluded on member account
 
@@ -124,7 +137,9 @@ class Police
 
     // 3rd Check: deny if permission is included on any member role
 
-    $member_roles = $section != 'network' ? (array) try_json_decode( $member->roles ) : (array) try_json_decode( $user->roles );
+    $member_roles = [];
+
+    if ( !( !isset( $member ) && !isset( $user ) ) ) $member_roles = $section != 'network' ? (array) try_json_decode( $member->roles ) : (array) try_json_decode( $user->roles );
 	 	$role_key_overrides = [];
 
     $debug['member_roles'] = [];

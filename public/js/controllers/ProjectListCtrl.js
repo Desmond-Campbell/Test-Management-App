@@ -51,6 +51,8 @@ app.controller('ProjectListCtrl', ['$scope', '$http', '$mdDialog', '$timeout', f
 
 	$scope.createProject = function () {
 
+		console.log('hhh');
+
 		$http.post( '/projects/create', $scope.project ).then( 
 			
 			function ( r ) {

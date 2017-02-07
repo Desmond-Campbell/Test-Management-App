@@ -62,7 +62,7 @@
                     {{___( "Delete" )}}
                   </md-button>
                 </md-menu-item>
-                <md-menu-item>
+                <!-- <md-menu-item>
                   <md-button ng-click="copySuite(S.id)">
                     <i class="fa fa-copy"></i> &nbsp;
                     {{___( "Copy" )}}
@@ -79,7 +79,7 @@
                   <md-button ng-click="moveSuite(S.id)">
                     <i class="fa fa-arrows"></i> &nbsp;
                     {{___( "Move To" )}} ...
-                  </md-button>
+                  </md-button> -->
                 </md-menu-item>
                 
               </md-menu-content>
@@ -118,7 +118,7 @@
                   {{___( "Delete" )}}
                 </md-button>
               </md-menu-item>
-              <md-menu-item>
+              <!-- <md-menu-item>
                 <md-button ng-click="copyScenario(s.id)">
                   <i class="fa fa-copy"></i> &nbsp;
                   {{___( "Copy" )}}
@@ -135,7 +135,7 @@
                 <md-button ng-click="moveScenario(s.id)">
                   <i class="fa fa-arrows"></i> &nbsp;
                   {{___( "Move To" )}} ...
-                </md-button>
+                </md-button> -->
               </md-menu-item>
               
             </md-menu-content>
@@ -162,7 +162,7 @@
           <md-card ng-repeat="c in cases" ng-class="caseClass(c.id)" ng-click="editCase($event, c.id)">
             @{{c.name}}
 
-            <md-menu>
+            <!-- <md-menu>
               <i class="fa fa-gear" ng-click="openMenu($mdOpenMenu, $event)" class="options-menu" style="float: right;"></i>
               <md-menu-content width="4">
                 <md-menu-item>
@@ -185,7 +185,7 @@
                 </md-menu-item>
                 
               </md-menu-content>
-            </md-menu>
+            </md-menu> -->
 
           </md-card>
 

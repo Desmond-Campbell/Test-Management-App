@@ -141,7 +141,7 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 		if ( $network_redir ) {
 
-    	header( "Location: $www_network_redir" );
+    	header( "Location: $www_network_redirect" );
 			die;
 			die("no_access");
 
@@ -231,13 +231,14 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 			Route::get('/projects/{project_id}/suites', 'SuiteController@index');
 			Route::get('/projects/{project_id}/suites/new', 'SuiteController@newSuite');
 			Route::post('/projects/{project_id}/suites/create', 'SuiteController@createSuite');
-			Route::get('/projects/{project_id}/suites/{suite_id}/manage', 'SuiteController@manageSuite');
+			Route::get('/projects/{project_id}/suites/{suite_id}/edit', 'SuiteController@editSuite');
 			Route::post('/projects/{project_id}/suites/{suite_id}/update', 'SuiteController@updateSuite');
 			Route::delete('/projects/{project_id}/suites/{suite_id}/delete', 'SuiteController@deleteSuite');
 			Route::get('/projects/{project_id}/suites/{suite_id}/get', 'SuiteController@getSuite');
 			Route::get('/projects/{project_id}/suites/{suite_id}/new-scenario', 'SuiteController@newScenario');
 			Route::post('/projects/{project_id}/suites/{suite_id}/create-scenario', 'SuiteController@createScenario');
 			Route::get('/projects/{project_id}/suites/{suite_id}/edit-scenario/{scenario_id}', 'SuiteController@editScenario');
+			Route::get('/projects/{project_id}/suites/{suite_id}/delete-scenario/{scenario_id}', 'SuiteController@deleteScenario');
 			Route::post('/projects/{project_id}/suites/{suite_id}/update-scenario/{scenario_id}', 'SuiteController@updateScenario');
 			Route::get('/projects/{project_id}/suites/{suite_id}/get-scenarios', 'SuiteController@getScenarios');
 			Route::get('/projects/{project_id}/suites/{suite_id}/get-scenario/{id}', 'SuiteController@getScenario');

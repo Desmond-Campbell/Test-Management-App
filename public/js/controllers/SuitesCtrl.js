@@ -88,6 +88,55 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 
 		};
 
+		$scope.editSuite = function(id) {
+
+    	$suiteurl = $scope.suites_url + $scope.suite.id + '/edit';
+	    $mdDialog.show({
+	      controller: FrameDialogCtrl,
+	      templateUrl: '/template?w=' + $(window).width() + '&h=' + $(window).height() + '&url=' + $suiteurl,
+	      parent: angular.element(document.body),
+	      clickOutsideToClose:true,
+	      fullscreen: true
+	    })
+	    .then(function(answer) {
+	    }, function() {
+	    });
+
+	  };
+
+	  $scope.deleteSuite = function (id) {
+
+			$id = $scope.project_id;
+
+			l(1);
+			$http.delete( '/projects/' + $id + '/suites/' + id + '/delete' ).then( 
+				
+				function ( r ) {
+					
+					l(0);
+			
+					if ( typeof r.data.errors != 'undefined' ) {
+
+						_alert( r.data.errors, 1 );
+
+					} else {
+						
+						$scope.getSuites();
+
+					}
+				
+				},
+
+				function () {
+
+					l(0);
+			
+					_alert( 'Failed to delete test suite.' );
+
+				});
+
+		};
+
 	// Load scenarios
 
 		$scope.scenarios = [];
@@ -200,6 +249,40 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 	    }, function() {
 	    });
 	  };
+
+	  $scope.deleteScenario = function (id) {
+
+			$id = $scope.project_id;
+    	$scenariourl = $scope.suites_url + $scope.suite.id + '/delete-scenario/' + id;
+
+			l(1);
+			$http.delete( $scenariourl ).then( 
+				
+				function ( r ) {
+					
+					l(0);
+			
+					if ( typeof r.data.errors != 'undefined' ) {
+
+						_alert( r.data.errors, 1 );
+
+					} else {
+						
+						$scope.getScenarios();
+
+					}
+				
+				},
+
+				function () {
+
+					l(0);
+			
+					_alert( 'Failed to delete test scenario.' );
+
+				});
+
+		};
 
 	  $scope.addScenario = function(ev) {
 
@@ -492,7 +575,7 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 
     	var confirm = $mdDialog.prompt()
 	      .title(_tt('Name your new test case below.'))
-	      .textContent(_tt('A test case is an actual test for a test condition or scenario. After creating it here, you can add more information, including steps and criteria.'))
+	      .textContent(_tt('A test case is an actual test for a test condition or scenario.'))
 	      .placeholder('')
 	      .ariaLabel(_tt('Test case name'))
 	      .targetEvent(ev)

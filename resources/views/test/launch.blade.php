@@ -103,10 +103,27 @@
                     
                     <table class="table">
 
-                      <tr ng-repeat="i in r.issues">
-                        <td width="10%" ng-show="i.type == 'result'"><span class="label-lg label label-success label-as-badge"><i class="fa fa-check"></i></span></td>
-                        <td width="10%" ng-show="i.type == 'issue'"><span class="label-lg label label-danger label-as-badge"><i class="fa fa-times"></i></span></td>
-                        <td>@{{i.step_name}}</td>
+                      <tr ng-repeat="s in r.data">
+                        <td width="60%">
+                          <i class="fa fa-check result-type-result" ng-show="s.result_type == 'result'"><md-tooltip md-direction="bottom">{{___( "Passed the most recent test." )}}</md-tooltip></i> 
+                          <i class="fa fa-square-o" ng-show="s.result_type != 'result' && s.result_type != 'issue'"><md-tooltip md-direction="bottom">{{___( "No test results available.." )}}</md-tooltip></i> 
+                          <i class="fa fa-times result-type-issue" ng-show="s.result_type == 'issue'"><md-tooltip md-direction="bottom">{{___( "Failed the most recent test." )}}</md-tooltip></i> &nbsp;
+                          @{{s.step.name}}
+                        </td>
+                        <td align="right">
+                          <span ng-repeat="i in s.results">
+                            <a href="javascript:;" ng-click="showResult(s.id, $index)">
+                              <span ng-show="i.type == 'result'" class="label label-success">
+                                <i class="fa fa-check"></i>
+                                <md-tooltip md-direction="bottom">{{___( "PASSED" )}} - @{{i.title}} - {{___( "submitted" )}} @{{i.created_at | relativeTime}} {{___( "by" )}} @{{i.user_name}}</md-tooltip>
+                              </span>
+                              <span ng-show="i.type != 'result'" class="label label-danger">
+                                <i class="fa fa-times"></i>
+                                <md-tooltip md-direction="bottom">{{___( "FAILED" )}} - @{{i.title}} - {{___( "submitted" )}} @{{i.created_at | relativeTime}} {{___( "by" )}} @{{i.user_name}}</md-tooltip>
+                              </span>
+                            </a>&nbsp;
+                          </span>
+                        </td>
                       </tr>
 
                     </table>

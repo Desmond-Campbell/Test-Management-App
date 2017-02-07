@@ -1,26 +1,42 @@
-@extends('index-full')
+@extends('index')
 
 @section('title')
-{{ $test->name }} {{$project->title}}
+{{$project->title}} - {{___( "Test Results" )}}
+@stop
+
+@section('left-side')
+
+  @include('navs.project-manage', [ 'active' => 'tests', 'project_id' => $project->id ])
+
+@stop
+
+@section('page-heading')
+{{___( "Test Results" )}}
+@stop
+
+<?php $layout_toolbar = 1; ?>
+
+@section('toolbar')
+  <div id="header-toolbar">
+    <ul class="toolbar">
+      <li><a href="/projects/{{$project->id}}/tests/{{$test->id}}"><img src="/img/toolbar/view.png" class="toolbar-icon" /> {{___( "View Test Run" )}}</a></li>
+    </ul>
+  </div>
 @stop
 
 @section('main')
 
-    <div class="main-content" ng-controller="ProjectBatchResultsCtrl">
+    <div ng-controller="ProjectBatchResultsCtrl">
 
       <input type="hidden" id="project_id" value="{{$project->id}}" />
       <input type="hidden" id="test_id" value="{{$test->id}}" />
       <input type="hidden" id="batch_id" value="{{$batch_id}}" />
 
-      <div class="heading-cell">
-        <h2>{{$test->name}} - {{$project->title}}</h2>
-      </div>
-
-      <br />
+      <h1 class="no-margin-top">{{$test->name}}</h1>
 
       <div class="push-down">
 
-        <button class="btn btn-default" ng-click="getResults()">{{___( "Update Results" )}}</button>
+        <button class="btn btn-default" ng-click="getResults()"><i class="fa fa-refresh"></i> &nbsp;{{___( "Refresh Results" )}}</button>
 
         <div class="push-down" ng-show="results.length > 0">
 

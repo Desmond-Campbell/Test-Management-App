@@ -593,10 +593,11 @@ li,
 .suite-list .list-inner md-checkbox {
 
 	margin: 0;
+	display: inline;
 
 }
 
-.suite-list md-card {
+.suite-list .card-item {
 	padding: 10px;
 	font-size: 14px;
 	margin: 0px;
@@ -611,6 +612,10 @@ li,
 	-khtml-box-shadow: 0 1px 1px #ccc, 0 1px 1px #ccc !important;
 	-webkit-box-shadow: 0 1px 1px #ccc, 0 1px 1px #ccc !important;
   transition: all 0.2s cubic-bezier(.25,.8,.25,1) !important;
+	-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-moz-border-radius: 3px;
 }
 
 .suite-list h3 {

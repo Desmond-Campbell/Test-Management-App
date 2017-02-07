@@ -290,6 +290,20 @@ class TestController extends Controller
 
       $result_id = Tests::create( $newtest )->id;
 
+      $filter_hash = sha1( "create_test.$name." . date( 'Y-m-d' ) );
+      $activity_values = [ 'name' => $name ];
+
+      $newactivity = [
+                        'project_id'    => $id,
+                        'object_type'   => 'create_test',
+                        'object_id'     => $result_id,
+                        'user_id'       => $user_id,
+                        'values'        => json_encode( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
+
       $result = [ 'success' => true, 'result_id' => $result_id ];
 
     }
@@ -366,7 +380,25 @@ class TestController extends Controller
                   'description'   => $description
                 ];
 
-      Tests::find( $test_id )->update( $changes );
+      $test = Tests::find( $test_id );
+
+      $filter_hash = sha1( "update_test.$name." . date( 'Y-m-d' ) );
+      $activity_values = [ 'old' => [], 'new' => [] ];
+      $activity_values['old']['name'] = $test->name;
+      $activity_values['old']['description'] = $test->description;
+
+      $newactivity = [
+                        'project_id'    => $id,
+                        'object_type'   => 'edit_test',
+                        'object_id'     => $test_id,
+                        'user_id'       => $user_id,
+                        'values'        => Activities::prepareValues( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      $test->update( $changes );
+
+      Activities::create( $newactivity );
 
       $changes['id'] = $test_id;
 
@@ -427,7 +459,22 @@ class TestController extends Controller
                   'cases'       => json_encode( $cases )
                 ];
 
-    Tests::find( $test_id )->update( $changes );
+    $test = Tests::find( $test_id );
+
+    $filter_hash = sha1( "update_test_cases.$test_id." . date( 'Y-m-d' ) );
+
+    $newactivity = [
+                      'project_id'    => $id,
+                      'object_type'   => 'update_test_cases',
+                      'object_id'     => $test_id,
+                      'user_id'       => $user_id,
+                      'values'        => '[]',
+                      'filter_hash'   => $filter_hash
+                    ];
+
+    Activities::create( $newactivity );
+
+    $test->update( $changes );
 
     $changes['id'] = $test_id;
 
@@ -513,7 +560,22 @@ class TestController extends Controller
                   'testers'  => json_encode( $testers )
                 ];
 
-    Tests::find( $test_id )->update( $changes );
+    $test = Tests::find( $test_id );
+
+    $filter_hash = sha1( "update_testers.$test_id." . date( 'Y-m-d' ) );
+    
+    $newactivity = [
+                      'project_id'    => $id,
+                      'object_type'   => 'update_testers',
+                      'object_id'     => $test_id,
+                      'user_id'       => $user_id,
+                      'values'        => '[]',
+                      'filter_hash'   => $filter_hash
+                    ];
+
+    $test->update( $changes );
+
+    Activities::create( $newactivity );
 
     $changes['id'] = $test_id;
 
@@ -536,7 +598,23 @@ class TestController extends Controller
 
     if ( !$test ) return [ 'errors' => ___( 'Test not found.' ) ];;
 
-    if ( $test->project_id != $id ) return [ 'errors' => ___( 'Test not found.' ) ];;
+    if ( $test->project_id != $id ) return [ 'errors' => ___( 'Test not found.' ) ];
+
+    $filter_hash = sha1( "delete_test.$test_id." . date( 'Y-m-d' ) );
+    $activity_values = [ 'name' => $test->name ];
+
+    $newactivity = [
+                      'project_id'    => $id,
+                      'object_type'   => 'delete_test',
+                      'object_id'     => $test_id,
+                      'user_id'       => $user_id,
+                      'values'        => json_encode( $activity_values ),
+                      'filter_hash'   => $filter_hash
+                    ];
+
+    $test->update( $changes );
+
+    Activities::create( $newactivity );
 
     $test->delete();
 
@@ -661,6 +739,10 @@ class TestController extends Controller
 
     }
 
+    $step = Steps::find( $step_id );
+
+    if ( !$step )  $err = [ 'errors' => ___( 'Test step was missing from the system. It may have been deleted.' ) ];
+
     if ( $err ) {
 
       $result = $err;
@@ -681,6 +763,28 @@ class TestController extends Controller
       TestActivities::advance( $activity_id );
 
       $result_id = Issues::create( $newissue )->id;
+
+      $type = $r->input( 'type' ) == 'result' ? 'result' : 'issue';
+
+      $case_id = $step->case_id;
+      $case = Cases::find( $case_id );
+      $case_name = ___( 'Missing Case' );
+
+      if ( $case ) $case_name = $case->name;
+
+      $filter_hash = sha1( "create_$type.$case_id." . date( 'Y-m-d' ) );
+      $activity_values = [ 'case_name' => $case_name ];
+
+      $newactivity = [
+                        'project_id'    => $id,
+                        'object_type'   => 'create_' . $type,
+                        'object_id'     => $case_id,
+                        'user_id'       => $user_id,
+                        'values'        => json_encode( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
 
       $result = [ 'success' => true, 'result_id' => $result_id ];
 
@@ -726,7 +830,6 @@ class TestController extends Controller
                   'user_id'       => get_user_id()
                 ];
 
-    TestActivities::advance( $activity_id );
     Issues::create( $newissue )->id;
 
     return response()->json( $result );
@@ -844,13 +947,15 @@ class TestController extends Controller
 
         $case_id = $a->case_id;
         $case = empty( $case_cache[$case_id] ) ? Cases::find( $a->case_id ) : $case_cache[$case_id];
-        $steps = empty( $steps_cache[$case_id] ) ? Steps::where( 'case_id', $case_id )->get() : $steps_cache[$case_id];
+        $steps = empty( $steps_cache[$case_id] ) ? Steps::where( 'case_id', $case_id )->orderBy('item_position', 'asc')->get() : $steps_cache[$case_id];
 
         if ( empty( $cases[$case_id] ) ) $cases[$case_id] = [ 'case' => $case, 'data' => [] ];
 
         foreach ( $steps as $s ) {
 
-          if ( empty( $cases[$case_id]['data'][$s->id] ) ) $cases[$case_id]['data'][$s->id] = [ 'step' => $s, 'results' => [], 'result_type' => 0 ];
+          $sid = $s->item_position;
+
+          if ( empty( $cases[$case_id]['data'][$sid] ) ) $cases[$case_id]['data'][$sid] = [ 'step' => $s, 'results' => [], 'result_type' => 0 ];
           
           $issues = Issues::where( 'activity_id', $a->id )->where( 'step_id', $s->id )->orderBy( 'created_at', 'desc' )->take(10)->get();
 
@@ -860,9 +965,9 @@ class TestController extends Controller
 
             if ( $u ) $i->user_name = $u->name;
 
-            $cases[$case_id]['data'][$s->id]['results'][] = $i;
+            $cases[$case_id]['data'][$sid]['results'][] = $i;
 
-            if ( $i->id < $cases[$case_id]['data'][$s->id] || $cases[$case_id]['data'][$s->id] < 1 ) $cases[$case_id]['data'][$s->id]['result_type'] = $i->type;
+            if ( $i->id < $cases[$case_id]['data'][$sid] || $cases[$case_id]['data'][$sid] < 1 ) $cases[$case_id]['data'][$sid]['result_type'] = $i->type;
 
           }
 

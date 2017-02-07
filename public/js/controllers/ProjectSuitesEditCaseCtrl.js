@@ -191,8 +191,10 @@ app.controller('ProjectSuitesEditCaseCtrl', ['$scope', '$http', '$mdDialog', '$t
 
 		var step = angular.copy( $scope.steps[i] );
 		step.name += ' -copy';
+		step.id = null;
 		$scope.steps.push(step);
 		$scope.editStep($scope.steps.length-1);
+		console.log('dupl', $scope.steps);
 		$scope.saveSteps();
 
 	};
@@ -219,6 +221,8 @@ app.controller('ProjectSuitesEditCaseCtrl', ['$scope', '$http', '$mdDialog', '$t
 					_alert( r.data.errors, 1 );
 
 				} else {
+
+					$scope.steps = r.data.steps;
 				
 				}
 			

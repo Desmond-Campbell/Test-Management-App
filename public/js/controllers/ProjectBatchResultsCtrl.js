@@ -7,10 +7,14 @@ app.controller('ProjectBatchResultsCtrl', ['$scope', '$http', '$mdDialog', '$tim
 
 	$scope.getResults = function() {
 
+		l(1);
+
   	$http.get( '/projects/' + $scope.project_id + '/tests/' + $scope.test_id + '/batch/' + $scope.batch_id + '/get-results' ).then( 
 				
 			function ( r ) {
 				
+				l(0);
+
 				if ( typeof r.data.errors != 'undefined' ) {
 
 					_alert( r.data.errors, 1 );
@@ -24,6 +28,8 @@ app.controller('ProjectBatchResultsCtrl', ['$scope', '$http', '$mdDialog', '$tim
 			},
 
 			function () {
+
+				l(0);
 
 				_alert( 'Failed to load test results.' );
 

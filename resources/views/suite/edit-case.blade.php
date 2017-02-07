@@ -44,49 +44,6 @@
     @endif
 
       <md-tabs md-border-bottom md-dynamic-height>
-        <md-tab label="{{___( "Properties" )}}">
-          <div class="md-padding push-down">
-      
-      <form class="form @if ( Config::get('pageconfig') != 'full-template' ) slim-form @endif" role="form" method="post" action="" onsubmit="return false">
-
-            <div layout-gt-xs="row">
-
-              <md-input-container flex-gt-xs>
-
-                <label>{{__( "Test Case Name" )}}</label>
-                <input class="md-block input-lg md-no-underline" 
-                      id="case-name"
-                      maxlength="50" 
-                      ng-model="case.name" />
-
-              </md-input-container>
-
-            </div>
-
-            <div layout-gt-xs="row">
-
-              <md-input-container flex-gt-xs>
-
-                <label>{{__( "Short Description" )}}</label>
-                <input class="md-block input-lg md-no-underline" 
-                      id="case-description"
-                      maxlength="72" 
-                      ng-model="case.description" />
-
-              </md-input-container>
-
-            </div>
-
-          </div>
-
-          <br />
-
-          <button type="submit" class="btn btn-success" ng-click="save()">{{__( "Save" )}}</button> 
-          <button type="reset" class="btn btn-danger" ng-click="cancel()">{{__( "Cancel" )}}</button> 
-
-        </form>
-
-        </md-tab>
         <md-tab label="{{___( "Steps" )}}">
           <div class="md-padding push-down">
 
@@ -186,7 +143,50 @@
 
           <button type="submit" class="btn btn-success" ng-click="save()">{{__( "Save" )}}</button> 
           <button type="reset" class="btn btn-danger" ng-click="cancel()">{{__( "Cancel" )}}</button> 
+        <md-tab label="{{___( "Properties" )}}">
+          <div class="md-padding push-down">
+      
+          <form class="form @if ( Config::get('pageconfig') != 'full-template' ) slim-form @endif" role="form" method="post" action="" onsubmit="return false">
 
+            <div layout-gt-xs="row">
+
+              <md-input-container flex-gt-xs>
+
+                <label>{{__( "Test Case Name" )}}</label>
+                <input class="md-block input-lg md-no-underline" 
+                      id="case-name"
+                      maxlength="50" 
+                      ng-model="case.name" />
+
+              </md-input-container>
+
+            </div>
+
+            <div layout-gt-xs="row">
+
+              <md-input-container flex-gt-xs>
+
+                <label>{{__( "Short Description" )}}</label>
+                <input class="md-block input-lg md-no-underline" 
+                      id="case-description"
+                      maxlength="72" 
+                      ng-model="case.description" />
+
+              </md-input-container>
+
+            </div>
+
+          </div>
+
+          <br />
+
+          <button type="submit" class="btn btn-success" ng-click="save()">{{__( "Save" )}}</button> 
+          <button type="reset" class="btn btn-danger" ng-click="cancel()">{{__( "Cancel" )}}</button> 
+
+          </form>
+
+        </md-tab>
+        
         </form>
             
           </div>

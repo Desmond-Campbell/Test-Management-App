@@ -32,6 +32,8 @@
     
     <h1 class="no-margin-top">{{___( "Test Runs" )}}</h1>
 
+    @if ( count ( $tests ) )
+
     <table class="table table-middle-align push-down sm-container">
 
       <tr>
@@ -55,6 +57,14 @@
       @endforeach
 
     </table>
+
+    @else
+
+    <div class="push-down">
+      <h4>{{___( "There are no test runs setup for this project yet." )}}</h4>
+    </div>
+
+    @endif
 
   </div>
 

@@ -13,7 +13,7 @@
           <li class="main-entry nav-list-item @if ( $active == 'dashboard' ) active @endif">
             <a href="/projects/{{$project_id}}/dashboard"><i class="fa fa-home"></i> &nbsp; {{___( "Dashboard" )}}</a>
           </li>
-            @if ( $active == 'dashboard' )
+            {{-- @if ( $active == 'dashboard' )
             <li role="separator" class="divider"></li>
               <li class="nav-submenu-list-item">
                 <a href="/projects/{{$project_id}}/dashboard">{{___( "Activity Feed" )}}</a>
@@ -22,7 +22,7 @@
                 <a href="/projects/{{$project_id}}/testing">{{___( "Testing Dashboard" )}}</a>
               </li>
             <li role="separator" class="divider"></li>
-            @endif
+            @endif --}}
           <li class="main-entry nav-list-item @if ( $active == 'details' ) active @endif">
              <a href="/projects/{{$project_id}}/details"><i class="fa fa-cog"></i> &nbsp; {{___( "Details" )}}</a>
           </li>
@@ -48,14 +48,14 @@
             @if ( $active == 'suites' )
             <li role="separator" class="divider"></li>
               <li class="nav-submenu-list-item">
-                <a href="/projects/{{$project_id}}/suites">{{___( "View Cases" )}}</a>
+                <a href="/projects/{{$project_id}}/suites">{{___( "Suites Manager" )}}</a>
               </li>
               <li class="nav-submenu-list-item">
                 <a href="/projects/{{$project_id}}/suites/new">{{___( "Add Test Cases" )}}</a>
               </li>
-              <li class="nav-submenu-list-item">
+              {{--<li class="nav-submenu-list-item">
                 <a href="/projects/{{$project_id}}/suites/import">{{___( "Import Test Cases" )}}</a>
-              </li>
+              </li>--}}
             <li role="separator" class="divider"></li>
             @endif
           <li class="main-entry nav-list-item @if ( $active == 'tests' ) active @endif">

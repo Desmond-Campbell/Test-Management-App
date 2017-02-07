@@ -390,6 +390,21 @@ class TeamController extends Controller
 
       $result_id = TeamRoles::create( $newrole )->id;
 
+      $filter_hash = sha1( "create_role.$name." . date( 'Y-m-d' ) );
+      $activity_values = [ 'name' => $name ];
+      $user_id = get_user_id();
+
+      $newactivity = [
+                        'project_id'    => $id,
+                        'object_type'   => 'create_role',
+                        'object_id'     => $result_id,
+                        'user_id'       => $user_id,
+                        'values'        => json_encode( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
+
       $result = [ 'success' => true, 'result_id' => $result_id ];
 
     }
@@ -434,6 +449,24 @@ class TeamController extends Controller
         }
 
       }
+
+      $user_id = get_user_id();
+
+      $filter_hash = sha1( "update_role.$role_id." . date( 'Y-m-d' ) );
+      $activity_values = [ 'old' => [], 'new' => [] ];
+      $activity_values['old']['name'] = $role->name;
+      $activity_values['old']['description'] = $role->description;
+      
+      $newactivity = [
+                        'project_id'    => $id,
+                        'object_type'   => 'update_role',
+                        'object_id'     => $role_id,
+                        'user_id'       => $user_id,
+                        'values'        => Activities::prepareValues( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
 
       $role->name = $name;
       $role->description = $description;
@@ -551,6 +584,23 @@ class TeamController extends Controller
       $selected_perms = $r->input( 'selected_perms' );
 
       $role->permissions = json_encode( $selected_perms );
+
+      $user_id = get_user_id();
+
+      $filter_hash = sha1( "update_role.$role_id." . date( 'Y-m-d' ) );
+      $activity_values = [ 'name' => $role->name ];
+
+      $newactivity = [
+                        'project_id'    => $id,
+                        'object_type'   => 'update_role',
+                        'object_id'     => $role_id,
+                        'user_id'       => $user_id,
+                        'values'        => json_encode( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
+
       $role->save();
 
       return response()->json( [ 'success' => true ] );
@@ -683,6 +733,26 @@ class TeamController extends Controller
       $selected_roles = $r->input( 'selected_roles' );
 
       $teammember->roles = json_encode( $selected_roles );
+
+      $user_id = get_user_id();
+
+      $filter_hash = sha1( "update_member_roles.$member_id." . date( 'Y-m-d' ) );
+        $user = User::find( $teammember->user_id );
+        $name = 'Unknown User';
+        if ( $user ) $name = $user->name;
+      $activity_values = [ 'name' => $name ];
+
+      $newactivity = [
+                        'project_id'    => $id,
+                        'object_type'   => 'update_member_roles',
+                        'object_id'     => $member_id,
+                        'user_id'       => $user_id,
+                        'values'        => json_encode( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
+
       $teammember->save();
 
       return response()->json( [ 'success' => true ] );
@@ -762,6 +832,26 @@ class TeamController extends Controller
       $selected_overrides = $r->input( 'selected_overrides' );
 
       $teammember->key_overrides = json_encode( $selected_overrides );
+
+      $user_id = get_user_id();
+
+      $filter_hash = sha1( "update_member_overrides.$member_id." . date( 'Y-m-d' ) );
+        $user = User::find( $teammember->user_id );
+        $name = 'Unknown User';
+        if ( $user ) $name = $user->name;
+      $activity_values = [ 'name' => $name ];
+
+      $newactivity = [
+                        'project_id'    => $id,
+                        'object_type'   => 'update_member_overrides',
+                        'object_id'     => $member_id,
+                        'user_id'       => $user_id,
+                        'values'        => json_encode( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
+
       $teammember->save();
 
       return response()->json( [ 'success' => true ] );
@@ -841,6 +931,26 @@ class TeamController extends Controller
       $selected_restrictions = $r->input( 'selected_restrictions' );
 
       $teammember->key_restrictions = json_encode( $selected_restrictions );
+
+      $user_id = get_user_id();
+
+      $filter_hash = sha1( "update_member_restrictions.$member_id." . date( 'Y-m-d' ) );
+        $user = User::find( $teammember->user_id );
+        $name = 'Unknown User';
+        if ( $user ) $name = $user->name;
+      $activity_values = [ 'name' => $name ];
+
+      $newactivity = [
+                        'project_id'    => $id,
+                        'object_type'   => 'update_member_restrictions',
+                        'object_id'     => $member_id,
+                        'user_id'       => $user_id,
+                        'values'        => json_encode( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
+
       $teammember->save();
 
       return response()->json( [ 'success' => true ] );

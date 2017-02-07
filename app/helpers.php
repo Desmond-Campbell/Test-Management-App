@@ -70,7 +70,7 @@ function arg( $A, $key, $default = null ) {
 
 function try_json_decode( $string ) {
 
-	$string = @json_decode( $string );
+	$string = $string !== null && $string != '' ? json_decode( $string ) : [];
 	
 	if ( $string ) $object = $string;
 	else $object = (object) [];

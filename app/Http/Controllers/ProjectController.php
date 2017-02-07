@@ -144,7 +144,7 @@ class ProjectController extends Controller
                           'filter_hash'   => $filter_hash
                         ];
 
-      Activities::create( $newactivity );
+        Activities::create( $newactivity );
 
       $result = [ 'result_id' => $id, 'url' => '/projects/' . $id ];
 

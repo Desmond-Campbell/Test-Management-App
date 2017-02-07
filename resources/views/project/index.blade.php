@@ -20,7 +20,7 @@
 
       <div class="form-group" layout="row" ng-show="newProjectMode">
         <div flex="50">
-          <input type="text" class="form-control col-md-4" id="new-project-title" ng-model="project.title" placeholder="{{___( "Enter a title for your new project." )}}" onEnter="createProject()" />
+          <input type="text" class="form-control col-md-4" id="new-project-title" ng-model="project.title" placeholder="{{___( "Enter a title for your new project." )}}" on-enter="createProject()" />
         </div>
         <div flex>
           &nbsp;&nbsp;
@@ -31,9 +31,20 @@
 
       <br />
 
+      @else
+
+        <div ng-show="projects.length < 1">
+          <h4 class="text-danger">{{___("You do not have permission to create projects.")}}</h4>
+        </div>
+
       @endif
 
-      <ul class="grid-list project-list">
+      <div ng-show="projects.length < 1">
+        <h3>{{___("No projects exist in this network.")}}</h3>
+      </div>
+
+
+      <ul class="grid-list project-list" ng-show="projects.length > 0">
 
         <li ng-repeat="p in projects" md-white-frame="1">
         
