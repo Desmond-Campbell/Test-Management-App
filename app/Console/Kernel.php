@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
         MigrateNetworks::class,
         // SeedNetwork::class,
         // SeedNetworks::class,
-        CreateNetworkOwner::class
+        NetworkConfig::class
     ];
 
     /**

@@ -19,7 +19,7 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 	$host = explode( '.', arg( $_SERVER, 'HTTP_HOST' ) );
 	$domain = $host[0];
 	$www_host = "http://www." . env( 'APP_DOMAIN' );
-	$www_redirect = $www_host . '' . arg( $_SERVER, 'REQUEST_URI' );
+	$www_redirect = $www_host . '/login?then=' . base64_encode( 'http://' . arg( $_SERVER, 'HTTP_HOST' ) . arg( $_SERVER, 'REQUEST_URI' ) );
 
 	$console = App::runningInConsole();
 
@@ -102,6 +102,52 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 	  }
 
+	  /* Cookie check */
+
+		$login_redir = true;
+		$network_redir = true;
+		$cookie = arg( $_COOKIE, config( 'session.global_cookie' ) );
+
+		if ( $cookie ) { 
+		
+			$crumbs = explode( '.', $cookie );
+
+			if ( count( $crumbs ) == 4 ) {
+
+				$login_redir = false;
+
+				$sso_id = (int) $crumbs[2];
+
+				$user = DB::table( 'users' )->where( 'sso_id', $sso_id )->first();
+
+				if ( $user ) {
+
+					$network_redir = false;
+
+				}
+
+			} 
+
+		}
+
+		if ( $login_redir ) {
+
+    	// header( "Location: $www_host" );
+			// die;
+			die("invalid_cookie");
+
+		}
+
+		if ( $network_redir ) {
+
+    	// header( "Location: $www_network_redir" );
+			// die;
+			die("no_access");
+
+		}
+
+	  /* End cookie check */
+
 	  // Police
 
 			Route::get('/police/project/{project_id}/check', 'PoliceController@quickCheck');
@@ -113,6 +159,7 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 		// Projects
 
+			Route::get('/', 'ProjectController@index');
 			Route::get('/projects', 'ProjectController@index');
 			Route::get('/projects/new', 'ProjectController@new');
 			Route::post('/projects/create', 'ProjectController@create');
@@ -231,10 +278,6 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 		// Organisation
 
 			Route::get('/organisation/people', 'OrganisationController@people');
-
-			Route::get('/', function () {
-			    return view('welcome');
-			});
 
 			// Lists
 

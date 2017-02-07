@@ -13,19 +13,14 @@
               </button>
               <a class="navbar-brand" href="#"><img src="/img/icon.png" /></a>
               <ul class="nav navbar-nav navbar-inverse submenu">
-                <li class="company-name"><strong>Organisation Name</strong></li>
-                <li class="company-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <li class="network-name"><strong>{{ \App\Options::get( 'network_name' ) }}</strong></li>
+                <li class="network-dropdown"><a href="http://my.{{env('APP_DOMAIN')}}/networks">
                   <span>
                     <md-tooltip md-direction="right">
-                      {{__( "Switch Organisation" )}}
+                      {{__( "Switch Network" )}}
                     </md-tooltip>
-                    <i class="fa fa-arrow-circle-down"></i>
+                    <i class="fa fa-arrow-circle-right"></i>
                   </span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="/plans">Test Plans</a></li>
-                    <li><a href="/users">Users</a></li>
-                    <li><a href="/settings">Settings</a></li>
-                  </ul>
                 </li>
               </ul>
             </div>

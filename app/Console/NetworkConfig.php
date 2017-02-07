@@ -9,12 +9,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\Console\Input\ArgvInput;
 
-class CreateNetworkOwner extends Command
+class NetworkConfig extends Command
 {
   
-  protected $signature = 'createnetworkowner {--database= : Enter network database as is.},
+  protected $signature = 'networkconfig {--database= : Enter network database as is.},
                                               {--sso_id= : Enter global user ID.},
-                                              {--sso_name= : Enter global name of user.}';
+                                              {--sso_name= : Enter global name of user.},
+                                              {--sso_timezone= : Enter network timezone as is.},
+                                              {--sso_network= : Enter network name as is.},
+                                              ';
   protected $description = 'Create a default network owner.';
 
   public function __construct() {
@@ -29,13 +32,22 @@ class CreateNetworkOwner extends Command
     $target = $argv->getParameterOption('--database');
     $sso_id = $argv->getParameterOption('--sso_id');
     $sso_name = $argv->getParameterOption('--sso_name');
+    $sso_timezone = $argv->getParameterOption('--sso_timezone');
+    $sso_network = $argv->getParameterOption('--sso_network');
 
     Kernel::connection( $target );
     Config::set( 'database.default', $target );
 
     $permissions = '["view_projects","update_project","create_project","view_people"]';
 
+    $timezone = new \DateTimeZone( $sso_timezone );
+    $timezoneOffset = $timezone->getOffset( new \DateTime );
+    $timezoneOffset = $timezoneOffset / ( 60 * 60 );
+
     \App\User::create( [ 'name' => $sso_name, 'sso_id' => $sso_id, 'permissions_include' => $permissions ] );
+    \App\Options::set( 'timezone', $sso_timezone );
+    \App\Options::set( 'timezone_hours', $timezoneOffset );
+    \App\Options::set( 'network_name', $sso_network );
     
     $this->info( Artisan::output() );
   

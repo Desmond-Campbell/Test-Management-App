@@ -255,14 +255,14 @@ a:hover {
 
 /*******************************************/
 
-.navbar .company-name strong {
+.navbar .network-name strong {
 	color: #FFF;
 	font-weight: bold;
 	display: block;
 	padding-top: 13px;
 }
 
-.navbar .company-dropdown a i {
+.navbar .network-dropdown a i {
 	color: #B4C6D0 !important;
 	font-weight: bold;
 	display: block;
@@ -270,7 +270,7 @@ a:hover {
 	padding-bottom: 4px !important;
 }
 
-.navbar .company-dropdown a {
+.navbar .network-dropdown a {
 	background: none !important;
 }
 

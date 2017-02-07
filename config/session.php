@@ -122,7 +122,8 @@ return [
     |
     */
 
-    'cookie' => 'laravel_session',
+    'cookie' => 'saastest_network',
+    'global_cookie' => 'saastest_global_name',
 
     /*
     |--------------------------------------------------------------------------
