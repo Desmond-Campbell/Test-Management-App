@@ -5,10 +5,11 @@ $keys = [];
 $keys["projects"] = [];
 $keys["projects"]["team"] = [];
 $keys["projects"]["projects"] = [];
-$keys["organisation"] = [];
-$keys["organisation"]["people"] = [];
-$keys["organisation"]["projects"] = [];
+$keys["network"] = [];
+$keys["network"]["people"] = [];
+$keys["network"]["projects"] = [];
 $keys["projects"]["suites"] = [];
+$keys["projects"]["tests"] = [];
 
 $keys["projects"]["team"]["remove_member"] = 
 					[ 
@@ -90,39 +91,39 @@ $keys["projects"]["projects"]["update_project"] =
 						"access_type" => "w" 
 					];
 
-$keys["organisation"]["people"]["remove_person"] = 
+$keys["network"]["people"]["remove_person"] = 
 					[ 
 						"name" => "Remove a Person", 
-						"message" => "You're not allowed to remove a person from this organisation.", 
+						"message" => "You're not allowed to remove a person from this network.", 
 						"keywords" => "delete remove person", 
 						"access_type" => "w" 
 					];
 
-$keys["organisation"]["people"]["update_person"] = 
+$keys["network"]["people"]["update_person"] = 
 					[ 
 						"name" => "Update a Person", 
-						"message" => "You're not allowed update a person in the organisation.", 
+						"message" => "You're not allowed update a person in the network.", 
 						"keywords" => "update edit change person", 
 						"access_type" => "w" 
 					];
 
-$keys["organisation"]["people"]["create_person"] = 
+$keys["network"]["people"]["create_person"] = 
 					[ 
 						"name" => "Invite a Person", 
-						"message" => "You're not allowed to create a person in this organisation.", 
-						"keywords" => "add new create person organisation", 
+						"message" => "You're not allowed to create a person in this network.", 
+						"keywords" => "add new create person network", 
 						"access_type" => "w" 
 					];
 
-$keys["organisation"]["people"]["view_people"] = 
+$keys["network"]["people"]["view_people"] = 
 					[ 
 						"name" => "View People", 
-						"message" => "You're not allowed to view people in this organisation.", 
-						"keywords" => "view list organisation people", 
+						"message" => "You're not allowed to view people in this network.", 
+						"keywords" => "view list network people", 
 						"access_type" => "r" 
 					];
 
-$keys["organisation"]["projects"]["own_projects"] = 
+$keys["network"]["projects"]["own_projects"] = 
 					[ 
 						"name" => "Own Projects", 
 						"message" => "You're not allowed to own projects.", 
@@ -130,7 +131,7 @@ $keys["organisation"]["projects"]["own_projects"] =
 						"access_type" => "w" 
 					];
 
-$keys["organisation"]["projects"]["create_project"] = 
+$keys["network"]["projects"]["create_project"] = 
 					[ 
 						"name" => "Create Projects", 
 						"message" => "You're not allowed to create projects.", 
@@ -138,10 +139,10 @@ $keys["organisation"]["projects"]["create_project"] =
 						"access_type" => "w" 
 					];
 
-$keys["organisation"]["projects"]["view_projects"] = 
+$keys["network"]["projects"]["view_projects"] = 
 					[ 
 						"name" => "View Projects", 
-						"message" => "You're not allowed to view projects in this organisation.", 
+						"message" => "You're not allowed to view projects in this network.", 
 						"keywords" => "view project list", 
 						"access_type" => "r" 
 					];
@@ -258,10 +259,10 @@ $keys["projects"]["team"]["view_roles"] =
 						"access_type" => "r" 
 					];
 
-$keys["organisation"]["projects"]["view_all_projects"] = 
+$keys["network"]["projects"]["view_all_projects"] = 
 					[ 
 						"name" => "View All Projects", 
-						"message" => "You're not allowed to view projects in this organisation that were created by others.", 
+						"message" => "You're not allowed to view projects in this network that were created by others.", 
 						"keywords" => "view project list", 
 						"access_type" => "r" 
 					];
@@ -455,6 +456,70 @@ $keys["projects"]["suites"]["view_all_cases"] =
 						"name" => "View Any Test Case", 
 						"message" => "You're not allowed to view test cases created by others.", 
 						"keywords" => "view open test cases", 
+						"access_type" => "r" 
+					];
+
+$keys["projects"]["tests"]["tester"] = 
+					[ 
+						"name" => "Tester", 
+						"message" => "You're not allowed to test this project.", 
+						"keywords" => "test run execute tester", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["tests"]["view_tests"] = 
+					[ 
+						"name" => "View Tests", 
+						"message" => "You're not allowed to view test runs.", 
+						"keywords" => "view open test runs", 
+						"access_type" => "r" 
+					];
+
+$keys["projects"]["tests"]["edit_test"] = 
+					[ 
+						"name" => "Edit test", 
+						"message" => "You're not allowed to edit test runs.", 
+						"keywords" => "edit modify update change test run", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["tests"]["view_batches"] = 
+					[ 
+						"name" => "View Batches", 
+						"message" => "You're not allowed to view test run batches.", 
+						"keywords" => "view test run batches", 
+						"access_type" => "r" 
+					];
+
+$keys["projects"]["tests"]["start_batch"] = 
+					[ 
+						"name" => "Start Batch", 
+						"message" => "You're not allowed to start a test run batch.", 
+						"keywords" => "start test run batch", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["tests"]["stop_batch"] = 
+					[ 
+						"name" => "Stop Batch", 
+						"message" => "You're not allowed to stop a test run batch.", 
+						"keywords" => "stop test run batch", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["tests"]["create_test"] = 
+					[ 
+						"name" => "Create Test", 
+						"message" => "You're not allowed to create tests.", 
+						"keywords" => "create new add test run", 
+						"access_type" => "w" 
+					];
+
+$keys["projects"]["tests"]["view_test_results"] = 
+					[ 
+						"name" => "View Test Results", 
+						"message" => "You're not allowed to view test results.", 
+						"keywords" => "test results", 
 						"access_type" => "r" 
 					];
 

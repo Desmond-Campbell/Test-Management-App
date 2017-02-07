@@ -34,7 +34,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_cases', 'return' => 1 ] );
+    police( [ 'project_id' => $id, 'keystring' => 'projects.tests.view_tests', 'return' => 1 ] );
 
     $project = Projects::find( $id );
 
@@ -50,7 +50,7 @@ class TestController extends Controller
     $test_id = $r->route( 'id' );
 
     police( [ 'project_id' => $id, 
-              'keystring' => 'projects.suites.view_suites', 
+              'keystring' => 'projects.tests.edit_test', 
               'return' => $r->input( 'format' ) == 'json' ] );
 
     ////////////////////////////////////////////
@@ -65,7 +65,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+    police( [ 'keystring' => 'projects.tests.view_batches', 'project_id' => $id ] );
 
     $test_id = $r->route( 'id' );
 
@@ -86,7 +86,7 @@ class TestController extends Controller
     $id = $r->route( 'project_id' );
     $test_id = $r->route( 'id' );
 
-    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_suites', 'return' => 1 ] );
+    police( [ 'project_id' => $id, 'keystring' => 'projects.tests.view_batches', 'return' => 1 ] );
 
     $test = Tests::find( $test_id );
 
@@ -107,7 +107,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+    police( [ 'keystring' => 'projects.tests.start_batch', 'project_id' => $id ] );
 
     $test_id = $r->route( 'id' );
 
@@ -133,7 +133,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+    police( [ 'keystring' => 'projects.tests.stop_batch', 'project_id' => $id ] );
 
     $test_id = $r->route( 'id' );
     $batch_id = $r->route( 'batch_id' );
@@ -160,7 +160,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+    police( [ 'keystring' => 'projects.tests.tester', 'project_id' => $id ] );
 
     $test_id = $r->route( 'id' );
     $batch_id = $r->route( 'batch_id' );
@@ -185,7 +185,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+    police( [ 'keystring' => 'projects.tests.edit_test', 'project_id' => $id ] );
 
     $test_id = $r->route( 'id' );
 
@@ -250,7 +250,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id, 'return' => 1 ] );
+    police( [ 'keystring' => 'projects.tests.create_test', 'project_id' => $id, 'return' => 1 ] );
 
     $project = Projects::find( $id );
 
@@ -303,7 +303,7 @@ class TestController extends Controller
     $id = $r->route( 'project_id' );
     $test_id = $r->route( 'id' );
 
-    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_suites', 'return' => 1 ] );
+    police( [ 'project_id' => $id, 'keystring' => 'projects.tests.view_tests', 'return' => 1 ] );
 
     $test = Tests::find( $test_id );
 
@@ -322,7 +322,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.suites.update_scenarios', 'project_id' => $id, 'return' => 1 ] );
+    police( [ 'keystring' => 'projects.tests.update_test', 'project_id' => $id, 'return' => 1 ] );
 
     $test_id = $r->route( 'id' );
 
@@ -382,7 +382,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.suites.update_scenarios', 'project_id' => $id, 'return' => 1 ] );
+    police( [ 'keystring' => 'projects.tests.edit_test', 'project_id' => $id, 'return' => 1 ] );
 
     $test_id = $r->route( 'id' );
 
@@ -442,7 +442,7 @@ class TestController extends Controller
     $id = $r->route( 'project_id' );
     $test_id = $r->route( 'id' );
 
-    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_suites', 'return' => 1 ] );
+    police( [ 'project_id' => $id, 'keystring' => 'projects.tests.edit_test', 'return' => 1 ] );
 
     $test = Tests::find( $test_id );
 
@@ -464,7 +464,7 @@ class TestController extends Controller
 
     foreach ( $teammembers as $t ) {
 
-      if ( Police::check( [ 'keystring' => 'projects.projects.update_project',  'quickcheck' => true, 'member_user_id' => $t->user_id , 'project_id' => $id ] ) ) {
+      if ( Police::check( [ 'keystring' => 'projects.tests.tester',  'quickcheck' => true, 'member_user_id' => $t->user_id , 'project_id' => $id ] ) ) {
 
         $user = User::find( $t->user_id );
 
@@ -488,7 +488,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.suites.update_scenarios', 'project_id' => $id, 'return' => 1 ] );
+    police( [ 'keystring' => 'projects.tests.edit_test', 'project_id' => $id, 'return' => 1 ] );
 
     $test_id = $r->route( 'id' );
 
@@ -528,7 +528,7 @@ class TestController extends Controller
     $id = $r->route( 'project_id' );
     $test_id = $r->route( 'id' );
 
-    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.delete_scenario', 'return' => 1 ] );
+    police( [ 'project_id' => $id, 'keystring' => 'projects.tests.delete_test', 'return' => 1 ] );
 
     $project = Projects::find( $id );
 
@@ -552,7 +552,7 @@ class TestController extends Controller
     $test_id = $r->route( 'id' );
     $batch_id = $r->route( 'batch_id' );
 
-    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_suites', 'return' => 1 ] );
+    police( [ 'project_id' => $id, 'keystring' => 'projects.tests.tester', 'return' => 1 ] );
 
     $test = Tests::find( $test_id );
 
@@ -607,7 +607,8 @@ class TestController extends Controller
     $step_id = $r->route( 'step_id' );
     $batch_id = $r->route( 'batch_id' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+    police( [ 'keystring' => 'projects.tests.tester', 'project_id' => $id ] );
+    police( [ 'keystring' => 'projects.tests.create_issue', 'project_id' => $id ] );
 
     $test_id = $r->route( 'id' );
 
@@ -631,7 +632,8 @@ class TestController extends Controller
     $activity_id = $r->route( 'activity_id' );
     $step_id = $r->route( 'step_id' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id, 'return' => 1 ] );
+    police( [ 'keystring' => 'projects.tests.tester', 'project_id' => $id ] );
+    police( [ 'keystring' => 'projects.tests.create_issue', 'project_id' => $id, 'return' => 1 ] );
 
     $project = Projects::find( $id );
 
@@ -695,7 +697,7 @@ class TestController extends Controller
     $step_id = $r->route( 'step_id' );
     $batch_id = $r->route( 'batch_id' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id, 'return' => 1 ] );
+    police( [ 'keystring' => 'projects.tests.tester', 'project_id' => $id, 'return' => 1 ] );
 
     $project = Projects::find( $id );
 
@@ -737,7 +739,7 @@ class TestController extends Controller
     $test_id = $r->route( 'id' );
     $batch_id = $r->route( 'batch_id' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id, 'return' => 1 ] );
+    police( [ 'keystring' => 'projects.tests.view_test_results', 'project_id' => $id, 'return' => 1 ] );
 
     $project = Projects::find( $id );
 
@@ -808,7 +810,7 @@ class TestController extends Controller
     $batch_id = $r->route( 'batch_id' );
     $group_type = $r->route( 'result_type' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id, 'return' => 1 ] );
+    police( [ 'keystring' => 'projects.tests.view_test_results', 'project_id' => $id, 'return' => 1 ] );
 
     $project = Projects::find( $id );
 
@@ -880,7 +882,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.suites.create_suite', 'project_id' => $id ] );
+    police( [ 'keystring' => 'projects.tests.view_test_results', 'project_id' => $id ] );
 
     $test_id = $r->route( 'id' );
     $batch_id = $r->route( 'batch_id' );

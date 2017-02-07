@@ -12,7 +12,7 @@ use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
-class OrganisationController extends Controller
+class NetworkController extends Controller
 {
 
   public function __construct()
@@ -22,7 +22,7 @@ class OrganisationController extends Controller
 
   public function people( Request $r ) {
 
-    $police_args = [ 'keystring' => 'organisation.people.view_people' ];
+    $police_args = [ 'keystring' => 'network.people.view_people' ];
 
     if ( $r->input( 'format' ) == 'json' ) {
 
@@ -30,7 +30,7 @@ class OrganisationController extends Controller
 
     } else {
 
-      $police_args['redirect'] = '/organisation';
+      $police_args['redirect'] = '/network';
 
     }
 
@@ -56,7 +56,7 @@ class OrganisationController extends Controller
       $people_filtered = [];
 
       $filter_members = $r->input( 'filter_members' );
-      $filter_option_name = "filter_organisation_members_" . get_user_id() . "_" . $project_id;
+      $filter_option_name = "filter_network_members_" . get_user_id() . "_" . $project_id;
 
       if ( empty( $filter_members ) ) $filter_members = Options::get( $filter_option_name, '' );
       else Options::set( $filter_option_name, $filter_members );
@@ -99,11 +99,11 @@ class OrganisationController extends Controller
 
     } else {
 
-      if ( !$project ) return redirect( '/organisation' );
+      if ( !$project ) return redirect( '/' );
 
     }
 
-    return view( 'organisation.people' );
+    return view( 'network.people' );
 
   }
 

@@ -152,7 +152,7 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 	  // Police
 
 			Route::get('/police/project/{project_id}/check', 'PoliceController@quickCheck');
-			Route::get('/police/organisation/check', 'PoliceController@quickCheck');
+			Route::get('/police/network/check', 'PoliceController@quickCheck');
 
 		// General
 
@@ -276,9 +276,9 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 			Route::get('/projects/{project_id}/requirements/import', 'RequirementController@import');
 			Route::post('/projects/{project_id}/requirements/import', 'RequirementController@createBulk');
 
-		// Organisation
+		// Network
 
-			Route::get('/organisation/people', 'OrganisationController@people');
+			Route::get('/network/people', 'NetworkController@people');
 
 			// Lists
 
