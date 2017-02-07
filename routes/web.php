@@ -18,8 +18,9 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 	$host = explode( '.', arg( $_SERVER, 'HTTP_HOST' ) );
 	$domain = $host[0];
-	$www_host = "http://www." . env( 'APP_DOMAIN' );
+	$www_host = "http://my." . env( 'APP_DOMAIN' );
 	$www_redirect = $www_host . '/login?then=' . base64_encode( 'http://' . arg( $_SERVER, 'HTTP_HOST' ) . arg( $_SERVER, 'REQUEST_URI' ) );
+	$www_network_redirect = $www_host . '/networks';
 
 	$console = App::runningInConsole();
 
@@ -27,24 +28,24 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 		if ( count( $host ) == 2 ) {
 
-			// header( "Location: $www_redirect" );
-			// die;
+			header( "Location: $www_redirect" );
+			die;
 			die("invalid_host_count-2");
 
 		}
 
 		if ( count( $host ) == 3 && \App\Networks::invalidDomain( $domain ) ) {
 
-			// header( "Location: $www_host" );
-			// die;
+			header( "Location: $www_host" );
+			die;
 			die("invalid_domain");
 
 		}
 
 		if ( count( $host ) != 3 ) {
 
-			// header( "Location: $www_host" );
-			// die;
+			header( "Location: $www_host" );
+			die;
 			die("invalid_host_count-!3");
 
 		}
@@ -53,8 +54,8 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 		if ( !$network ) {
 
-			// header( "Location: $www_host" );
-			// die;
+			header( "Location: $www_host" );
+			die;
 			die("invalid_domain_no_network_found");
 
 		} else {
@@ -94,8 +95,8 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 	  	if ( $e->getCode() == '1049' ) {
 
-	  		// header( "Location: $www_host" );
-				// die;
+	  		header( "Location: $www_host" );
+				die;
 				die("invalid_domain_no_database");
 	  	
 	  	}
@@ -132,16 +133,16 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 		if ( $login_redir ) {
 
-    	// header( "Location: $www_host" );
-			// die;
+    	header( "Location: $www_host" );
+			die;
 			die("invalid_cookie");
 
 		}
 
 		if ( $network_redir ) {
 
-    	// header( "Location: $www_network_redir" );
-			// die;
+    	header( "Location: $www_network_redir" );
+			die;
 			die("no_access");
 
 		}
