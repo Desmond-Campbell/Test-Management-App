@@ -583,7 +583,12 @@ class TeamController extends Controller
 
     $member_user_id = $teammember->user_id;
 
-    return view( 'team.edit-access', compact( 'project', 'member_id', 'member_user_id' ) );
+    $user = User::find( $member_user_id );
+    $member_sso_id = 0;
+
+    if ( $user ) $member_sso_id = $user->sso_id;
+
+    return view( 'team.edit-access', compact( 'project', 'member_id', 'member_user_id', 'member_sso_id' ) );
 
   }
 
@@ -603,7 +608,7 @@ class TeamController extends Controller
     if ( $member->is_removed ) return [ 'errors' => ___( 'The team member you selected has been removed from this project.' ) ];
 
     $user = User::find( $member->user_id );
-    if ( !$user ) return [ 'errors' => ___( 'The person you selected does not exist in the organisation at all.' ) ];
+    if ( !$user ) return [ 'errors' => ___( 'The person you selected does not exist in the network at all.' ) ];
 
     if ( $member->project_id != $id ) return [ 'errors' => ___( 'The person you selected is not a member of this project\'s team.' ) ];
 
@@ -651,7 +656,7 @@ class TeamController extends Controller
 
     } else {
 
-      return [ 'errors' => ___( 'Could not find team member or organisation person.' ) ];
+      return [ 'errors' => ___( 'Could not find team member or network person.' ) ];
 
     }
 
@@ -684,7 +689,7 @@ class TeamController extends Controller
 
     } else {
 
-      return [ 'errors' => ___( 'Could not find team member or organisation person.' ) ];
+      return [ 'errors' => ___( 'Could not find team member or network person.' ) ];
 
     }
 
@@ -730,7 +735,7 @@ class TeamController extends Controller
 
     } else {
 
-      return [ 'errors' => ___( 'Could not find team member or organisation person.' ) ];
+      return [ 'errors' => ___( 'Could not find team member or network person.' ) ];
 
     }
 
@@ -763,7 +768,7 @@ class TeamController extends Controller
 
     } else {
 
-      return [ 'errors' => ___( 'Could not find team member or organisation person.' ) ];
+      return [ 'errors' => ___( 'Could not find team member or network person.' ) ];
 
     }
 
@@ -809,7 +814,7 @@ class TeamController extends Controller
 
     } else {
 
-      return [ 'errors' => ___( 'Could not find team member or organisation person.' ) ];
+      return [ 'errors' => ___( 'Could not find team member or network person.' ) ];
 
     }
 
@@ -842,7 +847,7 @@ class TeamController extends Controller
 
     } else {
 
-      return [ 'errors' => ___( 'Could not find team member or organisation person.' ) ];
+      return [ 'errors' => ___( 'Could not find team member or network person.' ) ];
 
     }
 

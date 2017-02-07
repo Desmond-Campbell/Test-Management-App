@@ -27,7 +27,7 @@ app.controller('ProjectTeamAddCtrl', ['$scope', '$http', '$mdDialog', '$timeout'
 
 		$id = $scope.project_id;
 
-		$http.get( '/organisation/people?project_id=' + $id + '&format=json&filter_members=' + filter ).then( 
+		$http.get( '/network/people?project_id=' + $id + '&format=json&filter_members=' + filter ).then( 
 			
 			function ( r ) {
 				
@@ -55,7 +55,7 @@ app.controller('ProjectTeamAddCtrl', ['$scope', '$http', '$mdDialog', '$timeout'
 
 				l(0);
 
-				_alert( 'Failed to find people in your organisation.' );
+				_alert( 'Failed to find people in your network.' );
 
 			});
 

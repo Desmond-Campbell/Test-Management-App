@@ -26,7 +26,7 @@ class ProjectController extends Controller
 
   public function index( Request $r ) {
 
-    Police::check( [ 'keystring' => 'organisation.projects.view_projects', 
+    Police::check( [ 'keystring' => 'network.projects.view_projects', 
                       'return' => $r->input( 'format' ) == 'json' ] );
 
     if ( $r->input( 'format') == 'json' ) {
@@ -49,7 +49,7 @@ class ProjectController extends Controller
 
   public function create( Request $r ) {
 
-    Police::check( [ 'keystring' => 'organisation.projects.create_project', 'return' => 1 ] );
+    Police::check( [ 'keystring' => 'network.projects.create_project', 'return' => 1 ] );
 
     $title = trim( $r->input( 'title' ) );
     $err = null;

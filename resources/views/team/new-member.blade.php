@@ -35,8 +35,8 @@
     <br />
 
     <div class="alert alert-info-light md-container">
-    	{{___( "Use this section to add a member of your organisation to this project's team." )}}
-    	<a href="/organisation/people?then_to={{get_url()}}" title="{{___( "We'll take you back here when you're done." )}}">{{___( "Manage the people in your organisation here." )}}</a>
+    	{{___( "Use this section to add a member of your network to this project's team." )}}
+    	<a href="http://my.{{env('APP_DOMAIN')}}/network/{{\App\Options::get('network_id')}}/people" target="_blank">{{___( "Manage the people in your network here." )}}</a>
     </div>
 
       <p><small><md-checkbox ng-model="hide_members" aria-label="{{___( "Hide existing team members." ) }}" ng-click="changeFilter()">

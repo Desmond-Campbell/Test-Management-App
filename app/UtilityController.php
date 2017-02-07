@@ -17,7 +17,7 @@ class UtilityController extends Controller
 
   public function people( Request $r ) {
 
-    $police_args = [ 'keystring' => 'organisation.people.view_people' ];
+    $police_args = [ 'keystring' => 'network.people.view_people' ];
 
     if ( $r->input( 'format' ) == 'json' ) {
 
@@ -25,15 +25,11 @@ class UtilityController extends Controller
 
     } else {
 
-      $police_args['redirect'] = '/organisation';
+      $police_args['redirect'] = '/network';
 
     }
 
-    Police::check( $police_args );
-
-    $project_id = $r->input( 'project_id' );
-
-    $project = Projects::find( $project_id );
+    //Police::check( $police_args );
 
     if ( $r->input( 'format') == 'json' ) {
 
@@ -50,7 +46,7 @@ class UtilityController extends Controller
       $people_filtered = [];
 
       $filter_members = $r->input( 'filter_members' );
-      $filter_option_name = "filter_organisation_members_" . get_user_id() . "_" . $project_id;
+      $filter_option_name = "filter_network_members_" . get_user_id() . "_" . $project_id;
 
       if ( empty( $filter_members ) ) $filter_members = Options::get( $filter_option_name, '' );
       else Options::set( $filter_option_name, $filter_members );
@@ -69,13 +65,9 @@ class UtilityController extends Controller
 
       return response()->json( [ 'people' => $people_filtered, 'filter_members' => intval( $filter_members ) > 0 ] );
 
-    } else {
-
-      if ( !$project ) return redirect( '/organisation' );
-
     }
 
-    return view( 'organisation.people' );
+    return view( 'network.people' );
 
   }
 

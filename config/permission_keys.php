@@ -523,6 +523,14 @@ $keys["projects"]["tests"]["view_test_results"] =
 						"access_type" => "r" 
 					];
 
+$keys["network"]["people"]["network_owner"] = 
+					[ 
+						"name" => "Network Owner", 
+						"message" => "You do not have enough permissions to proceed.", 
+						"keywords" => "owner administrator", 
+						"access_type" => "w" 
+					];
+
 
 
 	return $keys;

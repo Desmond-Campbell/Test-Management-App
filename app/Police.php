@@ -11,7 +11,7 @@ class Police
   public static function getKeys() {
   	
   	$keys = [];
-  	$keys['organisation'] = config( 'permission_keys.organisation' );
+  	$keys['network'] = config( 'permission_keys.network' );
   	$keys['projects'] = config( 'permission_keys.projects' );
  
     return $keys;
@@ -69,13 +69,13 @@ class Police
     $category = arg( $args, 'category', 'projects' );
     $key = arg( $args, 'key' );
 
-    if ( $section == 'organisation' ) {
+    if ( $section == 'network' ) {
 
       $user_id = arg( $args, 'user_id', get_user_id() );
       $user = User::find( $user_id );
       $debug = [ 'section' => $section, 'category' => $category, 'key' => $key, 'user_id' => $user_id, 'user' => $user ];
 
-      if ( !$user ) self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Person was not found in organisation.' ), 'debug' => $debug ], 'args' => $args ] );
+      if ( !$user ) self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Person was not found in network.' ), 'debug' => $debug ], 'args' => $args ] );
 
     } else {
 
@@ -102,7 +102,7 @@ class Police
 
     if ( empty( $keys[$section][$category][$key] ) ) return self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Permission denied because of an invalid key request.' ), 'debug' => $debug ], 'args' => $args ] );
 
-    if ( $section == 'organisation' ) {
+    if ( $section == 'network' ) {
 
       $member_key_restrictions = (array) try_json_decode( $user->permissions_exclude );
       $member_key_overrides = (array) try_json_decode( $user->permissions_include );
@@ -124,7 +124,7 @@ class Police
 
     // 3rd Check: deny if permission is included on any member role
 
-    $member_roles = $section != 'organisation' ? (array) try_json_decode( $member->roles ) : (array) try_json_decode( $user->roles );
+    $member_roles = $section != 'network' ? (array) try_json_decode( $member->roles ) : (array) try_json_decode( $user->roles );
 	 	$role_key_overrides = [];
 
     $debug['member_roles'] = [];

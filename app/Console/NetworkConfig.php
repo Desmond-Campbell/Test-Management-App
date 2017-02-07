@@ -17,6 +17,7 @@ class NetworkConfig extends Command
                                               {--sso_name= : Enter global name of user.},
                                               {--sso_timezone= : Enter network timezone as is.},
                                               {--sso_network= : Enter network name as is.},
+                                              {--sso_network_id= : Enter network ID as is.},
                                               ';
   protected $description = 'Create a default network owner.';
 
@@ -34,6 +35,7 @@ class NetworkConfig extends Command
     $sso_name = $argv->getParameterOption('--sso_name');
     $sso_timezone = $argv->getParameterOption('--sso_timezone');
     $sso_network = $argv->getParameterOption('--sso_network');
+    $sso_network_id = $argv->getParameterOption('--sso_network_id');
 
     Kernel::connection( $target );
     Config::set( 'database.default', $target );
@@ -48,6 +50,7 @@ class NetworkConfig extends Command
     \App\Options::set( 'timezone', $sso_timezone );
     \App\Options::set( 'timezone_hours', $timezoneOffset );
     \App\Options::set( 'network_name', $sso_network );
+    \App\Options::set( 'network_id', $sso_network_id );
     
     $this->info( Artisan::output() );
   

@@ -87,7 +87,7 @@ function get_url() {
 
 function orgpass( $args ) {
 
-  return \App\Police::check( [ 'keystring' => "organisation.$args", 'quickcheck' => true ] );
+  return \App\Police::check( [ 'keystring' => "network.$args", 'quickcheck' => true ] );
 
 }
 

@@ -22,23 +22,9 @@ class NetworkController extends Controller
 
   public function people( Request $r ) {
 
-    $police_args = [ 'keystring' => 'network.people.view_people' ];
-
-    if ( $r->input( 'format' ) == 'json' ) {
-
-      $police_args['return'] = true;
-
-    } else {
-
-      $police_args['redirect'] = '/network';
-
-    }
-
-    Police::check( $police_args );
+    Police::check( [ 'keystring' => 'network.people.view_people', 'return' => 1 ] );
 
     $project_id = $r->input( 'project_id' );
-
-    $project = Projects::find( $project_id );
 
     if ( $r->input( 'format') == 'json' ) {
 
@@ -97,13 +83,7 @@ class NetworkController extends Controller
 
       return response()->json( [ 'people' => $people_filtered, 'filter_members' => intval( $filter_members ) > 0 ] );
 
-    } else {
-
-      if ( !$project ) return redirect( '/' );
-
     }
-
-    return view( 'network.people' );
 
   }
 

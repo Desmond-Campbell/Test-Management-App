@@ -36,7 +36,7 @@
 
     <div class="alert alert-info-light md-container">
     	{{___( "Use this section to add a role to your project's team." )}}
-    	<a href="/organisation/people?then_to={{get_url()}}" title="{{___( "We'll take you back here when you're done." )}}">{{___( "Manage the people in your organisation here." )}}</a>
+    	<a href="/network/people?then_to={{get_url()}}" title="{{___( "We'll take you back here when you're done." )}}">{{___( "Manage the people in your network here." )}}</a>
     </div>
 
     <form class="form slim-form" role="form" method="post" action="" onsubmit="return false">
