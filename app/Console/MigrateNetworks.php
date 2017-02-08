@@ -29,7 +29,7 @@ class MigrateNetworks extends Command
 
     foreach ( $networks as $n ) {
     
-      $target = 'dev_net_' . str_pad( $n->id, 10, "0", STR_PAD_LEFT );
+      $target = env( 'NETWORK_DATABASE_PREFIX' ) . str_pad( $n->id, 10, "0", STR_PAD_LEFT );
       $domain = $n->domain;
       
       Kernel::connection( $target );

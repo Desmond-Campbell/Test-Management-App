@@ -55,7 +55,7 @@ class Networks
 
     } else {
 
-      return 'dev_net_' . str_pad( $network->id, 10, "0", STR_PAD_LEFT );
+      return env( 'NETWORK_DATABASE_PREFIX' ) . str_pad( $network->id, 10, "0", STR_PAD_LEFT );
 
     }
 

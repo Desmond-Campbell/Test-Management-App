@@ -60,7 +60,7 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 		} else {
 
-			$database = 'dev_net_' . str_pad( $network->id, 10, "0", STR_PAD_LEFT );
+			$database = env( 'NETWORK_DATABASE_PREFIX' ) . str_pad( $network->id, 10, "0", STR_PAD_LEFT );
 
 		}
 
