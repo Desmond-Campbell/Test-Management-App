@@ -47,6 +47,24 @@
         <md-tab label="{{___( "Steps" )}}">
           <div class="md-padding push-down">
 
+          <div ng-show="steps.length > 5" layout="row">
+            <div flex="75">
+
+              <md-input-container class="md-block no-margin-bottom">
+                <input ng-model="newstep" placeholder="{{___( "Enter a new step here..." )}}" ng-blur="addStep()" on-enter="addStep()" />
+              </md-input-container>
+
+                  <div class="pull-up">
+                    <button class="btn btn-success btn-sm" ng-click="addStep()"><i class="fa fa-check"></i> &nbsp; Add</button> &nbsp; 
+                    <button class="btn btn-warning btn-sm" ng-click="cancelAddStep()"><i class="fa fa-times"></i></button>
+                  </div>
+
+                  <br /><br />
+
+            </div>
+
+          </div>
+
             <div ng-repeat="s in steps" ng-class="getStepClass($index)" layout-padding layout="row">
 
               <div flex="5" class="number-column">
@@ -81,10 +99,11 @@
             <br />
 
             <md-input-container class="md-block">
-              <input ng-model="newstep" placeholder="{{___( "Enter a new step here..." )}}" ng-blur="addStep()" on-enter="addStep()" /> <br />
-                <button class="btn btn-success btn-sm" ng-click="addStep()"><i class="fa fa-check"></i></button> &nbsp; 
-                <button class="btn btn-warning btn-sm" ng-click="cancelAddStep()"><i class="fa fa-times"></i></button>
+              <input ng-model="newstep" placeholder="{{___( "Enter a new step here..." )}}" ng-blur="addStep()" on-enter="addStep()" />
             </md-input-container>
+
+                <button class="btn btn-success btn-sm" ng-click="addStep()"><i class="fa fa-check"></i> &nbsp; Add</button> &nbsp; 
+                <button class="btn btn-warning btn-sm" ng-click="cancelAddStep()"><i class="fa fa-times"></i></button>
             
           </div>
         </md-tab>

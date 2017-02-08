@@ -11,6 +11,7 @@ use App\Steps;
 use App\Batches;
 use App\Police;
 use App\TestActivities;
+use App\Activities;
 use App\Tests;
 use App\TeamMembers;
 use App\User;
@@ -290,6 +291,8 @@ class TestController extends Controller
 
       $result_id = Tests::create( $newtest )->id;
 
+      $user_id = get_user_id();
+
       $filter_hash = sha1( "create_test.$name." . date( 'Y-m-d' ) );
       $activity_values = [ 'name' => $name ];
 
@@ -381,6 +384,7 @@ class TestController extends Controller
                 ];
 
       $test = Tests::find( $test_id );
+       $user_id = get_user_id();
 
       $filter_hash = sha1( "update_test.$name." . date( 'Y-m-d' ) );
       $activity_values = [ 'old' => [], 'new' => [] ];
@@ -460,6 +464,8 @@ class TestController extends Controller
                 ];
 
     $test = Tests::find( $test_id );
+
+    $user_id = get_user_id();
 
     $filter_hash = sha1( "update_test_cases.$test_id." . date( 'Y-m-d' ) );
 
@@ -562,6 +568,7 @@ class TestController extends Controller
 
     $test = Tests::find( $test_id );
 
+    $user_id = get_user_id();
     $filter_hash = sha1( "update_testers.$test_id." . date( 'Y-m-d' ) );
     
     $newactivity = [
@@ -769,6 +776,7 @@ class TestController extends Controller
       $case_id = $step->case_id;
       $case = Cases::find( $case_id );
       $case_name = ___( 'Missing Case' );
+    $user_id = get_user_id();
 
       if ( $case ) $case_name = $case->name;
 
@@ -816,6 +824,7 @@ class TestController extends Controller
     $skip = $r->route( 'advance_type' ) == 'skip';
 
     TestActivities::advance( $activity_id, $skip );
+    $user_id = get_user_id();
 
     $result = [ 'success' => true ];
 

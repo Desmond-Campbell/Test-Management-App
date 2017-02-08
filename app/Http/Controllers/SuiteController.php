@@ -8,6 +8,7 @@ use App\Scenarios;
 use App\Cases;
 use App\Steps;
 use App\Police;
+use App\Activities;
 use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
