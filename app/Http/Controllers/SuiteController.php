@@ -8,6 +8,7 @@ use App\Files;
 use App\Scenarios;
 use App\Cases;
 use App\Steps;
+use App\Search;
 use App\Police;
 use App\Activities;
 use Response;
@@ -197,6 +198,11 @@ class SuiteController extends Controller
 
       Activities::create( $newactivity );
 
+      Search::foil( [ 'object_type' => 'test_suites', 
+                      'object_name' => $name, 
+                      'project_id' => $id, 
+                      'object_id' => $result_id ] );
+
     }
 
     return response()->json( $result );
@@ -215,7 +221,6 @@ class SuiteController extends Controller
     $suite = Suites::find( $suite_id );
 
     if ( !$suite ) return view('blocked');
-
 
     if ( $suite->project_id != $id ) return view('blocked');
     
@@ -309,6 +314,11 @@ class SuiteController extends Controller
 
       $suite->update( $changes );
 
+      Search::foil( [ 'object_type' => 'test_suites', 
+                      'object_name' => $name, 
+                      'project_id' => $id, 
+                      'object_id' => $suite_id ] );
+
       $changes['id'] = $suite_id;
 
       $result = [ 'success' => true, 'result' => $changes ];
@@ -361,10 +371,31 @@ class SuiteController extends Controller
     Activities::create( $newactivity );
 
     $suite->delete();
-    $children = Scenarios::where( 'suite_id', $suite_id );
-    $children->delete();
-    $grand_children = Cases::where( 'suite_id', $suite_id );
-    $grand_children->delete();
+    $children = Scenarios::where( 'suite_id', $suite_id )->get();
+    
+    foreach ( $children as $c ) {
+
+      Search::foil( [ 'object_type' => 'test_scenarios', 
+                      'project_id' => $id, 
+                      'object_id' => $c->id ] );
+      $c->delete();
+
+    }
+
+    $grand_children = Cases::where( 'suite_id', $suite_id )->get();
+    
+    foreach ( $grand_children as $g ) {
+
+      Search::foil( [ 'object_type' => 'test_cases', 
+                      'project_id' => $id, 
+                      'object_id' => $g->id ] );
+      $g->delete();
+
+    }
+
+    Search::unseed( [ 'object_type' => 'test_suites', 
+                      'project_id' => $id, 
+                      'object_id' => $suite_id ] );
 
     $result = [ 'success' => true ];
 
@@ -493,6 +524,11 @@ class SuiteController extends Controller
 
       Activities::create( $newactivity );
 
+      Search::foil( [ 'object_type' => 'test_scenarios', 
+                      'object_name' => $name, 
+                      'project_id' => $id, 
+                      'object_id' => $result_id ] );
+
       $result = [ 'success' => true, 'result_id' => $result_id ];
 
     }
@@ -599,6 +635,11 @@ class SuiteController extends Controller
 
       $scenario->update( $changes );
 
+      Search::foil( [ 'object_type' => 'test_scenarios', 
+                      'object_name' => $name, 
+                      'project_id' => $id, 
+                      'object_id' => $scenario_id ] );
+
       $changes['id'] = $scenario_id;
 
       $result = [ 'success' => true, 'result' => $changes ];
@@ -658,9 +699,21 @@ class SuiteController extends Controller
     Activities::create( $newactivity );
 
     $scenario->delete();
-    $grand_children = Cases::where( 'scenario_id', $scenario_id );
-    $suite->update( [ 'grand_children' => DB::raw( "grand_children - " . $grand_children->count() ), 'children' => DB::raw( 'children - 1' ) ] );
-    $grand_children->delete();
+    $children = Cases::where( 'scenario_id', $scenario_id )->get();
+    $suite->update( [ 'grand_children' => DB::raw( "grand_children - " . count( $children->count() ) ), 'children' => DB::raw( 'children - 1' ) ] );
+
+    foreach ( $children as $c ) {
+
+      Search::unseed( [ 'object_type' => 'test_cases', 
+                      'project_id' => $id, 
+                      'object_id' => $c->id ] );
+      $c->delete();
+
+    }
+
+    Search::unseed( [ 'object_type' => 'test_scenarios', 
+                      'project_id' => $id, 
+                      'object_id' => $scenario_id ] );
 
     $result = [ 'success' => true ];
 
@@ -956,6 +1009,11 @@ class SuiteController extends Controller
 
       Activities::create( $newactivity );
 
+      Search::foil( [ 'object_type' => 'test_cases', 
+                      'object_name' => $name, 
+                      'project_id' => $id, 
+                      'object_id' => $result_id ] );
+
       // Adjust case count on scenario
 
       Scenarios::find( $scenario_id )->update( [ 'children' => DB::raw( 'children + 1' ) ] );
@@ -1086,6 +1144,11 @@ class SuiteController extends Controller
 
       Activities::create( $newactivity );
 
+      Search::foil( [ 'object_type' => 'test_cases', 
+                      'object_name' => $name, 
+                      'project_id' => $id, 
+                      'object_id' => $case_id ] );
+
       $case->update( $changes );
 
       $changes['id'] = $case_id;
@@ -1152,6 +1215,11 @@ class SuiteController extends Controller
                     ];
 
     Activities::create( $newactivity );
+
+    Search::unseed( [ 'object_type' => 'test_cases', 
+                      'object_name' => $name, 
+                      'project_id' => $id, 
+                      'object_id' => $case_id ] );
 
     $case->delete();
     $scenario->update( [ 'children' => DB::raw( 'children - 1' ) ] );

@@ -91,7 +91,6 @@
         @else
           <button type="submit" class="btn btn-warning" ng-click="save(0)">{{__( "Save" )}}</button> 
         @endif
-&nbsp;    <button type="button" class="btn btn-danger" ng-click="deleteSuite()">{{__( "Delete" )}}</button>
 
       </form>
 

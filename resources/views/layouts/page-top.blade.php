@@ -27,7 +27,11 @@
             <div flex="70">
               <div layout="row">
                 <div flex="60" ng-controller="SearchCtrl">
-                  <input type="text" id="search-top" name="k" autocomplete="off" class="f/orm-control" placeholder="{{__( "Search..." )}}" />
+                  @if ( isset( $project ) || isset( $projec_id ) )
+                  <form method="get" action="/projects/{{isset( $project->id ) ? $project->id : $project_id }}/search">
+                    <input type="text" id="search-top" name="q" autocomplete="off" class="f/orm-control" placeholder="{{__( "Search..." )}}" value="{{arg( $_REQUEST, 'q' )}}" />
+                  </form>
+                  @endif
                 </div>
                 <div flex="40">
                   <div layout="row">

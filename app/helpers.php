@@ -161,9 +161,17 @@ function http_die( $args ) {
 
 	} else {
 
+		die( arg( $args, 'identifier' ) );
+
 		header( 'Location: ' . $link );
 		die;
 
 	}
+
+}
+
+function string_to_words( $string ) {
+
+	return str_replace( [ ',', '.', '!', '#' ], [ '', '', '', '' ], implode( ' ', array_unique( array_filter( explode( ' ', $string ) ) ) ) );
 
 }

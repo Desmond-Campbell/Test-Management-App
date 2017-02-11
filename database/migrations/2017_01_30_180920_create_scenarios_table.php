@@ -19,6 +19,7 @@ class CreateScenariosTable extends Migration
             $table->integer('suite_id');
             $table->string('name');
             $table->string('description')->nullable();
+            $table->text('files');
             $table->integer('children')->nullable()->default(0);
             $table->integer('user_id');
             $table->timestamps();

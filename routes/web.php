@@ -187,6 +187,11 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 			Route::get('/template', 'TemplateController@index');
 
+		// Search
+
+			Route::get('/projects/{project_id}/search', 'SearchController@index');
+			Route::get('/projects/{project_id}/o/{object_type}/{id}', 'SearchController@getObject');
+
 		// Projects
 
 			Route::get('/', 'ProjectController@index');

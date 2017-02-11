@@ -22,6 +22,8 @@ class Kernel extends ConsoleKernel
         UnMigrateNetworks::class,
         SeedNetwork::class,
         SeedNetworks::class,
+        IndexNetworks::class,
+        IndexNetwork::class,
         NetworkConfig::class,
         AddPerson::class,
         EditPerson::class,
@@ -38,6 +40,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('indexnetworks')->everyFiveMinutes();
     }
 
     /**
