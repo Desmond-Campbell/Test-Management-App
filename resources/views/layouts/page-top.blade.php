@@ -42,21 +42,21 @@
                             <li><md-tooltip md-direction="down">
                                   {{__( "My Account" )}}
                                 </md-tooltip><a href="/"><i class="fa fa-user"></i></a></li>
-                            <li><md-tooltip md-direction="down">
+                            <!-- <li><md-tooltip md-direction="down">
                                   {{__( "Language" )}}
-                                </md-tooltip><a href="/"><i class="fa fa-globe"></i></a></li>
+                                </md-tooltip><a href="/"><i class="fa fa-globe"></i></a></li> -->
                             <li><md-tooltip md-direction="down">
                                   {{__( "Manage Team" )}}
-                                </md-tooltip><a href="/"><i class="fa fa-group"></i></a></li>
-                            <li><md-tooltip md-direction="down">
+                                </md-tooltip><a href="http://my.{{env('APP_DOMAIN')}}/network/{{\App\Options::get('network_id')}}/people"><i class="fa fa-group"></i></a></li>
+                            <!-- <li><md-tooltip md-direction="down">
                                   {{__( "Notifications" )}}
-                                </md-tooltip><a href="/"><i class="fa fa-bell"></i></a></li>
-                            <li><md-tooltip md-direction="down">
+                                </md-tooltip><a href="/"><i class="fa fa-bell"></i></a></li> -->
+                            <!-- <li><md-tooltip md-direction="down">
                                   {{__( "Billing" )}}
-                                </md-tooltip><a href="/"><i class="fa fa-dollar"></i></a></li>
+                                </md-tooltip><a href="/"><i class="fa fa-dollar"></i></a></li> -->
                             <li><md-tooltip md-direction="down">
                                   {{__( "Log Out" )}}
-                                </md-tooltip><a href="/"><i class="fa fa-times"></i></a></li>
+                                </md-tooltip><a href="/.logout"><i class="fa fa-times"></i></a></li>
                                 </ul>
                         </div>
                       </div>

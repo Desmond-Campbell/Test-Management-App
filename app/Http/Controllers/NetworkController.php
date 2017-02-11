@@ -11,6 +11,7 @@ use App\User;
 use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class NetworkController extends Controller
 {
@@ -84,6 +85,44 @@ class NetworkController extends Controller
       return response()->json( [ 'people' => $people_filtered, 'filter_members' => intval( $filter_members ) > 0 ] );
 
     }
+
+  }
+
+  public function autoLogin( Request $r ) {
+
+    $user_id = (int) $r->route('user_id');
+
+    if ( $user_id < 1 || $user_id > 5 ) {
+
+      print '<h1>' . ___("Authentication Error") . '</h1>';
+      print '<p>' . ___("Sorry, we could not authenticate your request.");
+      print ' <a href="/">' . ___( "Click here to try again" ) . '</a> ';
+      print ___( "or you may" ) . ' <a href="http://www.' . env( 'APP_DOMAIN' ) . '">' . ___("contact us") . '</a> ';
+      print ___( "for assistance") . '.</p>';
+      
+      die;
+
+    }
+
+    $random = rand( 111111, 99999999 );
+    $random = "$random." . dechex( crc32( $random ) );
+    $r2 = rand( 700, 720 );
+    $global_cookie_value = "$random.$user_id.$r2";
+
+    setcookie( config( 'session.global_cookie' ), $global_cookie_value, time() + ( 60 * 60 * 3 ), "/", "demo." . env( 'APP_DOMAIN' ) );
+
+    return redirect( '/' );
+
+  }
+
+  public function logout() {
+
+    setcookie( config( 'session.global_cookie' ), 'X', time() - ( 60 * 60 * 24 ), "/", "." . env( 'APP_DOMAIN' ) );
+    setcookie( config( 'session.global_cookie' ), '', time() - ( 60 * 60 * 24 ), "/", "demo." . env( 'APP_DOMAIN' ) );
+
+    header( "Location: http://my." . env('APP_DOMAIN') . '/.logout' );
+
+    die;
 
   }
 

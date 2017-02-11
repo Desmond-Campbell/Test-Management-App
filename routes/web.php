@@ -154,25 +154,42 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 		}
 
-		if ( $login_redir ) {
+		if ( $domain != 'demo' ) {
 
-    	http_die( [ 
-								'url' => "$www_host", 
-								'identifier' => "invalid_cookie", 
-								'message' => ___( 'We were unable to log you into the network you requested, due to an authentication error.' ) 
-								] 
-						);
+			if ( $login_redir ) {
 
-		}
+	    	http_die( [ 
+									'url' => "$www_host", 
+									'identifier' => "invalid_cookie", 
+									'message' => ___( 'We were unable to log you into the network you requested, due to an authentication error.' ) 
+									] 
+							);
 
-		if ( $network_redir ) {
+			}
 
-    	http_die( [ 
-								'url' => "$www_network_redirect", 
-								'identifier' => "no_access", 
-								'message' => ___( 'We were unable to log you into the network you requested, due to an authentication error.' ) 
-								] 
-						);
+			if ( $network_redir ) {
+
+	    	http_die( [ 
+									'url' => "$www_network_redirect", 
+									'identifier' => "no_access", 
+									'message' => ___( 'We were unable to log you into the network you requested, due to an authentication error.' ) 
+									] 
+							);
+
+			}
+
+		} else {
+
+			if ( $login_redir ) {
+
+	      if ( substr( $_SERVER['REQUEST_URI'], 0, 18 ) != '/network/autologin' ) {
+
+		      print_r(View::make('auth.autologin' )->render());
+		      die;
+
+		    }
+
+	    }
 
 		}
 
@@ -186,6 +203,7 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 		// General
 
 			Route::get('/template', 'TemplateController@index');
+			Route::get('/.logout', 'NetworkController@logout');
 
 		// Search
 
@@ -318,6 +336,7 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 		// Network
 
 			Route::get('/network/people', 'NetworkController@people');
+			Route::get('/network/autologin/{user_id}', 'NetworkController@autoLogin');
 
 			// Lists
 

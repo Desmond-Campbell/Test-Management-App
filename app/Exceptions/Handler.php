@@ -5,6 +5,12 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
+use App\Errors;
+use App\ErrorDetails;
 
 class Handler extends ExceptionHandler
 {
@@ -35,14 +41,14 @@ class Handler extends ExceptionHandler
         
         if ( env('ERROR_REPORTER') ) {
 
-            header( "content-type: text/plain" );
+            // header( "content-type: text/plain" );
 
             $string = $exception->__toString();
                 $lines = explode( "\n", $string );
                     $desc_lines = explode( "\\", explode( ":", $lines[0] )[0] );
-                    $class = $desc_lines[count( $desc_lines ) - 1]; 
+                    $class = explode( " in ", $desc_lines[count( $desc_lines ) - 1] )[0]; 
             $code_line_n = 0;
-            $error = [];
+            $error = $error_details = [];
             
             $extract = '';
             $file = @file_get_contents( $exception->getFile() );
@@ -73,24 +79,69 @@ class Handler extends ExceptionHandler
             
             }
             
-            $error['description'] = $lines[0];
+            $error['description'] = $description = $lines[0];
             $error['code'] = $exception->getCode();
             $error['line'] = $exception->getLine();
             $error['message'] = $exception->getMessage();
             $error['class'] = $class;
             $error['codeline'] = $code_line_n;
             $error['path'] = $exception->getFile();
-            $error['extract'] = $extract;
-            $error['server'] = $_SERVER;
-            $error['get'] = $_GET;
-            $error['post'] = $_POST;
-            $error['request'] = $_REQUEST;
-            $error['cookie'] = $_COOKIE;
-            $error['environment'] = env('APP_ENV');
-            $error['debug'] = env('APP_DEBUG');
-            $error['string'] = $string;
+            $error['hash'] = sha1( $error['code'] . $error['codeline'] . $error['path'] . $error['class'] );
+            $error['app_id'] = env( 'APP_ID', 'NA' );
+            $error['app_env'] = env( 'APP_ENV', 'NA' );
+            
+            $error_details['extract'] = json_encode( $extract );
+            $error_details['variables'] = json_encode( [ 'server' => $_SERVER, 'get' => $_GET, 'post' => $_POST, 'request' => $_REQUEST, 'cookie' => $_COOKIE ] );
+            $error_details['debug'] = env('APP_DEBUG');
+            $error_details['trace'] = $string;
+            $error_details['ip'] = arg( $_SERVER, 'REMOTE_ADDR', '' );
+            $error_details['browser'] = arg( $_SERVER, 'HTTP_USER_AGENT', '' );
+            $error_details['url'] = arg( $_SERVER, 'REQUEST_SCHEME', 'http' ) . '://'  . arg( $_SERVER, 'HTTP_HOST', '' ) . arg( $_SERVER, 'REQUEST_URI', '' );
 
-            print_r( $error );
+            if ( !env( 'APP_DEBUG' ) ) {
+
+                $database = env( 'DB_DATABASE' );
+                $connection = [];
+                $connection['driver'] = env( 'DB_CONNECTION' );
+                $connection['host'] = env( 'DB_HOST' );
+                $connection['port'] = env( 'DB_PORT' );
+                $connection['database'] = $database;
+                $connection['username'] = env( 'DB_USERNAME' );
+                $connection['password'] = env( 'DB_PASSWORD' );
+
+                Config::set( "database.connections.$database", $connection );
+                Config::set( 'database.default', $database );
+
+                // Find error
+                $repeat = Errors::where( 'hash', $error['hash'] )->first();
+
+                if ( !$repeat ) {
+
+                    $error_id = Errors::create( $error )->id;
+
+                } else {
+
+                    $error_id = $repeat->id;
+                    $offences = $repeat->offences;
+                    $repeat->update( [ 'offences' => $offences + 1 ] );
+
+                }
+
+                $error_details['error_id'] = $error_id;
+
+                $details_id = ErrorDetails::create( $error_details )->id;
+
+                $reference_number = "$error_id-$details_id";
+
+            } else {
+
+                $reference_number = 0;
+
+            }
+
+            $template = $class == 'NotFoundHttpException' ? '400' : '500';
+
+            print_r(View::make('errors.' . $template, compact( 'reference_number', 'description', 'string', 'class' ) )->render());
 
             die;
 
