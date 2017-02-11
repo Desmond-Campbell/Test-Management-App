@@ -20,6 +20,7 @@
   <div id="header-toolbar">
     <ul class="toolbar">
       <li><a href="/projects/{{$project->id}}/suites/new"><img src="/img/toolbar/new.png" class="toolbar-icon" /> {{___( "Add Suite" )}}</a></li>
+      <li><md-tooltip md-direction="down">{{__( "Reload this Page" )}}</md-tooltip><a href="javascript:location.reload()"><i class="fa fa-refresh"></i>  </a></li>
     </ul>
   </div>
 @stop

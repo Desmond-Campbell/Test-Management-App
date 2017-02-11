@@ -72,7 +72,7 @@
 
       <div>
         <h1 class="display-3">{{___("Auto Log In")}}</h1>
-        <p>{{___("You're about to enter our demo environment. We will log you in with one of the following accounts. Please note that this will clear any current logged in session into a real network.")}}</p>
+        <p>{{___("You're about to enter our demo environment. We will log you in with one of the following accounts. Please note that this will clear any current logged in session to a real network.")}}</p>
 
       </div>
 
@@ -91,31 +91,31 @@
             </tr>
 
             <tr>
-              <td>1. Vladimir Polochek</td>
+              <td>{{___("1. Vladimir (Network Owner)")}}</td>
               <td><strong>{{___("Network Owner")}}</strong><br /><small>{{___("This user can do everything possible in a network, on projects, with teams, etc. He's the super administrator guy.") }}</small></td>
               <td><a href="/network/autologin/1" class="btn btn-primary btn-sm" style="color: #FFF !important">{{___("Use This")}}</a></td>
             </tr>
 
             <tr>
-              <td>2. Justin Denton</td>
+              <td>{{___("2. Justin (Admin)")}}</td>
               <td><strong>{{___("Administrator")}}</strong><br /><small>{{___("This user can perform most actions that the super administrator (Vladimir Polocheck) can perform. He's just not a network owner.") }}</small></td>
               <td><a href="/network/autologin/2" class="btn btn-primary btn-sm" style="color: #FFF !important">{{___("Use This")}}</a></td>
             </tr> 
 
             <tr>
-              <td>3. Dimitri Lebedeev</td>
+              <td>{{___("3. Dimitri (Project Admininistrator)")}}</td>
               <td><strong>{{___("Project Admin")}}</strong><br /><small>{{___("This user can perform most actions related to projects and members throughout the network, but can't manage the network itself.") }}</small></td>
               <td><a href="/network/autologin/3" class="btn btn-primary btn-sm" style="color: #FFF !important">{{___("Use This")}}</a></td>
             </tr>
 
             <tr>
-              <td>4. Nasine Bulochev</td>
-              <td><strong>{{___("Singular Project Admin")}}</strong><br /><small style="color: #FFF !important">{{___("This user can perform most actions related to projects that they have created only.") }}</small></td>
+              <td>{{___("4. Nadine (Project Manager)")}}</td>
+              <td><strong>{{___("Singular Project Admin")}}</strong><br /><small>{{___("This user can perform most actions related to projects that they have created only.") }}</small></td>
               <td><a href="/network/autologin/4" class="btn btn-primary btn-sm" style="color: #FFF !important">{{___("Use This")}}</a></td>
             </tr>
 
             <tr>
-              <td>5. Gladys Truman</td>
+              <td>{{___("5. Gladys (Tester)")}}</td>
               <td><strong>{{___("Tester")}}</strong><br /><small>{{___("This user can only execute tests.") }}</small></td>
               <td><a href="/network/autologin/5" class="btn btn-primary btn-sm" style="color: #FFF !important">{{___("Use This")}}</a></td>
             </tr>     
@@ -128,12 +128,14 @@
           <h3>{{___("Additional Information")}}</h3>
           <p>{{___("While you're in the demo, please note the following:")}}</p>
           <ul>
+            <li>{{___("You can't access or modify details for these accounts.")}}</li>
+            <li>{{___("You can't access or modify details of the network.")}}</li>
             <li>{{___("You can't create additional people in the network.")}}</li>
-            <li>{{___("You can't add or remove people to a project.")}}</li>
+            <li>{{___("You can't add or remove people to/from a project.")}}</li>
             <li>{{___("You can't change permissions for people in a project.")}}</li>
           </ul>
           <h4>{{___("Why?")}}</h4>
-          <p>{{___("We are trying to make this environment suitable for proper testing. Therefore, we decided to control some of the permissions so that at any point in time, anyone who participates in a demo will be able to benefit from the configurations.")}}</p>
+          <p>{{___("We are trying to make this environment suitable for proper demonstration of the benefits of SaasTest. Therefore, we decided to control some of the permissions so that at any point in time, anyone who participates in a demo will be able to benefit from the configurations.")}}</p>
           <p><strong>{{___("NB: The data in our demo network resets every few hours.")}}</strong></p>
         </div>
 

@@ -1217,7 +1217,7 @@ class SuiteController extends Controller
     Activities::create( $newactivity );
 
     Search::unseed( [ 'object_type' => 'test_cases', 
-                      'object_name' => $name, 
+                      'object_name' => $case->name, 
                       'project_id' => $id, 
                       'object_id' => $case_id ] );
 

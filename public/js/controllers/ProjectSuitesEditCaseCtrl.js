@@ -81,6 +81,53 @@ app.controller('ProjectSuitesEditCaseCtrl', ['$scope', '$http', '$mdDialog', '$t
 
 	};
 
+	$scope.deleteCase = function () {
+
+		if ( !getconfirm() ) return;
+	
+		$id = $scope.project_id;
+  	$caseurl = '/projects/' + $id + '/suites/' + $scope.suite_id + '/scenario/' + $scope.case.scenario_id + '/delete-case/' + $scope.case_id;
+
+		l(1);
+		$http.delete( $caseurl ).then( 
+			
+			function ( r ) {
+				
+				l(0);
+		
+				if ( typeof r.data.errors != 'undefined' ) {
+
+					_alert( r.data.errors, 1 );
+
+				} else {
+					
+					pageconfig = $("#pageconfig").val();
+					
+					if ( pageconfig != 1 ) {
+
+						location.assign( '/projects/' + $id + '/suites?suite_id=' + $scope.suite_id + '&scenario_id=' + $scope.case.scenario_id );
+
+					} else {
+
+						$scope.case = {};
+						$scope.cancel( null );
+
+					}
+
+				}
+			
+			},
+
+			function () {
+
+				l(0);
+		
+				_alert( 'Failed to delete test case.' );
+
+			});
+
+	};
+
 	$scope.cancel = function ( result ) {
 		parent.passResult( result );
 	};

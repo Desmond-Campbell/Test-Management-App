@@ -13,7 +13,9 @@ class SeedNetwork extends Command
 {
   
   protected $signature = 'seednetwork {--domain= : Enter network domain as stored in networks table.},
-                                      {--class= : Enter PHP class name.}';
+                                      {--class= : Enter PHP class name.}
+                                      {--database= : Enter database name.}
+                                      ';
   protected $description = 'Run seeders on a single network database.';
 
   public function __construct() {
@@ -25,7 +27,14 @@ class SeedNetwork extends Command
   public function handle() {
     
     $argv = new ArgvInput();
-    $target = \App\Networks::getDatabase( $argv->getParameterOption('--domain') );
+    $target = $argv->getParameterOption('--database');
+
+    if ( !$target ) {
+
+      $target = \App\Networks::getDatabase( $argv->getParameterOption('--domain') );
+
+    }
+    
     $class = $argv->getParameterOption('--class');
     
     Kernel::connection( $target );

@@ -12,7 +12,9 @@ use Symfony\Component\Console\Input\ArgvInput;
 class MigrateNetwork extends Command
 {
   
-  protected $signature = 'migratenetwork {--domain= : Enter network domain as stored in networks table.}';
+  protected $signature = 'migratenetwork {--domain= : Enter network domain as stored in networks table.}
+                                      {--database= : Enter database name.}
+                                                                          ';
   protected $description = 'Run migrations on a single network database.';
 
   public function __construct() {
@@ -24,7 +26,13 @@ class MigrateNetwork extends Command
   public function handle() {
     
     $argv = new ArgvInput();
-    $target = \App\Networks::getDatabase( $argv->getParameterOption('--domain') );
+    $target = $argv->getParameterOption('--database');
+
+    if ( !$target ) {
+
+      $target = \App\Networks::getDatabase( $argv->getParameterOption('--domain') );
+
+    }
     
     Kernel::connection( $target );
     Config::set( 'database.default', $target );

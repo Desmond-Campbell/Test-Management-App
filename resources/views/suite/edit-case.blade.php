@@ -31,9 +31,15 @@
     <input type="hidden" id="project_id" value="{{$project->id}}" />
     <input type="hidden" id="suite_id" value="{{$suite->id}}" />
     <input type="hidden" id="case_id" value="{{$case->id}}" />
-    <input type="hidden" id="pageconfig" value="{{Config::get('pageconfig')}}" />
+    <input type="hidden" id="pageconfig" value="{{Config::get('pageconfig') == 'full-template'? 1 : 0}}" />
     
-    <h1 class="no-margin-top">{{___( "Edit Test Case" )}}</h1>
+    <h1 class="no-margin-top">{{___( "Edit Test Case" )}} 
+      @if ( Config::get('pageconfig') == 'full-template' ) &nbsp; <button type="button" class="btn btn-default btn-small" ng-click="cancel()"><i class="fa fa-times"></i> &nbsp; {{__( "Close" )}}</button> 
+      @endif
+       &nbsp; <button type="button" class="btn btn-danger btn-small" ng-click="deleteCase()"><i class="fa fa-trash"></i> &nbsp; {{__( "Delete" )}}</button>
+    </h1>
+
+    <h4>@{{case.name}}</h4>
 
     <br />
 
@@ -55,7 +61,7 @@
               </md-input-container>
 
                   <div class="pull-up">
-                    <button class="btn btn-success btn-sm" ng-click="addStep()"><i class="fa fa-check"></i> &nbsp; Add</button> &nbsp; 
+                    <button class="btn btn-success btn-sm" ng-click="addStep()"><i class="fa fa-check"></i> &nbsp; {{___("Add")}}</button> &nbsp; 
                     <button class="btn btn-warning btn-sm" ng-click="cancelAddStep()"><i class="fa fa-times"></i></button>
                   </div>
 
@@ -102,7 +108,7 @@
               <input ng-model="newstep" placeholder="{{___( "Enter a new step here..." )}}" ng-blur="addStep()" on-enter="addStep()" />
             </md-input-container>
 
-                <button class="btn btn-success btn-sm" ng-click="addStep()"><i class="fa fa-check"></i> &nbsp; Add</button> &nbsp; 
+                <button class="btn btn-success btn-sm" ng-click="addStep()"><i class="fa fa-check"></i> &nbsp; {{___("Add")}}</button> &nbsp; 
                 <button class="btn btn-warning btn-sm" ng-click="cancelAddStep()"><i class="fa fa-times"></i></button>
             
           </div>
@@ -159,7 +165,7 @@
           <br />
 
           <button type="submit" class="btn btn-success" ng-click="save()">{{__( "Save" )}}</button> 
-          <button type="reset" class="btn btn-danger" ng-click="cancel()">{{__( "Cancel" )}}</button> 
+          <button type="reset" class="btn btn-danger" ng-click="cancel()">{{__( "Close" )}}</button> 
         <md-tab label="{{___( "Properties" )}}">
           <div class="md-padding push-down">
       
@@ -197,7 +203,7 @@
           <br />
 
           <button type="submit" class="btn btn-success" ng-click="save()">{{__( "Save" )}}</button> 
-          <button type="reset" class="btn btn-danger" ng-click="cancel()">{{__( "Cancel" )}}</button> 
+          <button type="reset" class="btn btn-danger" ng-click="cancel()">{{__( "Close" )}}</button> 
 
           </form>
 
