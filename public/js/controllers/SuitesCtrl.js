@@ -90,7 +90,7 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 
 		$scope.editSuite = function(id) {
 
-    	$suiteurl = $scope.suites_url + $scope.suite.id + '/edit';
+    	$suiteurl = $scope.suites_url + id + '/edit';
 	    $mdDialog.show({
 	      controller: FrameDialogCtrl,
 	      templateUrl: '/template?w=' + $(window).width() + '&h=' + $(window).height() + '&url=' + $suiteurl,
@@ -547,6 +547,40 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 	    });
 	  };
 
+	  $scope.deleteCase = function (id) {
+
+			$id = $scope.project_id;
+    	$caseurl = $scope.suites_url + $scope.suite.id + '/scenario/' + $scope.scenario.id + '/delete-case/' + id;
+
+			l(1);
+			$http.delete( $caseurl ).then( 
+				
+				function ( r ) {
+					
+					l(0);
+			
+					if ( typeof r.data.errors != 'undefined' ) {
+
+						_alert( r.data.errors, 1 );
+
+					} else {
+						
+						$scope.getCases();
+
+					}
+				
+				},
+
+				function () {
+
+					l(0);
+			
+					_alert( 'Failed to delete test case.' );
+
+				});
+
+		};
+
 	  $scope.addCase = function(ev) {
 
     	err = 0;
@@ -620,11 +654,3 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 	  };
 
 }]);
-
-function receiveResult( result ){
-
-	$('md-backdrop').hide();
-	$('.md-dialog-container').hide();
-	$('.md-scroll-mask').hide();
-
-}

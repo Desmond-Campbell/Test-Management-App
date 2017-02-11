@@ -127,8 +127,7 @@
                   <label>{{__( "Pass Criteria" )}}</label>
                   <textarea class="md-block input-lg md-no-underline" 
                         id="case-pass"
-                        maxlength="72" 
-                        ng-model="case.pass">
+                        ng-model="case.pass_criteria">
                   </textarea>
 
                 </md-input-container>
@@ -146,8 +145,7 @@
                   <label>{{__( "Fail Criteria" )}}</label>
                   <textarea class="md-block input-lg md-no-underline" 
                         id="case-fail"
-                        maxlength="72" 
-                        ng-model="case.fail">
+                        ng-model="case.fail_criteria">
                   </textarea>
 
                 </md-input-container>
@@ -174,7 +172,7 @@
                 <label>{{__( "Test Case Name" )}}</label>
                 <input class="md-block input-lg md-no-underline" 
                       id="case-name"
-                      maxlength="50" 
+                      maxlength="255" 
                       ng-model="case.name" />
 
               </md-input-container>
@@ -188,7 +186,6 @@
                 <label>{{__( "Short Description" )}}</label>
                 <input class="md-block input-lg md-no-underline" 
                       id="case-description"
-                      maxlength="72" 
                       ng-model="case.description" />
 
               </md-input-container>

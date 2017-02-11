@@ -31,7 +31,7 @@
     <input type="hidden" id="project_id" value="{{$project->id}}" />
     <input type="hidden" id="suite_id" value="{{$suite->id}}" />
     <input type="hidden" id="scenario_id" value="{{$scenario->id}}" />
-    <input type="hidden" id="pageconfig" value="{{Config::get('pageconfig')}}" />
+    <input type="hidden" id="pageconfig" value="<?php print Config::get('hidefull') ? 1 : 0; ?>" />
     
     <h1 class="no-margin-top">{{___( "Edit Test Scenario" )}}</h1>
 
@@ -56,7 +56,7 @@
                 <label>{{__( "Scenario Name" )}}</label>
                 <input class="md-block input-lg md-no-underline" 
                       id="scenario-name"
-                      maxlength="50" 
+                      maxlength="255" 
                       ng-model="scenario.name" />
 
               </md-input-container>
@@ -70,7 +70,6 @@
                 <label>{{__( "Description" )}}</label>
                 <input class="md-block input-lg md-no-underline" 
                       id="scenario-description"
-                      maxlength="72" 
                       ng-model="scenario.description" />
 
               </md-input-container>
@@ -90,8 +89,37 @@
         <md-tab label="{{___( "Files" )}}">
           <div class="md-padding push-down">
 
+            <div layout="flex">
+
+              <div flex="45">
+                <h4>{{___( "Select file(s) from your computer and click Upload." )}}</h4>
+                <input type="file" id="file1" name="file" multiple ng-files="getTheFiles($files)" /> <br />
+                <button type="submit" class="btn btn-warning" ng-click="uploadFiles()">{{__( "Upload" )}}</button> 
+              </div>
+
+              <div flex="5">
+              </div>
+
+              <div flex="50" class="short-div">
+
+                <ul class="list-group">
+                  <li class="list-group-item" ng-repeat="f in scenariofiles">
+                    <table>
+                      <tr>
+                        <td width="5%">
+                          <button class="btn btn-default" ng-click="deleteScenarioFile(f.id)"><i class="fa fa-trash"></i></button>
+                        </td>
+                        <td style="padding-left:15px">
+                          @{{f.name}}
+                        </td>
+                      </tr>
+                    </table>
+                  </li>
+                </ul>
+
+              </div>
             
-            
+            </div>
           </div>
         </md-tab>
         

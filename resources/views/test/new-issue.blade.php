@@ -13,6 +13,7 @@
       <input type="hidden" id="activity_id" value="{{$activity->id}}" />
       <input type="hidden" id="step_id" value="{{$step->id}}" />
       <input type="hidden" id="batch_id" value="{{$batch_id}}" />
+      <input type="hidden" id="pageconfig" value="<?php print Config::get('hidefull') ? 1 : 0; ?>" />
 
       <div class="heading-cell">
         <h2>{{___( "New Issue" )}}</h2>

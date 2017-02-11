@@ -311,6 +311,15 @@ a:hover {
 	background: none !important;
 }
 
+.label-small-round {
+	border-radius: 10px;
+	-khtml-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	padding:5px;
+	text-align:center;
+}
+
 md-input-container label, label.form-label {
 
 	font-size: 20px;
@@ -456,6 +465,12 @@ li,
 
 .smaller-text {
 	font-size: 87%;
+}
+
+.short-div {
+	width: 50%;
+	height: 300px;
+	overflow-y: auto;
 }
 
 #loading-container {

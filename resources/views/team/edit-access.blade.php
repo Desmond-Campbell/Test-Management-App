@@ -57,7 +57,7 @@
               </div>
 
               <fieldset class="demo-fieldset" >
-                <div layout="row" layout-wrap flex>
+                <div layout="row" layout-wrap flex class="short-div">
                   <div flex-xs flex="50" ng-show="roles.length > 5">
                     <md-checkbox aria-label="{{___( "Select All" )}}"
                                  ng-checked="isChecked()"
@@ -88,7 +88,7 @@
               </div>
 
               <fieldset class="demo-fieldset" >
-                <div layout="row" layout-wrap flex>
+                <div layout="row" layout-wrap flex class="short-div">
                   <div flex-xs flex="50" ng-show="overrides.length > 5">
                     <md-checkbox aria-label="{{___( "Select All" )}}"
                                  ng-checked="isCheckedO()"
@@ -119,7 +119,7 @@
               </div>
 
               <fieldset class="demo-fieldset" >
-                <div layout="row" layout-wrap flex>
+                <div layout="row" layout-wrap flex class="short-div">
                   <div flex-xs flex="50" ng-show="restrictions.length > 5">
                     <md-checkbox aria-label="{{___( "Select All" )}}"
                                  ng-checked="isCheckedR()"

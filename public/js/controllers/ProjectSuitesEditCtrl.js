@@ -34,7 +34,11 @@ app.controller('ProjectSuitesEditCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 
 	$scope.getSuite();
 
-	$scope.save = function () {
+	$scope.saveOnly = function () { $scope.save( 0 ); };
+
+	$scope.saveAndClose = function () { $scope.save( 1 ); };
+
+	$scope.save = function ( close ) {
 
 		$id = $scope.project_id;
 
@@ -52,6 +56,8 @@ app.controller('ProjectSuitesEditCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 				} else {
 					
 					_notifySuccess( 'Test suite updated successfully' );
+
+					if ( close ) parent.passResult( null );
 
 				}
 			

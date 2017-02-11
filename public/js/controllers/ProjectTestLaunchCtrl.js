@@ -7,6 +7,11 @@ app.controller('ProjectTestLaunchCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 	$scope.step_id = 0;
 	$scope.activity_id = 0;
 
+	getActivity = function () {
+		console.log('ccccc');
+		$scope.getActivity();
+	}
+
 	$scope.getActivity = function () {
 
 		$id = $scope.project_id;
@@ -31,8 +36,10 @@ app.controller('ProjectTestLaunchCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 					$scope.case = r.data.case;
 					$scope.scenario = r.data.scenario;
 
+					updateActivity = $timeout( getActivity, '10000' );
+
 				}
-			
+
 			},
 
 			function () {
@@ -45,7 +52,10 @@ app.controller('ProjectTestLaunchCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 
 	};
 
+	// updateActivity = window.setInterval( $scope.getActivity(), '10000' );
 	$scope.getActivity();
+
+	$scope.reload = function () { location.reload(); }
 
 	$scope.passTest = function(ev) {
 

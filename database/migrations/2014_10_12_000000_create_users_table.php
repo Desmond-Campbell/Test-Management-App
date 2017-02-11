@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email', 128);
             $table->string('password');
             $table->integer('sso_id');
+            $table->boolean('is_network_owner');
             $table->text('permissions_include')->nullable();
             $table->text('permissions_exclude')->nullable();
             $table->timestamps();

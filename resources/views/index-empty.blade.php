@@ -1,3 +1,4 @@
+<?php $hidefull = Config::get('pageconfig') == 'full-template'; ?><!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,7 +19,11 @@
 
   <div layout="column">
     
+    @if ( !$hidefull )
+
     @include('layouts.page-top')
+
+    @endif
 
     <div flex>
       

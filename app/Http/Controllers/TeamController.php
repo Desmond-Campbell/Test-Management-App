@@ -20,7 +20,12 @@ class TeamController extends Controller
   public function __construct( Request $r )
   {
 
-    if ( $r->input( 'request-type' ) == 'full-template' ) Config::set( 'pageconfig', 'full-template' );
+    if ( $r->input( 'request-type' ) == 'full-template' ) {
+
+      Config::set( 'pageconfig', 'full-template' );
+      Config::set( 'hidefull', true );
+
+    }
 
   }
 
@@ -487,6 +492,18 @@ class TeamController extends Controller
     $id = $r->route( 'project_id' );
 
     police( [ 'keystring' => 'projects.team.update_role', 'project_id' => $id ] );
+
+    if ( block( 'team.view_role_permissions', $id ) ) {
+
+      http_die( [ 'message' => ___( 'An authentication error occured. You have permissions to update the role, but you also need permission to view the permissions on the role. Please contact project or network owner.' ), 'url' => '/projects/' . $id, 'kill' => true ] );
+
+    }
+
+    if ( block( 'team.view_role', $id ) ) {
+
+      http_die( [ 'message' => ___( 'An authentication error occured. You have permissions to update the role, but you also need permission to view the role. Please contact project or network owner.' ), 'url' => '/projects/' . $id, 'kill' => true ] );
+
+    }
 
     $role_id = $r->route( 'role_id' );
 

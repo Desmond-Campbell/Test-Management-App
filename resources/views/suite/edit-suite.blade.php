@@ -85,7 +85,12 @@
 
         @endif
 
-        <button type="submit" class="btn btn-success" ng-click="save()">{{__( "Save" )}}</button> 
+        @if ( Config::get('hidefull') )
+          <button type="submit" class="btn btn-success" ng-click="saveAndClose()">{{__( "Save &amp; Close" )}}</button>
+          <button type="submit" class="btn btn-warning" ng-click="saveOnly()">{{__( "Save" )}}</button> 
+        @else
+          <button type="submit" class="btn btn-warning" ng-click="save(0)">{{__( "Save" )}}</button> 
+        @endif
 &nbsp;    <button type="button" class="btn btn-danger" ng-click="deleteSuite()">{{__( "Delete" )}}</button>
 
       </form>

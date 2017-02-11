@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Projects;
 use App\Suites;
+use App\Files;
 use App\Scenarios;
 use App\Cases;
 use App\Steps;
@@ -21,7 +22,12 @@ class SuiteController extends Controller
   public function __construct( Request $r )
   {
 
-    if ( $r->input( 'request-type' ) == 'full-template' ) Config::set( 'pageconfig', 'full-template' );
+    if ( $r->input( 'request-type' ) == 'full-template' ) {
+
+      Config::set( 'pageconfig', 'full-template' );
+      Config::set( 'hidefull', true );
+
+    }
 
   }
 
@@ -47,7 +53,15 @@ class SuiteController extends Controller
 
         foreach ( $suites as $suite ) {
 
-          $output[] = $suite->name;
+          if ( block( 'suites.view_all_suites', $id ) ) {
+
+            if ( $suite->user_id == get_user_id() ) $output[] = $suite->name;
+
+          } else {
+
+            $output[] = $suite->name;
+
+          }
 
         }
 
@@ -55,7 +69,23 @@ class SuiteController extends Controller
 
       }
 
-      return response()->json( [ 'suites' => $suites ] );
+      $filtered_suites = [];
+
+      foreach ( $suites as $suite ) {
+
+        if ( block( 'suites.view_all_suites', $id ) ){
+
+          if ( $suite->user_id == get_user_id() ) $filtered_suites[] = $suite;
+
+        } else {
+
+          $filtered_suites[] = $suite;
+
+        }
+
+      }
+
+      return response()->json( [ 'suites' => $filtered_suites ] );
 
     } else {
 
@@ -120,9 +150,12 @@ class SuiteController extends Controller
 
     } else {
 
+      $user_id = get_user_id();
+ 
       $newsuite = [
                   'name'          => $name,
                   'project_id'    => $id,
+                  'user_id'    => $user_id,
                   'description'   => $description
                 ];
 
@@ -149,8 +182,6 @@ class SuiteController extends Controller
       }
 
       $result = [ 'success' => true, 'result_id' => $result_id ];
-
-      $user_id = get_user_id();
 
       $filter_hash = sha1( "create_suite.$name." . date( 'Y-m-d' ) );
       $activity_values = [ 'name' => $name ];
@@ -293,7 +324,7 @@ class SuiteController extends Controller
     $id = $r->route( 'project_id' );
     $suite_id = $r->route( 'suite_id' );
 
-    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.delete_suites', 'return' => 1 ] );
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.delete_suite', 'return' => 1 ] );
 
     $project = Projects::find( $id );
 
@@ -304,6 +335,17 @@ class SuiteController extends Controller
     if ( $suite->project_id != $id ) return [ 'errors' => ___( 'Suite not found.' ) ];;
 
     $user_id = get_user_id();
+
+    if ( block( 'suites.delete_all_suites', $id ) ) {
+
+      if ( $suite->user_id != $user_id ) {
+
+        return [ 'errors' => ___( "You are not allowed to delete test suites by others." ) ];
+
+      }
+
+    }
+
     $filter_hash = sha1( "delete_suite.$suite_id." . date( 'Y-m-d' ) );
     $activity_values = [ 'name' => $suite->name ];
 
@@ -324,6 +366,8 @@ class SuiteController extends Controller
     $grand_children = Cases::where( 'suite_id', $suite_id );
     $grand_children->delete();
 
+    $result = [ 'success' => true ];
+
     return response()->json( $result );
 
   }
@@ -341,7 +385,15 @@ class SuiteController extends Controller
     
     if ( $suite->project_id != $id ) return response()->json( [ 'errors' => ___( "Requested test scenarios not found (invalid project)." ) ] );
 
-    $scenarios = Scenarios::where( 'suite_id', $suite_id )->get();
+    if ( block( 'suites.view_all_scenarios', $id ) ) {
+
+      $scenarios = Scenarios::where( 'suite_id', $suite_id )->where( 'user_id', get_user_id() )->get();
+
+    } else {
+
+      $scenarios = Scenarios::where( 'suite_id', $suite_id )->get();
+
+    }
 
     return response()->json( [ 'scenarios' => $scenarios ] );
 
@@ -414,17 +466,18 @@ class SuiteController extends Controller
 
     } else {
 
+      $user_id = get_user_id();
+
       $newscenario = [
                       'name'          => $name,
                       'project_id'    => $id,
-                      'suite_id'      => $suite_id
+                      'suite_id'      => $suite_id,
+                      'user_id'      => $user_id
                     ];
 
       $result_id = Scenarios::create( $newscenario )->id;
 
       Suites::find( $suite_id )->update( [ 'children' => DB::raw( 'children + 1' ) ] );
-
-      $user_id = get_user_id();
 
       $filter_hash = sha1( "create_scenario.$name." . date( 'Y-m-d' ) );
       $activity_values = [ 'name' => $name ];
@@ -576,9 +629,20 @@ class SuiteController extends Controller
 
     if ( !$scenario ) return [ 'errors' => ___( 'Scenario not found.' ) ];
     
-    if ( $suite->scenario_id != $scenario->id ) return [ 'errors' => ___( 'Scenario not found.' ) ];
+    if ( $suite_id != $scenario->suite_id ) return [ 'errors' => ___( 'Scenario not found.' ) ];
 
     $user_id = get_user_id();
+
+    if ( block( 'suites.delete_all_scenarios', $id ) ) {
+
+      if ( $scenario->user_id != $user_id ) {
+
+        return [ 'errors' => ___( "You are not allowed to delete scenarios created by others." ) ];
+
+      }
+
+    }
+
     $filter_hash = sha1( "delete_scenario.$scenario_id." . date( 'Y-m-d' ) );
     $activity_values = [ 'name' => $scenario->name ];
 
@@ -595,10 +659,169 @@ class SuiteController extends Controller
 
     $scenario->delete();
     $grand_children = Cases::where( 'scenario_id', $scenario_id );
-    $suites->update( [ 'grand_children' => DB::raw( "grand_children - " . $grand_children->count() ), 'children' => DB::raw( 'children - 1' ) ] );
+    $suite->update( [ 'grand_children' => DB::raw( "grand_children - " . $grand_children->count() ), 'children' => DB::raw( 'children - 1' ) ] );
     $grand_children->delete();
 
+    $result = [ 'success' => true ];
+
     return response()->json( $result );
+
+  }
+
+  public function uploadScenarioFile( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $suite_id = $r->route( 'suite_id' );
+    $scenario_id = $r->route( 'scenario_id' );
+
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.update_scenarios', 'return' => 1 ] );
+
+    $project = Projects::find( $id );
+
+    $suite = Suites::find( $suite_id );
+
+    if ( !$suite ) return [ 'errors' => ___( 'Suite not found.' ) ];;
+
+    if ( $suite->project_id != $id ) return [ 'errors' => ___( 'Suite not found.' ) ];;
+
+    $scenario = Scenarios::find( $scenario_id );
+
+    if ( !$scenario ) return [ 'errors' => ___( 'Scenario not found.' ) ];
+    
+    if ( $suite_id != $scenario->suite_id ) return [ 'errors' => ___( 'Scenario not found.' ) ];
+
+    $user_id = get_user_id();
+    $files = [];
+
+    foreach ( $_FILES as $file ) {
+
+      $variables = json_encode( [ 'suite_id' => $suite_id ] );
+
+      $args = [ 
+                'project_id'    => $id,
+                'object_id'   => $scenario_id,
+                'variables'     => $variables,
+                'network_id'    => \App\Options::get( 'network_id' ),
+                ];
+
+      $file_id = Files::store( $file, $args );
+
+      $_files = $scenario->files;
+      if ( !$_files ) $_files = '[]';
+
+      $files = json_decode( $_files );
+      $files[] = $file_id;
+
+      $scenario = Scenarios::find( $scenario_id );
+      $scenario->update( [ 'files' => json_encode( $files ) ] );
+
+      $filter_hash = sha1( "upload_scenario_file.$scenario_id." . date( 'Y-m-d' ) );
+      $activity_values = [ 'name' => $scenario->name, 'object_id' => $scenario_id ];
+
+      $newactivity = [
+                        'project_id'    => $id,
+                        'object_type'   => 'upload_scenario_file',
+                        'object_id'     => $file_id,
+                        'user_id'       => $user_id,
+                        'values'        => json_encode( $activity_values ),
+                        'filter_hash'   => $filter_hash
+                      ];
+
+      Activities::create( $newactivity );
+
+    }
+
+    $result = [ 'success' => true, 'files' => $files ];
+
+    return response()->json( $result );
+
+  }
+
+  public function getScenarioFiles( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $suite_id = $r->route( 'suite_id' );
+    $scenario_id = $r->route( 'scenario_id' );
+
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.view_scenarios', 'return' => 1 ] );
+
+    $suite = Suites::find( $suite_id );
+
+    if ( !$suite ) return response()->json( [ 'errors' => ___( "Requested test scenario not found." ) . ee( 'invalid_test_suite' ) ] );
+    
+    if ( $suite->project_id != $id ) return response()->json( [ 'errors' => ___( "Requested test scenario not found." ) . ee( 'invalid_project' ) ] );
+
+    $scenario = Scenarios::find( $scenario_id );
+
+    if ( $scenario ) {
+
+      if ( !$scenario->files || $scenario->files == '[]' ) return response()->json( [] );
+
+      $fileIds = json_decode( $scenario->files );
+
+      $files = Files::whereIn( 'id', $fileIds )->get();
+
+      return response()->json( [ 'files' => $files ] );
+    
+    }
+
+    return response()->json( [ 'errors' => ___( "Requested test scenario not found." ) ] );
+
+  }
+
+  public function deleteScenarioFile( Request $r ) {
+
+    $id = $r->route( 'project_id' );
+    $suite_id = $r->route( 'suite_id' );
+    $scenario_id = $r->route( 'scenario_id' );
+    $file_id = $r->route( 'file_id' );
+
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.update_scenarios', 'return' => 1 ] );
+
+    $suite = Suites::find( $suite_id );
+
+    if ( !$suite ) return response()->json( [ 'errors' => ___( "Requested test scenario not found." ) . ee( 'invalid_test_suite' ) ] );
+    
+    if ( $suite->project_id != $id ) return response()->json( [ 'errors' => ___( "Requested test scenario not found." ) . ee( 'invalid_project' ) ] );
+
+    $scenario = Scenarios::find( $scenario_id );
+
+    if ( $scenario ) {
+
+      if ( !$scenario->files || $scenario->files == '[]' ) return response()->json( [ 'errors' => ___( "Well, the file you are trying to delete does not exist. Hmmmm." ) ] );
+
+      $fileIds = json_decode( $scenario->files );
+      $fileIdsUpdated = [];
+
+      foreach ( $fileIds as $fileid ) {
+
+        if ( $fileid == $file_id ) {
+
+          $file = Files::find( $file_id );
+
+          if ( $file ) {
+
+            $path = $file->path;
+            unlink( $path );
+            $file->delete;
+
+          }
+
+        } else {
+
+          $fileIdsUpdated[] = $fileid;
+
+        }
+
+      }
+
+      $scenario->update( [ 'files' => json_encode( $fileIdsUpdated ) ] );
+
+      return response()->json( [ 'success' => true ] );
+    
+    }
+
+    return response()->json( [ 'errors' => ___( "Requested test scenario not found." ) ] );
 
   }
 
@@ -622,7 +845,17 @@ class SuiteController extends Controller
 
     if ( $scenario->suite_id != $suite_id || $scenario->project_id != $id ) return response()->json( [ 'errors' => ___( "Requested test cases not found." ) . ee( 'invalid_test_suite_or_project' ) ] );
 
-    $cases = Cases::where( 'scenario_id', $scenario_id )->get();
+    $user_id = get_user_id();
+
+    if ( block( 'suites.view_all_cases', $id ) ) {
+
+      $cases = Cases::where( 'scenario_id', $scenario_id )->where( 'user_id', $user_id )->get();
+
+    } else {
+
+      $cases = Cases::where( 'scenario_id', $scenario_id )->get();
+
+    }
 
     return response()->json( [ 'cases' => $cases ] );
 
@@ -697,16 +930,17 @@ class SuiteController extends Controller
 
     } else {
 
+      $user_id = get_user_id();
+
       $newcase = [
                       'name'          => $name,
                       'project_id'    => $id,
                       'suite_id'      => $suite_id,
-                      'scenario_id'      => $scenario_id
+                      'scenario_id'      => $scenario_id,
+                      'user_id'      => $user_id
                     ];
 
       $result_id = Cases::create( $newcase )->id;
-
-      $user_id = get_user_id();
 
       $filter_hash = sha1( "create_test_case.$name." . date( 'Y-m-d' ) );
       $activity_values = [ 'name' => $name ];
@@ -797,8 +1031,8 @@ class SuiteController extends Controller
 
     $name = $r->input( 'name' );
     $description = $r->input( 'description' );
-    $fail_criteria = $r->input( 'fail' );
-    $pass_criteria = $r->input( 'pass' );
+    $fail_criteria = $r->input( 'fail_criteria' );
+    $pass_criteria = $r->input( 'pass_criteria' );
     $err = null;
 
     if ( !$name ) {
@@ -871,7 +1105,7 @@ class SuiteController extends Controller
     $scenario_id = $r->route( 'scenario_id' );
     $case_id = $r->route( 'id' );
 
-    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.delete_cases', 'return' => 1 ] );
+    police( [ 'project_id' => $id, 'keystring' => 'projects.suites.delete_case', 'return' => 1 ] );
 
     $project = Projects::find( $id );
 
@@ -883,9 +1117,9 @@ class SuiteController extends Controller
 
     $scenario = Scenarios::find( $scenario_id );
 
-    if ( !$scenario ) return [ 'errors' => ___( 'Scenario not found.' ) ];
+    if ( !$scenario ) return [ 'errors' => ___( 'Scenario not found. ' ) ];
     
-    if ( $suite->scenario_id != $scenario->id ) return [ 'errors' => ___( 'Scenario not found.' ) ];;
+    if ( $scenario->suite_id != $suite_id ) return [ 'errors' => ___( 'Scenario not found.' ) ];;
 
     $case = Cases::find( $case_id );
 
@@ -894,6 +1128,17 @@ class SuiteController extends Controller
     if ( $case->suite_id != $suite_id || $case->project_id != $id ) return [ 'errors' => ___( 'Case not found.' ) ];
 
     $user_id = get_user_id();
+
+    if ( block( 'suites.delete_all_cases', $id ) ) {
+
+      if ( $case->user_id != $user_id ) {
+
+        return [ 'errors' => ___( "You are not allowed to delete test cases created by others." ) ];
+
+      }
+
+    }
+
     $filter_hash = sha1( "delete_case.$scenario_id." . date( 'Y-m-d' ) );
     $activity_values = [ 'name' => $case->name ];
 
@@ -910,7 +1155,9 @@ class SuiteController extends Controller
 
     $case->delete();
     $scenario->update( [ 'children' => DB::raw( 'children - 1' ) ] );
-    $suites->update( [ 'grand_children' => DB::raw( 'grand_children - 1' ) ] );
+    $suite->update( [ 'grand_children' => DB::raw( 'grand_children - 1' ) ] );
+
+    $result = [ 'success' => true ];
 
     return response()->json( $result );
 

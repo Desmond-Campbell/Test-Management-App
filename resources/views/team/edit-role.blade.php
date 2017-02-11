@@ -76,20 +76,22 @@
 
     </div>
 
+    <div>
+        <button class="btn btn-success btn-sm" ng-click="savePerms()">{{___( "Save Changes" )}}</button>
+        &nbsp;
+        <button class="btn btn-danger btn-sm" ng-click="getRole(); getPerms()" ng-show="dirty_perms">{{___( "Undo Permission Changes" )}}</button><br /><br />
+      </div>
+
     <h2>{{___( "Permissions" )}}</h2>
 
     <div ng-cloak class="md-container push-down">
       
       <div class="text-info">{{___( "These are the default set of permissions on this role, which may be superceded by others specified in the list of override or restriction permissions configured on a team member's account." )}}</div><br />
 
-      <div ng-show="dirty_perms">
-        <button class="btn btn-success btn-sm" ng-click="savePerms()">{{___( "Save Changes" )}}</button>
-        &nbsp;
-        <button class="btn btn-danger btn-sm" ng-click="getPerms()">{{___( "Undo" )}}</button><br /><br />
-      </div>
+      
 
       <fieldset class="demo-fieldset" >
-        <div layout="row" layout-wrap flex>
+        <div layout="row" layout-wrap flex class="short-div">
           <div flex-xs flex="50" ng-show="perms.length > 5">
             <md-checkbox aria-label="{{___( "Select All" )}}"
                          ng-checked="isChecked()"

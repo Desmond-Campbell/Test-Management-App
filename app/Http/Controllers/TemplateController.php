@@ -25,7 +25,7 @@ class TemplateController extends Controller
     $w = max( max( $r->input( 'w' ), 0 ) / 1.75, 500 );
     $h = max( max( $r->input( 'h' ), 0 ) / 1.25, 500 );
 
-    return '<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script><script>function passResult(result){ parent.receiveResult(); $("#frame").remove(); window.close();}</script><iframe id="frame" src="' . $url . '?request-type=full-template" height="' . $h . 'px" width="' . $w . 'px" border="0" style="border: none"></iframe>';
+    return '<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script><script>function passResult(result){ parent.receiveResult(); $("#frame").remove(); /*window.close();*/}</script><iframe id="frame" src="' . $url . '?request-type=full-template" height="' . $h . 'px" width="' . $w . 'px" border="0" style="border: none"></iframe>';
 
   }
 

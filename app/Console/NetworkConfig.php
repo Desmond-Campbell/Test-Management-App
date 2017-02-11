@@ -40,13 +40,13 @@ class NetworkConfig extends Command
     Kernel::connection( $target );
     Config::set( 'database.default', $target );
 
-    $permissions = '["view_projects","update_project","create_project","view_people"]';
+    $permissions = '["view_projects","update_project","create_project","view_people","network_owner"]';
 
     $timezone = new \DateTimeZone( $sso_timezone );
     $timezoneOffset = $timezone->getOffset( new \DateTime );
     $timezoneOffset = $timezoneOffset / ( 60 * 60 );
 
-    \App\User::create( [ 'name' => $sso_name, 'sso_id' => $sso_id, 'permissions_include' => $permissions ] );
+    \App\User::create( [ 'name' => $sso_name, 'sso_id' => $sso_id, 'permissions_include' => $permissions, 'is_network_owner' => 1 ] );
     \App\Options::set( 'timezone', $sso_timezone );
     \App\Options::set( 'timezone_hours', $timezoneOffset );
     \App\Options::set( 'network_name', $sso_network );

@@ -20,6 +20,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 
 class TestController extends Controller
 {
@@ -27,7 +28,12 @@ class TestController extends Controller
   public function __construct( Request $r )
   {
 
-    if ( $r->input( 'request-type' ) == 'full-template' ) Config::set( 'pageconfig', 'full-template' );
+    if ( $r->input( 'request-type' ) == 'full-template' ) {
+
+      Config::set( 'pageconfig', 'full-template' );
+      Config::set( 'hidefull', true );
+
+    }
 
   }
 
@@ -35,7 +41,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'project_id' => $id, 'keystring' => 'projects.tests.view_tests', 'return' => 1 ] );
+    police( [ 'project_id' => $id, 'keystring' => 'projects.tests.view_tests', 'return' => $r->input( 'format' ) == 'json' ] );
 
     $project = Projects::find( $id );
 
@@ -108,7 +114,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.tests.start_batch', 'project_id' => $id ] );
+    police( [ 'keystring' => 'projects.tests.start_batch', 'project_id' => $id, 'return' => 1 ] );
 
     $test_id = $r->route( 'id' );
 
@@ -134,7 +140,7 @@ class TestController extends Controller
 
     $id = $r->route( 'project_id' );
 
-    police( [ 'keystring' => 'projects.tests.stop_batch', 'project_id' => $id ] );
+    police( [ 'keystring' => 'projects.tests.stop_batch', 'project_id' => $id, 'return' => 1 ] );
 
     $test_id = $r->route( 'id' );
     $batch_id = $r->route( 'batch_id' );
@@ -177,6 +183,37 @@ class TestController extends Controller
     $batch = Batches::find( $batch_id );
 
     if ( !$batch ) return response()->json( [ 'errors' => __( "Test batch not found." ) ] );
+
+    $testers = $test->testers;
+    
+    if ( !$testers ) $testers = '[]';
+
+    $testers = json_decode( $testers );
+    $registered_tester = false;
+
+    $user = User::find( get_user_id() );
+
+    if ( $user ) {
+
+      $member = TeamMembers::where( 'project_id', $id )->where( 'user_id', $user->id )->first();
+
+      if ( $member ) {
+
+        $registered_tester = in_array( $member->id, $testers );
+
+      }
+
+      $registered_tester = $registered_tester || $user->is_network_owner;
+
+    }
+
+    if ( !$registered_tester ) {
+
+      $result = [];
+      print_r(View::make('index-empty', compact( 'result' ) )->nest('child', 'blocked')->render());
+      die;
+
+    }
 
     return view( 'test.launch', compact( 'project', 'test', 'batch_id' ) );
 
@@ -650,7 +687,7 @@ class TestController extends Controller
 
     $step = (object) [ 'id' => 0 ];
 
-    $activity = TestActivities::where( 'project_id', $id )->where( 'test_id', $test_id )->where('batch_id', $batch_id)->where( 'status', '1' )->first();
+    $activity = TestActivities::where( 'project_id', $id )->where( 'user_id', get_user_id() )->where( 'test_id', $test_id )->where('batch_id', $batch_id)->where( 'status', '1' )->first();
 
     $batch = Batches::where( 'id', $batch_id )->where( 'status', 1 )->first();
 
@@ -776,7 +813,7 @@ class TestController extends Controller
       $case_id = $step->case_id;
       $case = Cases::find( $case_id );
       $case_name = ___( 'Missing Case' );
-    $user_id = get_user_id();
+      $user_id = get_user_id();
 
       if ( $case ) $case_name = $case->name;
 
@@ -974,7 +1011,11 @@ class TestController extends Controller
 
             if ( $u ) $i->user_name = $u->name;
 
-            $cases[$case_id]['data'][$sid]['results'][] = $i;
+            if ( count( $cases[$case_id]['data'][$sid]['results'] ) < 10 ) {
+
+              $cases[$case_id]['data'][$sid]['results'][] = $i;
+
+            }
 
             if ( $i->id < $cases[$case_id]['data'][$sid] || $cases[$case_id]['data'][$sid] < 1 ) $cases[$case_id]['data'][$sid]['result_type'] = $i->type;
 

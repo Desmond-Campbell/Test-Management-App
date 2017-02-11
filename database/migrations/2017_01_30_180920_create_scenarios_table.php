@@ -17,7 +17,7 @@ class CreateScenariosTable extends Migration
             $table->increments('id');
             $table->integer('project_id');
             $table->integer('suite_id');
-            $table->string('name', 50);
+            $table->string('name');
             $table->string('description')->nullable();
             $table->integer('children')->nullable()->default(0);
             $table->integer('user_id');

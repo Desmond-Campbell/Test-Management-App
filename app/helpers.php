@@ -32,7 +32,33 @@ function ___( $text, $lang = null ) {
 
 function get_user_id() {
 
-	return 1;
+	$id = 0;
+
+	$cookie = arg( $_COOKIE, config( 'session.global_cookie' ) );
+
+	if ( $cookie ) { 
+	
+		$crumbs = explode( '.', $cookie );
+
+		if ( count( $crumbs ) == 4 ) {
+
+			$login_redir = false;
+
+			$sso_id = (int) $crumbs[2];
+
+			$user = DB::table( 'users' )->where( 'sso_id', $sso_id )->first();
+
+			if ( $user ) {
+
+				$id = $user->id;
+
+			}
+
+		} 
+
+	}
+
+	return $id;
 
 }
 
@@ -120,5 +146,24 @@ function police( $args ) {
 function ee( $id ) {
 
 	return " [$id]";
+
+}
+
+function http_die( $args ) {
+
+	$link = arg( $args, 'url', 'http://www.saastest.co/' );
+	$url = '<p><a href="' . $link . '" target="_blank">' . ___( 'Click here to continue' ) . '</a></p>';
+
+	if ( arg( $_REQUEST, 'request-type' ) == 'full-template' || arg( $args, 'kill' ) ) {
+
+		$output = '<h3>' . ___( 'Error' ) . '</h3><p>' . arg( $args, 'message', ___( 'Sorry, we were unable to process your request.' ) ) . "</p>$url";
+		die( $output );
+
+	} else {
+
+		header( 'Location: ' . $link );
+		die;
+
+	}
 
 }

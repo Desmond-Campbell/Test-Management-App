@@ -174,7 +174,7 @@
 
               @{{c.name}}
 
-              <!-- <md-menu>
+              <md-menu>
                 <i class="fa fa-gear" ng-click="openMenu($mdOpenMenu, $event)" class="options-menu" style="float: right;"></i>
                 <md-menu-content width="4">
                   <md-menu-item>
@@ -189,15 +189,15 @@
                       {{___( "Delete" )}}
                     </md-button>
                   </md-menu-item>
-                  <md-menu-item>
+                  <!-- <md-menu-item>
                     <md-button ng-click="copyCase(c.id)">
                       <i class="fa fa-copy"></i> &nbsp;
                       {{___( "Copy" )}}
                     </md-button>
-                  </md-menu-item>
+                  </md-menu-item> -->
                   
                 </md-menu-content>
-              </md-menu> -->
+              </md-menu>
 
             </div>
 

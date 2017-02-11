@@ -24,6 +24,8 @@
         
           <div class="md-padding">
 
+          <button class="btn btn-default" ng-click="reload()"><i class="fa fa-refresh"></i> &nbsp;{{___( "Refresh this Page" )}}</button>
+
             <div ng-show="!(activity.id > 0)">
               <h3>{{___( "No more activities left to test." )}}</h3>
               <p>{{___( "You've either completed your testing activity or the test has been aborted." )}}</p>
@@ -93,6 +95,12 @@
 
             <div class="push-down" ng-show="results.length > 0">
 
+              <div class="text-right">
+
+                <big><i class="fa fa-question-circle"><md-tooltip md-direction="left">{{___( "Here you'll find the last 10 results, oldest first (left). Hover a result to see details." )}}</md-tooltip></i></big>
+
+              </div>
+
               <div ng-repeat="r in results">
 
                 <md-card class="no-margin-left">
@@ -104,20 +112,22 @@
                     <table class="table">
 
                       <tr ng-repeat="s in r.data">
-                        <td width="60%">
+                        <td width="3%">
                           <i class="fa fa-check result-type-result" ng-show="s.result_type == 'result'"><md-tooltip md-direction="bottom">{{___( "Passed the most recent test." )}}</md-tooltip></i> 
                           <i class="fa fa-square-o" ng-show="s.result_type != 'result' && s.result_type != 'issue'"><md-tooltip md-direction="bottom">{{___( "No test results available.." )}}</md-tooltip></i> 
-                          <i class="fa fa-times result-type-issue" ng-show="s.result_type == 'issue'"><md-tooltip md-direction="bottom">{{___( "Failed the most recent test." )}}</md-tooltip></i> &nbsp;
+                          <i class="fa fa-times result-type-issue" ng-show="s.result_type == 'issue'"><md-tooltip md-direction="bottom">{{___( "Failed the most recent test." )}}</md-tooltip></i>
+                        </td>
+                        <td width="40%">
                           @{{s.step.name}}
                         </td>
                         <td align="right">
                           <span ng-repeat="i in s.results">
                             <a href="javascript:;" ng-click="showResult(s.id, $index)">
-                              <span ng-show="i.type == 'result'" class="label label-success">
+                              <span ng-show="i.type == 'result'" class="label label-success label-small-round">
                                 <i class="fa fa-check"></i>
                                 <md-tooltip md-direction="bottom">{{___( "PASSED" )}} - @{{i.title}} - {{___( "submitted" )}} @{{i.created_at | relativeTime}} {{___( "by" )}} @{{i.user_name}}</md-tooltip>
                               </span>
-                              <span ng-show="i.type != 'result'" class="label label-danger">
+                              <span ng-show="i.type != 'result'" class="label label-danger label-small-round">
                                 <i class="fa fa-times"></i>
                                 <md-tooltip md-direction="bottom">{{___( "FAILED" )}} - @{{i.title}} - {{___( "submitted" )}} @{{i.created_at | relativeTime}} {{___( "by" )}} @{{i.user_name}}</md-tooltip>
                               </span>

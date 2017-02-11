@@ -4,6 +4,7 @@ namespace App;
 
 use \App\Model;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
 
 class Police 
 {    
@@ -68,6 +69,14 @@ class Police
     $section = arg( $args, 'section', 'projects' );
     $category = arg( $args, 'category', 'projects' );
     $key = arg( $args, 'key' );
+
+    $theUser = User::find( get_user_id() );
+
+    if ( !empty( $theUser ) ) {
+
+      if ( $theUser->is_network_owner ) return self::handleReturn( [ 'result' => [ 'allow' => true, 'message' => ___( 'Permission granted based on exclusive network access.' ), 'debug' => null ], 'args' => $args ] );
+
+    }
 
     if ( $section == 'network' ) {
 
@@ -184,6 +193,12 @@ class Police
 
 	  }
 
+    if ( in_array( 'exclusive_access', $member_key_overrides ) ) {
+
+      return self::handleReturn( [ 'result' => [ 'allow' => true, 'message' => 'Permission granted based on an exclusive access permission.', 'debug' => $debug ], 'args' => $args ] );
+
+    }
+
 	  self::handleReturn( [ 'result' => [ 'allow' => false, 'message' => ___( 'Permission denied because there were no records found that would permit.' ), 'debug' => $debug ], 'args' => $args ] );
 
   }
@@ -202,6 +217,12 @@ class Police
       $c = arg( $d, 'category' );
     $p = arg( arg( arg( $ks, $s, [] ), $c, [] ), $k ) ;
     $m = arg( $p, 'message', '' );
+
+    if ( !env( 'PERMISSION_DEBUG' ) ) {
+
+      $A['result']['debug'] = $result['debug'] = $d = [];
+
+    }
 
     if ( arg( arg( $A, 'args' ), 'quickcheck' ) ) return $result['allow'];
 

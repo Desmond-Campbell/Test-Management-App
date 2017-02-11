@@ -20,7 +20,12 @@ class ProjectController extends Controller
   public function __construct( Request $r )
   {
 
-    if ( $r->input( 'request-type' ) == 'full-template' ) Config::set( 'pageconfig', 'full-template' );
+    if ( $r->input( 'request-type' ) == 'full-template' ) {
+
+      Config::set( 'pageconfig', 'full-template' );
+      Config::set( 'hidefull', true );
+
+    }
 
   }
 
@@ -31,7 +36,15 @@ class ProjectController extends Controller
 
     if ( $r->input( 'format') == 'json' ) {
 
-      $projects = Projects::all();
+      if ( orgpass( 'projects.view_all_projects' ) ) {
+
+        $projects = Projects::all();
+
+      } else {
+
+        $projects = Projects::where( 'user_id', get_user_id() )->get();
+
+      }
 
       return response()->json( [ 'projects' => $projects ] );
 

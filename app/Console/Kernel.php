@@ -18,8 +18,10 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         MigrateNetwork::class,
         MigrateNetworks::class,
-        // SeedNetwork::class,
-        // SeedNetworks::class,
+        UnMigrateNetwork::class,
+        UnMigrateNetworks::class,
+        SeedNetwork::class,
+        SeedNetworks::class,
         NetworkConfig::class,
         AddPerson::class,
         EditPerson::class,

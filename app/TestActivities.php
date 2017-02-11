@@ -54,7 +54,7 @@ class TestActivities extends Model
     		$activity->current_step = 0;
     		$activity->status = 2;
 
-    		$next_activity = TestActivities::where( 'id' , '>', $activity->id )->where( 'test_id', $activity->test_id )->first();
+    		$next_activity = TestActivities::where( 'id' , '>', $activity->id )->where( 'test_id', $activity->test_id )->where( 'user_id', get_user_id() )->first();
 
     		if ( $next_activity ) {
 

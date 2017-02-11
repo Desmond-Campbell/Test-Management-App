@@ -17,6 +17,14 @@ use Illuminate\Support\Facades\DB;
 Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'web', 'forceSSL'*/]], function ($domain) {
 
 	$host = explode( '.', arg( $_SERVER, 'HTTP_HOST' ) );
+
+	if ( count( $host ) == 2 ) {
+
+		header( "Location: http://www." . env( 'APP_DOMAIN' ) );
+		die;
+
+	}
+
 	$domain = $host[0];
 	$www_host = "http://my." . env( 'APP_DOMAIN' );
 	$www_redirect = $www_host . '/login?then=' . base64_encode( 'http://' . arg( $_SERVER, 'HTTP_HOST' ) . arg( $_SERVER, 'REQUEST_URI' ) );
@@ -28,25 +36,34 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 		if ( count( $host ) == 2 ) {
 
-			header( "Location: $www_redirect" );
-			die;
-			die("invalid_host_count-2");
+			http_die( [ 
+								'url' => "$www_redirect", 
+								'identifier' => "invalid_host_count-2", 
+								'message' => ___( 'We were unable to find the network you requested.' ) 
+								] 
+						);
 
 		}
 
 		if ( count( $host ) == 3 && \App\Networks::invalidDomain( $domain ) ) {
 
-			header( "Location: $www_host" );
-			die;
-			die("invalid_domain");
+			http_die( [ 
+								'url' => "$www_host", 
+								'identifier' => "invalid_domain (2)", 
+								'message' => ___( 'We were unable to find the network you requested.' ) 
+								] 
+						);
 
 		}
 
 		if ( count( $host ) != 3 ) {
 
-			header( "Location: $www_host" );
-			die;
-			die("invalid_host_count-!3");
+			http_die( [ 
+								'url' => "$www_host", 
+								'identifier' => "invalid_host_count-!3", 
+								'message' => ___( 'We were unable to find the network you requested.' ) 
+								] 
+						);
 
 		}
 
@@ -54,9 +71,12 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 		if ( !$network ) {
 
-			header( "Location: $www_host" );
-			die;
-			die("invalid_domain_no_network_found");
+			http_die( [ 
+								'url' => "$www_host", 
+								'identifier' => "invalid_domain_no_network_found", 
+								'message' => ___( 'We were unable to find the network you requested.' ) 
+								] 
+						);
 
 		} else {
 
@@ -95,9 +115,12 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 	  	if ( $e->getCode() == '1049' ) {
 
-	  		header( "Location: $www_host" );
-				die;
-				die("invalid_domain_no_database");
+	  		http_die( [ 
+								'url' => "$www_host", 
+								'identifier' => "invalid_domain_no_database", 
+								'message' => ___( 'We were unable to load the network you requested, due to a system error.' ) 
+								] 
+						);
 	  	
 	  	}
 
@@ -133,17 +156,23 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 		if ( $login_redir ) {
 
-    	header( "Location: $www_host" );
-			die;
-			die("invalid_cookie");
+    	http_die( [ 
+								'url' => "$www_host", 
+								'identifier' => "invalid_cookie", 
+								'message' => ___( 'We were unable to log you into the network you requested, due to an authentication error.' ) 
+								] 
+						);
 
 		}
 
 		if ( $network_redir ) {
 
-    	header( "Location: $www_network_redirect" );
-			die;
-			die("no_access");
+    	http_die( [ 
+								'url' => "$www_network_redirect", 
+								'identifier' => "no_access", 
+								'message' => ___( 'We were unable to log you into the network you requested, due to an authentication error.' ) 
+								] 
+						);
 
 		}
 
@@ -238,14 +267,18 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 			Route::get('/projects/{project_id}/suites/{suite_id}/new-scenario', 'SuiteController@newScenario');
 			Route::post('/projects/{project_id}/suites/{suite_id}/create-scenario', 'SuiteController@createScenario');
 			Route::get('/projects/{project_id}/suites/{suite_id}/edit-scenario/{scenario_id}', 'SuiteController@editScenario');
-			Route::get('/projects/{project_id}/suites/{suite_id}/delete-scenario/{scenario_id}', 'SuiteController@deleteScenario');
+			Route::get('/projects/{project_id}/suites/{suite_id}/scenario/{scenario_id}/get-files', 'SuiteController@getScenarioFiles');
+			Route::delete('/projects/{project_id}/suites/{suite_id}/scenario/{scenario_id}/file/{file_id}/delete', 'SuiteController@deleteScenarioFile');
+			Route::delete('/projects/{project_id}/suites/{suite_id}/delete-scenario/{scenario_id}', 'SuiteController@deleteScenario');
 			Route::post('/projects/{project_id}/suites/{suite_id}/update-scenario/{scenario_id}', 'SuiteController@updateScenario');
+			Route::post('/projects/{project_id}/suites/{suite_id}/scenario/{scenario_id}/upload-file', 'SuiteController@uploadScenarioFile');
 			Route::get('/projects/{project_id}/suites/{suite_id}/get-scenarios', 'SuiteController@getScenarios');
 			Route::get('/projects/{project_id}/suites/{suite_id}/get-scenario/{id}', 'SuiteController@getScenario');
 			Route::get('/projects/{project_id}/suites/{suite_id}/get-cases/{scenario_id}', 'SuiteController@getCases');
 			Route::get('/projects/{project_id}/suites/{suite_id}/get-case/{id}', 'SuiteController@getCase');
 			Route::get('/projects/{project_id}/suites/{suite_id}/edit-case/{id}', 'SuiteController@editCase');
 			Route::post('/projects/{project_id}/suites/{suite_id}/update-case/{id}', 'SuiteController@updateCase');
+			Route::delete('/projects/{project_id}/suites/{suite_id}/scenario/{scenario_id}/delete-case/{id}', 'SuiteController@deleteCase');
 			Route::get('/projects/{project_id}/suites/{suite_id}/new-case/{scenario_id}', 'SuiteController@newCase');
 			Route::post('/projects/{project_id}/suites/{suite_id}/create-case/{scenario_id}', 'SuiteController@createCase');
 			Route::get('/projects/{project_id}/suites/{suite_id}/get-steps/{case_id}', 'SuiteController@getSteps');

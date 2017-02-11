@@ -26,7 +26,7 @@ app.controller('ProjectCreateIssueCtrl', ['$scope', '$http', '$mdDialog', '$time
 				
 					pageconfig = $("#pageconfig").val();
 
-					if ( pageconfig != 'template-full' ) {
+					if ( pageconfig != 1 ) {
 
 						_notifySuccess( 'Issue was saved successfully.' );
 
@@ -49,6 +49,10 @@ app.controller('ProjectCreateIssueCtrl', ['$scope', '$http', '$mdDialog', '$time
 
 			});
 
+	};
+
+	$scope.cancel = function ( result ) {
+		parent.passResult( result );
 	};
 
 }]);

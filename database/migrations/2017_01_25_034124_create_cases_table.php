@@ -19,10 +19,10 @@ class CreateCasesTable extends Migration
             $table->integer('suite_id');
             $table->integer('scenario_id');
             $table->string('name');
-            $table->string('instructions')->nullable();
+            $table->text('instructions')->nullable();
             $table->text('description')->nullable();
-            $table->string('pass_criteria')->nullable();
-            $table->string('fail_criteria')->nullable();
+            $table->text('pass_criteria')->nullable();
+            $table->text('fail_criteria')->nullable();
             $table->decimal('item_position', 4, 2)->nullable()->default(0);
             $table->integer('user_id');
             $table->smallInteger('status')->default(1);
