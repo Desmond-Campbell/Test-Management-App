@@ -106,6 +106,8 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 
 	  $scope.deleteSuite = function (id) {
 
+			if ( !getconfirm() ) return;
+
 			$id = $scope.project_id;
 
 			l(1);
@@ -252,6 +254,8 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 
 	  $scope.deleteScenario = function (id) {
 
+			if ( !getconfirm() ) return;
+		
 			$id = $scope.project_id;
     	$scenariourl = $scope.suites_url + $scope.suite.id + '/delete-scenario/' + id;
 
@@ -549,6 +553,8 @@ app.controller('SuitesCtrl', ['$scope', '$http', '$mdDialog', '$timeout', functi
 
 	  $scope.deleteCase = function (id) {
 
+			if ( !getconfirm() ) return;
+		
 			$id = $scope.project_id;
     	$caseurl = $scope.suites_url + $scope.suite.id + '/scenario/' + $scope.scenario.id + '/delete-case/' + id;
 

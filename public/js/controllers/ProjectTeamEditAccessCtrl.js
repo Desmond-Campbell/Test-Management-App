@@ -7,6 +7,8 @@ app.controller('ProjectTeamEditAccessCtrl', ['$scope', '$http', '$mdDialog', '$t
 
 	$scope.removeMember = function () {
 
+		if ( !getconfirm() ) return;
+
 		l(1);
 
 		$id = $scope.project_id;

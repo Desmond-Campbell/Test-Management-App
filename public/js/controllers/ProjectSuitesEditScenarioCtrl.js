@@ -198,6 +198,8 @@ app.controller('ProjectSuitesEditScenarioCtrl', ['$scope', '$http', '$mdDialog',
 
   $scope.deleteScenarioFile = function ( id ) {
 
+		if ( !getconfirm() ) return;
+
 	  filesUrl = '/projects/' + $id + '/suites/' + $scope.suite_id + '/scenario/' + $scope.scenario_id + '/file/' + id + '/delete';
 
 	  $http.delete( filesUrl ).then( function ( r ) {

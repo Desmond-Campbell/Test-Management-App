@@ -75,6 +75,8 @@ app.controller('ProjectSuitesEditCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 
 	$scope.deleteSuite = function () {
 
+		if ( !getconfirm() ) return;
+
 		$id = $scope.project_id;
 
 		l(1);

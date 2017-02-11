@@ -157,6 +157,7 @@ app.controller('ProjectSuitesEditCaseCtrl', ['$scope', '$http', '$mdDialog', '$t
 	};
 
 	$scope.deleteStep = function ( i ) {
+		if ( !getconfirm() ) return;
 		$scope.steps.splice( i, 1 );
 		$scope.cancelEditStep();
 		$scope.saveSteps();

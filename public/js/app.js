@@ -48,6 +48,12 @@ function _tt( text ) {
 
 }
 
+function getconfirm() {
+
+  return confirm( _tt( 'Are you sure?' ) );
+
+}
+
 function l(mode) {
 	if ( mode ) {
 		$('#loading-container').fadeIn('fast');

@@ -99,7 +99,7 @@ class Search extends Model
 
 	  	} else {
 
-	  		$object->update( [ 'status' => 0 ] );
+	  		$object->update( [ 'status' => 0, 'object_name' => $object_name ] );
 
 	  	}
 
