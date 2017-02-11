@@ -32,6 +32,8 @@
     <input type="hidden" id="project_id" value="{{$project->id}}" />
     <input type="hidden" id="test_id" value="{{$test_id}}" />
 
+    <h3>@{{test.name}}</h3>
+
     <md-tabs md-border-bottom md-dynamic-height>
         
       <md-tab label="{{___( "Test Cases" )}}">

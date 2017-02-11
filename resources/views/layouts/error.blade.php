@@ -56,7 +56,7 @@
       </div>
 
       <div class="jumbotron">
-        <h1 class="display-3">@yield("title")}}</h1>
+        <h1 class="display-3">@yield("title")</h1>
         <p class="lead">@yield("message"):</p>
 
         <h3>{{___("Reference")}} #{{$reference_number}}</h3>

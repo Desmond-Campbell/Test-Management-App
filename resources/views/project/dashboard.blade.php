@@ -80,16 +80,16 @@
 						<li class="list-group-item">
 						  <div>
 						    <strong>Created By:</strong><br />
-						    <small>{{"<?=$project->user_id;?>"}}</small>
+						    <small>{{"<?= \App\User::find( $project->user_id )->name;?>"}}</small>
 						  </div>
 						</li>
 
-						<li class="list-group-item">
+						<!-- <li class="list-group-item">
 						  <div>
 						    <strong>Current Owner:</strong><br />
 						    <small>{{"<?=$project->user_id;?>"}}</small>
 						  </div>
-						</li> 
+						</li> --> 
 
 					</ul>
 
@@ -97,21 +97,21 @@
 
 	    		<ul class="box-list list-group">
 
-					  <li class="list-group-item">
+					  <!-- <li class="list-group-item">
 						  <div class="row">
 						    <div class="col-md-8">
 						    	<strong>Requirements</strong>
 						    </div>
 						    <div class="col-md-4">0</div>
 						  </div>
-						</li>
+						</li> -->
 
 					  <li class="list-group-item">
 						  <div class="row">
 						    <div class="col-md-8">
 						    	<strong>Test Suites</strong>
 						    </div>
-						    <div class="col-md-4">0</div>
+						    <div class="col-md-4">{{\App\Suites::where('project_id', $project->id)->count()}}</div>
 						  </div>
 						</li>
 
@@ -120,25 +120,25 @@
 						    <div class="col-md-8">
 						    	<strong>Files</strong>
 						    </div>
-						    <div class="col-md-4">0</div>
+						    <div class="col-md-4">{{\App\Files::where('project_id', $project->id)->count()}}</div>
 						  </div>
 						</li>
 
-					  <li class="list-group-item">
+					  <!-- <li class="list-group-item">
 						  <div class="row">
 						    <div class="col-md-8">
 						    	<strong>Discussions</strong>
 						    </div>
 						    <div class="col-md-4">0</div>
 						  </div>
-						</li>
+						</li> -->
 
 					  <li class="list-group-item">
 						  <div class="row">
 						    <div class="col-md-8">
 						    	<strong>Active Test Runs</strong>
 						    </div>
-						    <div class="col-md-4">0</div>
+						    <div class="col-md-4">{{\App\Tests::where('project_id', $project->id)->where('status',1)->count()}}</div>
 						  </div>
 						</li> 
 

@@ -618,7 +618,7 @@ class SuiteController extends Controller
       $user_id = get_user_id();
 
       $filter_hash = sha1( "update_scenario.$scenario_id." . date( 'Y-m-d' ) );
-      $activity_values = [ 'old' => [], 'new' => [] ];
+      $activity_values = [ 'old' => [], 'new' => [ 'name' => $name ] ];
       $activity_values['old']['name'] = $scenario->name;
       $activity_values['old']['description'] = $scenario->description;
       

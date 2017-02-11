@@ -265,7 +265,7 @@ class ProjectController extends Controller
 
     if ( pass( 'projects.view_all_activities', $id ) ) {
 
-      $activitiesCollection = Activities::where( 'project_id', $project->id )->orderBy( 'id', 'desc' )->take(10)->get();
+      $activitiesCollection = Activities::where( 'project_id', $project->id )->orderBy( 'id', 'desc' )->take(25)->get();
 
     } else {
 

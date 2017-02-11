@@ -511,7 +511,7 @@ class TestController extends Controller
                       'object_type'   => 'update_test_cases',
                       'object_id'     => $test_id,
                       'user_id'       => $user_id,
-                      'values'        => '[]',
+                      'values'        => json_encode( [ 'name' => $test->name ] ),
                       'filter_hash'   => $filter_hash
                     ];
 
@@ -613,7 +613,7 @@ class TestController extends Controller
                       'object_type'   => 'update_testers',
                       'object_id'     => $test_id,
                       'user_id'       => $user_id,
-                      'values'        => '[]',
+                      'values'        => json_encode( [ 'name' => $test->name ] ),
                       'filter_hash'   => $filter_hash
                     ];
 
