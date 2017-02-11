@@ -39,6 +39,7 @@
                       <div layout="row">
                         <div flex="95">
                           <ul class="nav navbar-nav navbar-right">
+                            <li><a style="background:none !important">{{___("Version")}} {{env('APP_VERSION')}}</a></li>
                             <li><md-tooltip md-direction="down">
                                   {{__( "My Account" )}}
                                 </md-tooltip><a href="/"><i class="fa fa-user"></i></a></li>
