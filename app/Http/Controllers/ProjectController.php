@@ -279,9 +279,14 @@ class ProjectController extends Controller
     foreach ( $activitiesCollection as $a ) {
 
       $content = Activities::getContent( $a );
-      $activities[] = [ 'id'      => $a->id, 
-                        'content' => $content,
-                        'record'  => $a ];
+
+      if ( $content ) {
+
+        $activities[] = [ 'id'      => $a->id, 
+                          'content' => $content,
+                          'record'  => $a ];
+
+      }
 
     }
 
