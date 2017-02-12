@@ -206,7 +206,7 @@ class Activities extends Model
     public static function getContent( $activity ) {
 
     	$type = $activity->object_type;
-    	$content = ___( 'Nothing found.' );
+    	$content = '';
     	$templates = self::getTemplates( $type );
 
     	if ( $templates ) {
