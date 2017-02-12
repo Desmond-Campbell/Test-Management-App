@@ -6,7 +6,7 @@ use App\Activities;
 use App\Police;
 use App\Projects;
 use App\CaseSections;
-use App\RequirementSections;
+use App\TeamMembers;
 use App\User;
 use Response;
 use App\Http\Requests;
@@ -34,6 +34,8 @@ class ProjectController extends Controller
     Police::check( [ 'keystring' => 'network.projects.view_projects', 
                       'return' => $r->input( 'format' ) == 'json' ] );
 
+    $user_id = get_user_id();
+
     if ( $r->input( 'format') == 'json' ) {
 
       if ( orgpass( 'projects.view_all_projects' ) ) {
@@ -42,7 +44,30 @@ class ProjectController extends Controller
 
       } else {
 
-        $projects = Projects::where( 'user_id', get_user_id() )->get();
+        $allprojects = Projects::all();
+        $projects = [];
+
+        foreach ( $allprojects as $p ) {
+
+          if ( $p->user_id == $user_id ) {
+
+            $projects[] = $p;
+
+          } else {
+
+            // Find team members and if they're add, show the project
+
+            $inteam = TeamMembers::where( 'project_id', $p->id )->where( 'user_id', $user_id )->count();
+
+            if ( $inteam > 0 ) {
+
+              $projects[] = $p;
+
+            }
+
+          }
+
+        }
 
       }
 

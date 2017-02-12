@@ -56,7 +56,7 @@ class DemoDataSeeder extends Seeder
 															"password": "",
 															"sso_id": 2,
 															"is_network_owner": 0,
-															"permissions_include": "[\"view_people\",\"view_projects\",\"create_projects\"]",
+															"permissions_include": "[\"view_people\",\"view_projects\",\"view_all_projects\",\"create_project\"]",
 															"permissions_exclude": null,
 															"created_at": "2017-02-11 06:25:40",
 															"updated_at": "2017-02-11 06:25:40"
@@ -68,7 +68,7 @@ class DemoDataSeeder extends Seeder
 															"password": "",
 															"sso_id": 3,
 															"is_network_owner": 0,
-															"permissions_include": "[\"view_projects\",\"create_projects\"]",
+															"permissions_include": "[\"view_projects\",\"create_project\",\"view_all_projects\"]",
 															"permissions_exclude": null,
 															"created_at": "2017-02-11 06:25:40",
 															"updated_at": "2017-02-11 06:25:40"
@@ -80,7 +80,7 @@ class DemoDataSeeder extends Seeder
 															"password": "",
 															"sso_id": 4,
 															"is_network_owner": 0,
-															"permissions_include": "[\"view_people\",\"view_projects\"]",
+															"permissions_include": "[\"view_people\",\"view_projects\",\"create_project\"]",
 															"permissions_exclude": null,
 															"created_at": "2017-02-11 06:25:40",
 															"updated_at": "2017-02-11 06:25:40"
@@ -410,7 +410,7 @@ class DemoDataSeeder extends Seeder
 																		"project_id": 1,
 																		"user_id": 2,
 																		"user_type": 3,
-																		"roles": "[4]",
+																		"roles": "[2]",
 																		"key_overrides": null,
 																		"key_restrictions": null,
 																		"is_removed": 0,
@@ -420,21 +420,9 @@ class DemoDataSeeder extends Seeder
 																	{
 																		"id": 3,
 																		"project_id": 1,
-																		"user_id": 5,
-																		"user_type": 3,
-																		"roles": "[2]",
-																		"key_overrides": null,
-																		"key_restrictions": null,
-																		"is_removed": 0,
-																		"created_at": "2017-02-11 13:13:07",
-																		"updated_at": "2017-02-11 13:22:31"
-																	},
-																	{
-																		"id": 4,
-																		"project_id": 1,
 																		"user_id": 3,
 																		"user_type": 3,
-																		"roles": "[4]",
+																		"roles": "[3]",
 																		"key_overrides": null,
 																		"key_restrictions": null,
 																		"is_removed": 0,
@@ -442,16 +430,28 @@ class DemoDataSeeder extends Seeder
 																		"updated_at": "2017-02-11 13:23:13"
 																	},
 																	{
-																		"id": 5,
+																		"id": 4,
 																		"project_id": 1,
 																		"user_id": 4,
 																		"user_type": 3,
-																		"roles": "[5]",
+																		"roles": "[4]",
 																		"key_overrides": null,
 																		"key_restrictions": null,
 																		"is_removed": 0,
 																		"created_at": "2017-02-11 13:23:01",
 																		"updated_at": "2017-02-11 13:23:27"
+																	},
+																	{
+																		"id": 5,
+																		"project_id": 1,
+																		"user_id": 5,
+																		"user_type": 3,
+																		"roles": "[5]",
+																		"key_overrides": null,
+																		"key_restrictions": null,
+																		"is_removed": 0,
+																		"created_at": "2017-02-11 13:13:07",
+																		"updated_at": "2017-02-11 13:22:31"
 																	}
 																]
 															}';
@@ -475,17 +475,6 @@ class DemoDataSeeder extends Seeder
 																	"is_owner": 0,
 																	"project_id": 1,
 																	"role_type": 0,
-																	"name": "Tester",
-																	"description": "This user can only test projects.",
-																	"permissions": "[\"view_activities\",\"view_dashboard\",\"view_details\",\"tester\",\"view_tests\",\"view_test_results\",\"create_issue\"]",
-																	"created_at": "2017-02-11 13:13:33",
-																	"updated_at": "2017-02-11 13:14:30"
-																},
-																{
-																	"id": 3,
-																	"is_owner": 0,
-																	"project_id": 1,
-																	"role_type": 0,
 																	"name": "Administrator",
 																	"description": "A role subordinate to owner, with most privileges.",
 																	"permissions": "[\"view_members\",\"view_member_restrictions\",\"update_member_overrides\",\"view_member_overrides\",\"view_member_roles\",\"view_member\",\"view_role_permissions\",\"view_role\",\"update_role\",\"create_role\",\"view_roles\",\"view_deleted_members\",\"view_properties\",\"view_all_activities\",\"view_activities\",\"view_dashboard\",\"view_details\",\"update_project\",\"exclusive_access\",\"update_all_projects\",\"view_suites\",\"view_all_suites\",\"create_suite\",\"update_suites\",\"delete_suite\",\"delete_all_suites\",\"copy_suite\",\"copy_all_suites\",\"create_scenario\",\"update_scenarios\",\"delete_scenario\",\"delete_all_scenarios\",\"create_case\",\"update_cases\",\"delete_case\",\"delete_all_cases\",\"view_scenarios\",\"view_all_scenarios\",\"view_cases\",\"view_all_cases\",\"tester\",\"view_tests\",\"edit_test\",\"view_batches\",\"start_batch\",\"stop_batch\",\"create_test\",\"view_test_results\",\"create_issue\",\"edit_member\",\"update_member\"]",
@@ -493,7 +482,7 @@ class DemoDataSeeder extends Seeder
 																	"updated_at": "2017-02-11 13:17:27"
 																},
 																{
-																	"id": 4,
+																	"id": 3,
 																	"is_owner": 0,
 																	"project_id": 1,
 																	"role_type": 0,
@@ -504,7 +493,7 @@ class DemoDataSeeder extends Seeder
 																	"updated_at": "2017-02-11 13:18:34"
 																},
 																{
-																	"id": 5,
+																	"id": 4,
 																	"is_owner": 0,
 																	"project_id": 1,
 																	"role_type": 0,
@@ -513,6 +502,17 @@ class DemoDataSeeder extends Seeder
 																	"permissions": "[\"view_properties\",\"view_activities\",\"view_dashboard\",\"view_details\",\"update_project\",\"exclusive_access\",\"view_suites\",\"create_suite\",\"update_suites\",\"delete_suite\",\"copy_suite\",\"copy_all_suites\",\"create_scenario\",\"update_scenarios\",\"delete_scenario\",\"create_case\",\"update_cases\",\"delete_case\",\"view_scenarios\",\"view_cases\",\"tester\",\"view_tests\",\"edit_test\",\"view_batches\",\"start_batch\",\"stop_batch\",\"create_test\",\"view_test_results\",\"create_issue\",\"view_deleted_members\"]",
 																	"created_at": "2017-02-11 13:19:51",
 																	"updated_at": "2017-02-11 13:20:33"
+																},
+																{
+																	"id": 5,
+																	"is_owner": 0,
+																	"project_id": 1,
+																	"role_type": 0,
+																	"name": "Tester",
+																	"description": "This user can only test projects.",
+																	"permissions": "[\"view_activities\",\"view_dashboard\",\"view_details\",\"tester\",\"view_tests\",\"view_test_results\",\"create_issue\"]",
+																	"created_at": "2017-02-11 13:13:33",
+																	"updated_at": "2017-02-11 13:14:30"
 																}
 															]
 														}';

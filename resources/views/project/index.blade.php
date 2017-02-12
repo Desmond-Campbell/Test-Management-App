@@ -9,7 +9,14 @@
     <div class="main-content" ng-controller="ProjectListCtrl">
 
       <div class="heading-cell">
-        <h1>{{___( "Projects" )}}</h1>
+        <h1>{{___( "Projects" )}}
+
+          <sup style="font-size: 40%; cursor:pointer;" class="text-default">
+          <md-tooltip md-direction="right" class="multiline">
+            {{__( "You can organise your tests in different projects. Permissions below the network level are set up on a per project basis." )}}
+          </md-tooltip><i class="fa fa-info-circle"></i>
+        </sup></h1>
+
       </div>
 
       <br />
@@ -40,7 +47,13 @@
       @endif
 
       <div ng-show="projects.length < 1">
-        <h3>{{___("No projects exist in this network.")}}</h3>
+        <h3>
+        @if ( orgpass( "network.network_owner" ) )
+          {{___("No projects exist in this network.")}}
+        @else
+          {{___("There are no projects exist in this network that are visible to you.")}}
+        @endif
+        </h3>
       </div>
 
 
@@ -62,10 +75,10 @@
             </md-card-title>
             <md-card-actions layout="row">
               <div flex="50">
-                &nbsp;<a href="/projects/@{{p.id}}" class="btn btn-sm btn-default">&nbsp; <i class="fa fa-paper-plane"></i> &nbsp; {{___( "Select" ) }} &nbsp;</a>
+                &nbsp;<a href="/projects/@{{p.id}}" class="btn btn-sm btn-default">&nbsp; <i class="fa fa-paper-plane"></i> &nbsp; {{___( "Open" ) }} &nbsp;</a>
               </div>
               <div flex="50">
-                 <p class="project-modified-date">Modified @{{p.updated_at | relativeTime}} &nbsp;</p>
+                 <p class="project-modified-date">{{___( "Modified" )}} @{{p.updated_at | relativeTime}} &nbsp;</p>
               </div>
             </md-card-actions>
           </md-card>

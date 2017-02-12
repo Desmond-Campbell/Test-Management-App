@@ -326,6 +326,10 @@ a:hover {
 	text-align:center;
 }
 
+md-tooltip.multiline .md-content {
+    height: auto;
+}
+
 md-input-container label, label.form-label {
 
 	font-size: 20px;
