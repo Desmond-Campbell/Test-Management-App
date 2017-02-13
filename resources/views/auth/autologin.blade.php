@@ -91,31 +91,31 @@
             </tr>
 
             <tr>
-              <td>{{___("1. Vladimir (Network Owner)")}}</td>
+              <td>{{___("1. Vladimir Owner")}}</td>
               <td><strong>{{___("Network Owner")}}</strong><br /><small>{{___("This user can do everything possible in a network, on projects, with teams, etc. He's the super administrator guy.") }}</small></td>
               <td><a href="/network/autologin/1" class="btn btn-primary btn-sm" style="color: #FFF !important">{{___("Use This")}}</a></td>
             </tr>
 
             <tr>
-              <td>{{___("2. Justin (Admin)")}}</td>
+              <td>{{___("2. Justin Admin")}}</td>
               <td><strong>{{___("Administrator")}}</strong><br /><small>{{___("This user can perform most actions that the super administrator (Vladimir Polocheck) can perform. He's just not a network owner.") }}</small></td>
               <td><a href="/network/autologin/2" class="btn btn-primary btn-sm" style="color: #FFF !important">{{___("Use This")}}</a></td>
             </tr> 
 
             <tr>
-              <td>{{___("3. Dimitri (Project Admininistrator)")}}</td>
+              <td>{{___("3. Dimitri Project")}}</td>
               <td><strong>{{___("Project Admin")}}</strong><br /><small>{{___("This user can perform most actions related to projects and members throughout the network, but can't manage the network itself.") }}</small></td>
               <td><a href="/network/autologin/3" class="btn btn-primary btn-sm" style="color: #FFF !important">{{___("Use This")}}</a></td>
             </tr>
 
             <tr>
-              <td>{{___("4. Nadine (Project Manager)")}}</td>
+              <td>{{___("4. Nadine Manager")}}</td>
               <td><strong>{{___("Singular Project Admin")}}</strong><br /><small>{{___("This user can perform most actions related to projects that they have created only.") }}</small></td>
               <td><a href="/network/autologin/4" class="btn btn-primary btn-sm" style="color: #FFF !important">{{___("Use This")}}</a></td>
             </tr>
 
             <tr>
-              <td>{{___("5. Gladys (Tester)")}}</td>
+              <td>{{___("5. Gladys Tester")}}</td>
               <td><strong>{{___("Tester")}}</strong><br /><small>{{___("This user can only execute tests.") }}</small></td>
               <td><a href="/network/autologin/5" class="btn btn-primary btn-sm" style="color: #FFF !important">{{___("Use This")}}</a></td>
             </tr>     
