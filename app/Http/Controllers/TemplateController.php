@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class TemplateController extends Controller
 {
 
-  public function __construct()
+  public function __construct( Request $r )
   {
 
     \App\Tracker::track( $r->all() );

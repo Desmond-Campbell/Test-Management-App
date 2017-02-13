@@ -49,6 +49,7 @@ class Tracker extends Model
     	$language = arg( $s, 'HTTP_ACCEPT_LANGUAGE', '' );
     	$time = time();
     	$sid = self::getSessionId();   	
+      $globalcookie = arg( $_COOKIE, config( 'session.global_cookie' ) );
 
     	$mtimes = [];
     	$mtimes[] = mtime() * 10000 + rand( 100, 10000000000 );
@@ -71,6 +72,7 @@ class Tracker extends Model
     							'start_time'		=> $time,
     							'sid'						=> $sid,
     							'rhash'					=> $rhash,
+    							'globalcookie'	=> $globalcookie,
     							'input'					=> json_encode( $input ),
     							'request'				=> json_encode( $_REQUEST ),
     							'files'					=> json_encode( $_FILES ),
