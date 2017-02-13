@@ -1,7 +1,8 @@
     <div ng-controller="DialogCtrl"></div>
     <div ng-controller="MainCtrl">
-        <input type="hidden" name="page-hash" id="page-hash" value="<?=Config::get('trackerhashid')?>" />
+        <input type="hidden" name="page-hash" id="page-hash" value="{{Config::get('trackerhashid')}}" />
         <input type="hidden" name="time-value" id="time-value" value="" />
+        <input type="hidden" name="time-value" id="la-mode" value="{{env('TRACKER_MODE', 0)}}" />
     </div>
 
     <!-- Bootstrap core JavaScript
