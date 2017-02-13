@@ -124,6 +124,7 @@ return [
 
     'cookie' => 'saastest_network',
     'global_cookie' => 'saastest_global_name',
+    'la_cookie' => 'saastest_la_store',
 
     /*
     |--------------------------------------------------------------------------

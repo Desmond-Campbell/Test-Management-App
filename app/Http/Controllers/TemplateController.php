@@ -17,6 +17,8 @@ class TemplateController extends Controller
   public function __construct()
   {
 
+    \App\Tracker::track( $r->all() );
+
   }
 
   public function index( Request $r ) {

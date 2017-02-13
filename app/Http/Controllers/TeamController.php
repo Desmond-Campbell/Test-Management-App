@@ -27,6 +27,8 @@ class TeamController extends Controller
 
     }
 
+    \App\Tracker::track( $r->all() );
+
   }
 
   public function index( Request $r ) {

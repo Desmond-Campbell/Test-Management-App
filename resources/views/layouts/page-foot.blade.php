@@ -1,4 +1,8 @@
     <div ng-controller="DialogCtrl"></div>
+    <div ng-controller="MainCtrl">
+        <input type="hidden" name="page-hash" id="page-hash" value="<?=Config::get('trackerhashid')?>" />
+        <input type="hidden" name="time-value" id="time-value" value="" />
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -16,6 +20,9 @@
     <script src="/js/controllers/Controller.js"></script>
     <script src="/js/vendor/moment.js"></script>
     <script src="/js/vendor/angular-moment.js"></script>
+    <script src="/js/vendor/ifvisible/ifvisible.js"></script>
+    <script src="/js/vendor/timeme.js"></script>
+    <script src="/js/la.js"></script>
     <script src="/js/vendor/bootstrap/bootstrap.min.js"></script>
     <script src="/js/vendor/bootstrap/docs.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

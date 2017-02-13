@@ -16,8 +16,11 @@ use Illuminate\Support\Facades\View;
 class NetworkController extends Controller
 {
 
-  public function __construct()
+  public function __construct( Request $r )
   {
+
+
+    \App\Tracker::track( $r->all() );
 
   }
 

@@ -63,7 +63,7 @@ class Activities extends Model
 	    elseif ( $type == 'delete_suite' || $all ):
 
 	    	// Delete test suite
-	    	$template = '%username% ' . ___( 'deleted test suite' ) . ' <strong>%name%</strong>. ' . $link;
+	    	$template = '%username% ' . ___( 'deleted test suite' ) . ' <strong>%name%</strong>.';
 	    	$templates['delete_suite'] = [ 'default' => $template ];
 
 	    elseif ( $type == 'create_scenario' || $all ):
@@ -165,7 +165,7 @@ class Activities extends Model
 	    elseif ( $type == 'create_result' || $all ):
 
 	    	// Create result
-	    	$template = '%username% ' . ___( 'logged positive feedback for test case' ) . ' <strong>%case_name%</strong>. ' . $link;
+	    	$template = '%username% ' . ___( 'logged positive feedback for test case' ) . ' <strong>%case_name%</strong>.';
 	    	$templates['create_result'] = [ 'default' => $template ];
 
 	    elseif ( $type == 'add_team_member' || $all ):

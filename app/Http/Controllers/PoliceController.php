@@ -17,6 +17,8 @@ class PoliceController extends Controller
   public function __construct()
   {
 
+    \App\Tracker::track( $r->all() );
+
   }
 
   public function quickCheck( Request $r ) {

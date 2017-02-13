@@ -175,3 +175,12 @@ function string_to_words( $string ) {
 	return str_replace( [ ',', '.', '!', '#' ], [ '', '', '', '' ], implode( ' ', array_unique( array_filter( explode( ' ', $string ) ) ) ) );
 
 }
+
+function mtime() {
+
+	$mtime = explode( " ", microtime() )[0];
+	$mtime = str_replace( '0.', '', $mtime );
+
+	return (float) ( time()  . ".$mtime" );
+
+}

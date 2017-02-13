@@ -38,3 +38,47 @@ app.controller('DialogCtrl', ['$scope', '$http', '$mdDialog', '$mdToast', functi
 	}
 
 }]);
+
+app.controller('MainCtrl', ['$scope', '$http', '$timeout', function ( $scope, $http, $timeout ) {
+
+	window.onbeforeunload = function () {
+
+		latimer();
+
+	};
+
+	$scope.intrvl = 7500;
+	$scope.timevalue = 0;
+
+	latimer = function () {
+
+		$pagehash = $('#page-hash').val();
+		$timevalue = TimeMe.getTimeOnCurrentPageInSeconds().toFixed(2);
+		$properties = { 
+										'dh' : $(document).height(), 
+										'dw' : $(document).width(), 
+										'wh' : $(window).height(), 
+										'ww' : $(window).width(), 
+										'st' : $(window).scrollTop()
+									};
+
+		if ( $timevalue != $scope.timevalue && $timevalue > 0 ) {
+
+			$http.post( '/projects/la.js', { timevalue : $timevalue, pagehash : $pagehash, properties : $properties } ).then( function () {
+				$scope.intrvl = parseInt( $scope.intrvl );
+				$scope.timevalue = $timevalue;
+				window.setTimeout( 'latimer()', $scope.intrvl );
+			});
+
+		} else {
+
+			$scope.intrvl = parseInt( $scope.intrvl * 1.1 );
+			window.setTimeout( 'latimer()', $scope.intrvl );
+
+		}
+
+	};
+
+	latimer();
+
+}]);

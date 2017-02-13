@@ -202,7 +202,11 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 	  /* End cookie check */
 
-	  // Police
+	  // Tracker
+
+			Route::post('/projects/la.js', 'UtilityController@updateTracker' );
+
+		// Police
 
 			Route::get('/police/project/{project_id}/check', 'PoliceController@quickCheck');
 			Route::get('/police/network/check', 'PoliceController@quickCheck');
