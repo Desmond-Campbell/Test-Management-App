@@ -24,7 +24,12 @@
 
 	    <div flex="60">
 
-	    	<h1 class="no-margin-top">{{___( "Activities") }}</h1>
+	    	<h1 class="no-margin-top">{{___( "Activities") }}
+	    		<sup style="font-size: 40%; cursor:pointer;" class="text-default">
+	          <md-tooltip md-direction="right" class="multiline">
+	            {{__( "This section shows actions taken on this project. You may either see your activities only, or everyone's, depending on your permissions." )}}
+	          </md-tooltip><i class="fa fa-info-circle"></i>
+	        </sup></h1>
 
 	    	@if ( pass( "projects.view_activities", $project->id ) )
 

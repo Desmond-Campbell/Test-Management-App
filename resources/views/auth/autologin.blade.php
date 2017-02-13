@@ -60,7 +60,7 @@
         <a class="nav-link" href="http://my.{{env('APP_DOMAIN')}}/login">{{___("Log In")}}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="http://{{env('APP_DOMAIN')}}/contact">{{___("Contact Us")}}</a>
+        <a class="nav-link" href="http://www.{{env('APP_DOMAIN')}}/contact">{{___("Contact Us")}}</a>
       </li>
     </ul>
   </nav>

@@ -28,6 +28,7 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 	$domain = $host[0];
 	$www_host = "http://my." . env( 'APP_DOMAIN' );
 	$www_redirect = $www_host . '/login?then=' . base64_encode( 'http://' . arg( $_SERVER, 'HTTP_HOST' ) . arg( $_SERVER, 'REQUEST_URI' ) );
+
 	$www_network_redirect = $www_host . '/networks';
 
 	$console = App::runningInConsole();
@@ -35,6 +36,12 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 	if ( !$console ) {
 
 		if ( count( $host ) == 2 ) {
+
+			if ( substr( arg( $_SERVER, 'REQUEST_URI' ), 0, 9 ) != '/projects' ) {
+
+				$www_redirect = "http://" . env( 'APP_DOMAIN' ) . arg( $_SERVER, 'REQUEST_URI');
+
+			}
 
 			http_die( [ 
 								'url' => "$www_redirect", 
