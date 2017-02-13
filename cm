@@ -1,2 +1,2 @@
 read -p "Enter commit message (no double quotes): " message
-git commit -m "$username!"
+git commit -m message
