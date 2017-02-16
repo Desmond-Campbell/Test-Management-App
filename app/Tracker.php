@@ -96,7 +96,7 @@ class Tracker extends Model
 
 	    	$filepath = base_path() . '/' . env( 'TRACKER_DIRECTORY' ) . '/.' . date( "YmdH") . '.' . $sid;
 
-	    	$update = "\n" . json_encode( [ 'type' => 'update', 'rhash' => $pagehash, 'timevalue' => $timevalue, 'timestamp' => time(), 'properties' => json_encode( $properties ) ] );
+	    	$update = "\n" . json_encode( [ 'type' => 'update', 'rhash' => $pagehash, 'timevalue' => $timevalue, 'timestamp' => time(), 'properties' => json_encode( $properties ) ] ) . "\n";
 
   	  	file_put_contents( $filepath, $update, FILE_APPEND );
 
