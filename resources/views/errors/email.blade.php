@@ -9,7 +9,7 @@
 <p>{{$error_details['ip']}}</p>
 
 <h3>Host:</h3>
-<p>{{gethostbyaddr($error_details['ip'])}}</p>
+<p>{{@gethostbyaddr($error_details['ip'])}}</p>
 
 <h3>Browser:</h3>
 <p>{{$error_details['browser']}}</p>

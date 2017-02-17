@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         AddPerson::class,
         EditPerson::class,
         RemovePerson::class, 
+        ParseAccessLogs::class, 
     ];
 
     /**
@@ -41,6 +42,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->command('indexnetworks')->everyFiveMinutes();
+        $schedule->command('parseaccesslogs')->hourlyAt( 18 );
     }
 
     /**
