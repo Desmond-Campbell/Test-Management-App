@@ -8,7 +8,6 @@ app.controller('ProjectTestLaunchCtrl', ['$scope', '$http', '$mdDialog', '$timeo
 	$scope.activity_id = 0;
 
 	getActivity = function () {
-		console.log('ccccc');
 		$scope.getActivity();
 	}
 
