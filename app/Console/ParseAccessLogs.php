@@ -61,6 +61,7 @@ class ParseAccessLogs extends Command
 
                 $newrecord = [];
                 $newrecord['hash'] = $hash;
+                $newrecord['start_time'] = date( 'Y-m-d H:i:s', arg( $data, 'start_time' ) );
                 $newrecord['ip'] = arg( $data, 'ip' );
                 $newrecord['host'] = arg( $data, 'host' );
                   if ( !$newrecord['host'] && $newrecord['ip'] ) $newrecord['host'] = gethostbyaddr( $newrecord['ip'] );
