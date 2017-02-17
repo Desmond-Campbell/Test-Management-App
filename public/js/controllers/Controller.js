@@ -68,7 +68,7 @@ app.controller('MainCtrl', ['$scope', '$http', '$timeout', function ( $scope, $h
 
 			if ( $timevalue != $scope.timevalue && $timevalue > 0 ) {
 
-				$http.post( '/projects/la.js', { timevalue : $timevalue, pagehash : $pagehash, properties : $properties } ).then( function () {
+				$http.post( '/projects/status.js', { timevalue : $timevalue, pagehash : $pagehash, properties : $properties } ).then( function () {
 					$scope.intrvl = parseInt( $scope.intrvl );
 					$scope.timevalue = $timevalue;
 					window.setTimeout( 'latimer()', $scope.intrvl );

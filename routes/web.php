@@ -204,7 +204,7 @@ Route::group(['domain' => '{domain}.' . env('APP_DOMAIN'), 'middleware' => [/*'w
 
 	  // Tracker
 
-			Route::post('/projects/la.js', 'UtilityController@updateTracker' );
+			Route::post('/projects/status.js', 'UtilityController@updateTracker' );
 
 		// Police
 

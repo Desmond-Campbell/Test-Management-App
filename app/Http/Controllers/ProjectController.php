@@ -317,7 +317,8 @@ class ProjectController extends Controller
 
     }
 
-    return response()->json( [ 'activities' => $activities ] );
+    retur
+    espkkk )->json( [ 'activities' => $activities ] );
 
   }
 

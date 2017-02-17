@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Mail;
 use App\Errors;
 use App\ErrorDetails;
 
@@ -119,13 +120,11 @@ class Handler extends ExceptionHandler
 
                 if ( !$repeat ) {
 
-                    $error_id = Errors::create( $error )->id;
-
                     $subject = "$class at line $code_line_n in $path";
 
-                    $message = "<h1>{$error_details['class']}</h1>
+                    $body = "<h1>{$error['class']}</h1>
 
-											<big><big>{$error_details['description']}</big></big>
+											<big><big>{$error['description']}</big></big>
 
 											<h3>URL:</h3>
 											<p>{$error_details['url']}</p>
@@ -145,19 +144,27 @@ class Handler extends ExceptionHandler
 											</pre>
 											</div>";
 
-                    mail( 'livespringmedia@gmail.com', $subject, $message );
-                    // mail( 'docampbell@gmail.com', $subject, $message, "From: ST <error@saastest.co>\n\n" );
+                    $email = 'docampbell@gmail.com';
 
-                    /*Mail::send('errors.email', [ 'subject' => $subject, 'email' => 'livespringmedia@gmail.com', 'error' => $error_details ], 
-                          function ($message) use ($subject, $email, $error) {
-						            $message->to($email, null)->subject($subject);
-						        });*/
+                    try {
+                        $response = Mail::send('errors.email', [ 'subject' => $subject, 'email' => $email, 'error_details' => $error_details, 'error' => $error ], 
+                              function ($message) use ($subject, $email, $error, $error_details ) {
+    						            $message->to($email, null)->subject($subject);
+    						        });
+                    } catch( Exception $e ) {
+
+                        die( '<h1>Server is too busy.</h1><p>A lot of people are connected right now and the server is very busy. Please try again in a few.</p>' );
+
+                    }
+
+                    $error_id = Errors::create( $error )->id;
 
                 } else {
 
                     $error_id = $repeat->id;
                     $offences = $repeat->offences;
                     $repeat->update( [ 'offences' => $offences + 1 ] );
+                    // ddd( $repeat );
 
                 }
 

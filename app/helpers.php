@@ -184,3 +184,10 @@ function mtime() {
 	return (float) ( time()  . ".$mtime" );
 
 }
+
+function ddd( $a ) {
+
+	@header( 'content-type: text/plain' );
+	print_r( $a );
+	die;
+}

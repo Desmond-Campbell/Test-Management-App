@@ -3,22 +3,16 @@
 <big><big>{{$error['description']}}</big></big>
 
 <h3>URL:</h3>
-<p>{{$error['url']}}</p>
+<p>{{$error_details['url']}}</p>
 
 <h3>IP:</h3>
-<p>{{$error['ip']}}</p>
+<p>{{$error_details['ip']}}</p>
 
 <h3>Host:</h3>
-<p>{{gethostbyaddr($error['ip'])}}</p>
+<p>{{gethostbyaddr($error_details['ip'])}}</p>
 
 <h3>Browser:</h3>
-<p>{{$error['browser']}}</p>
+<p>{{$error_details['browser']}}</p>
 
 <h3>Trace:</h3>
-<pre>{{$error['trace']}}</pre>
-
-<div>
-<pre>
-	{{$error['string']}}
-</pre>
-</div>
+<pre>{{$error_details['trace']}}</pre>
