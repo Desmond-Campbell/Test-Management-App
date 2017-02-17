@@ -2050,9 +2050,9 @@ class DemoDataSeeder extends Seeder
 																		"suites": "[1,2]",
 																		"scenarios": "[1,2,3,7,4,5,6,8]",
 																		"cases": "[1,2,3,4,5,7,8,9,13,12,10,11]",
-																		"testers": "[3]",
-																		"status": 0,
-																		"user_id": 0,
+																		"testers": "[5]",
+																		"status": 1,
+																		"user_id": 1,
 																		"created_at": "2017-02-11 14:06:14",
 																		"updated_at": "2017-02-11 14:07:18"
 																	}

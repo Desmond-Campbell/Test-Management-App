@@ -325,6 +325,7 @@ class TestController extends Controller
       $newtest = [
                   'name'          => $name,
                   'project_id'    => $id,
+                  'status'        => 1,
                   'description'   => $description
                 ];
 
