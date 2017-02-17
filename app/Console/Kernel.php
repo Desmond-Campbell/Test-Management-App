@@ -43,6 +43,7 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         $schedule->command('indexnetworks')->everyFiveMinutes();
         $schedule->command('parseaccesslogs')->hourlyAt( 18 );
+        $schedule->command('parseaccesslogs')->hourlyAt( 48 );
     }
 
     /**
