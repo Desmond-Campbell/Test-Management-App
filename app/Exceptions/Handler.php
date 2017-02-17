@@ -78,6 +78,8 @@ class Handler extends ExceptionHandler
                 $extract = $file_data;
             
             }
+
+            $path = $exception->getFile();
             
             $error['description'] = $description = $lines[0];
             $error['code'] = $exception->getCode();
@@ -85,7 +87,7 @@ class Handler extends ExceptionHandler
             $error['message'] = $exception->getMessage();
             $error['class'] = $class;
             $error['codeline'] = $code_line_n;
-            $error['path'] = $exception->getFile();
+            $error['path'] = $path;
             $error['hash'] = sha1( $error['code'] . $error['codeline'] . $error['path'] . $error['class'] );
             $error['app_id'] = env( 'APP_ID', 'NA' );
             $error['app_env'] = env( 'APP_ENV', 'NA' );
@@ -118,6 +120,38 @@ class Handler extends ExceptionHandler
                 if ( !$repeat ) {
 
                     $error_id = Errors::create( $error )->id;
+
+                    $subject = "$class at line $code_line_n in $path";
+
+                    $message = "<h1>{$error_details['class']}</h1>
+
+											<big><big>{$error_details['description']}</big></big>
+
+											<h3>URL:</h3>
+											<p>{$error_details['url']}</p>
+
+											<h3>IP:</h3>
+											<p>{$error_details['ip']}</p>
+
+											<h3>Host:</h3>
+											<p>" . gethostbyaddr( $error_details['ip'] ) . "</p>
+
+											<h3>Browser:</h3>
+											<p>{$error_details['browser']}</p>
+
+											<div>
+											<pre>
+												{$error_details['trace']}
+											</pre>
+											</div>";
+
+                    mail( 'livespringmedia@gmail.com', $subject, $message );
+                    // mail( 'docampbell@gmail.com', $subject, $message, "From: ST <error@saastest.co>\n\n" );
+
+                    /*Mail::send('errors.email', [ 'subject' => $subject, 'email' => 'livespringmedia@gmail.com', 'error' => $error_details ], 
+                          function ($message) use ($subject, $email, $error) {
+						            $message->to($email, null)->subject($subject);
+						        });*/
 
                 } else {
 

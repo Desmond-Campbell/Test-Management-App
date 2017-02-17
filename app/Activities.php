@@ -234,8 +234,12 @@ class Activities extends Model
 
   				endif;
 
-    			$fields['old_title'] = $t->old;
-    			$fields['new_title'] = $t->new;
+  				if ( $t ):
+
+	    			$fields['old_title'] = $t->old;
+	    			$fields['new_title'] = $t->new;
+
+	    		endif;
 
   			endif;
 
