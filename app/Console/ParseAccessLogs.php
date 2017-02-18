@@ -121,6 +121,30 @@ class ParseAccessLogs extends Command
       }
     
     }
+
+    // Purge known IPs
+
+    $ips = env( 'INTERNAL_IPS' );
+
+    if ( $ips ) {
+
+      $ips = explode( ',', $ips );
+
+      foreach ( $ips as $ip ) {
+
+        if ( !stristr( $ip, '*' ) ) {
+
+          TrackerLog::where( 'ip', $ip )->delete();
+
+        } else {
+
+          TrackerLog::where( 'ip', 'LIKE', str_replace( '*', '%', $ip ) )->delete();
+
+        }
+        
+      }
+
+    }
   
   }
 
