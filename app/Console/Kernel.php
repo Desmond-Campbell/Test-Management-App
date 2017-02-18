@@ -29,6 +29,7 @@ class Kernel extends ConsoleKernel
         EditPerson::class,
         RemovePerson::class, 
         ParseAccessLogs::class, 
+        PurgeLogIp::class, 
     ];
 
     /**

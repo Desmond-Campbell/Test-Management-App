@@ -132,6 +132,8 @@ class ParseAccessLogs extends Command
 
       foreach ( $ips as $ip ) {
 
+        $ip = trim( $ip );
+
         if ( !stristr( $ip, '*' ) ) {
 
           TrackerLog::where( 'ip', $ip )->delete();
