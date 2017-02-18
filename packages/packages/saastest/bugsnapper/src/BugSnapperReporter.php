@@ -111,6 +111,12 @@ class BugSnapperReporter
 
         Config::set( 'bugsnapper_response', $resource );
 
+        if ( $class == 'FatalThrowableError' ) {
+
+            abort( 500 );
+
+        }
+
     }
 
     function arg( $object, $key, $default = null ) {
