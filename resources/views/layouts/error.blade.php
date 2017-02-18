@@ -1,4 +1,8 @@
+<?php
 
+$bugsnapper = Config::get( 'bugsnapper_response' );
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,13 +30,13 @@
 
     <div style="width:80%; margin:auto; margin-top: 25px">
 
-      <h1>{{$class}}</h1>
+      <h1>{{arg( $bugsnapper, 'class', 'Error' )}}</h1>
       <div class="panel">
         <div class="panel-title">
-            {{$description}}
+            {{arg( $bugsnapper, 'description', 'An error has occured.' )}}
         </div>
         <div class="panel-body" style="font-size: 80%">
-          {{nl2br( $string )}}
+          {{nl2br( arg( $bugsnapper, 'string' ) )}}
         </div>
       </div>
 
@@ -59,7 +63,7 @@
         <h1 class="text-red">@yield("title")</h1>
         <p class="lead">@yield("message"):</p>
 
-        <h3>{{___("Reference")}} #{{$reference_number}}</h3>
+        <h3>{{___("Reference")}} #{{arg( $bugsnapper, 'reference_number', '999' )}}</h3>
       </div>
 
       <footer class="footer">

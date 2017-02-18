@@ -1,0 +1,17 @@
+{
+    "name": "saastest/bugsnapper",
+    "description": "Automatically intercept and report bugs to the cloud. Get alerts by SMS and/or email.",
+    "type": "library",
+    "require": {
+        "laravel/laravel": "5.1",
+        "lib-curl": "^7.35"
+    },
+    "license": "NA",
+    "authors": [
+        {
+            "name": "SaasTest",
+            "email": "saastestco@gmail.com"
+        }
+    ],
+    "minimum-stability": "beta"
+}
