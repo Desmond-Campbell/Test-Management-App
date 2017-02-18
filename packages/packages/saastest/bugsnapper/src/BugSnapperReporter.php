@@ -72,6 +72,8 @@ class BugSnapperReporter
         $error_details['browser'] = $this->arg( $_SERVER, 'HTTP_USER_AGENT', '' );
         $error_details['url'] = $this->arg( $_SERVER, 'REQUEST_SCHEME', 'http' ) . '://'  . $this->arg( $_SERVER, 'HTTP_HOST', '' ) . $this->arg( $_SERVER, 'REQUEST_URI', '' );
 
+        if ( $class == "NotFoundHttpException" || $class == "TokenMismatchException" ) $error['hash'] = sha1( $error['code'] . $error['codeline'] . $error['path'] . $error['class'] . $error_details['url'] );
+
         $content = json_encode( [ 'error' => $error, 'error_details' => $error_details ] );
 
         $headers = [ 'Content-type: application/x-www-form-urlencoded' ];
