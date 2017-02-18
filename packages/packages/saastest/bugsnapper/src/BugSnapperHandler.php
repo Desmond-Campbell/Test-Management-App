@@ -18,9 +18,7 @@ class BugSnapperHandler extends Handler
     public function report(Exception $exception)
     {
 
-        app( 'bugsnapper' )->report( $exception );
-
-        /*if ( $this->shouldReport( $exception ) ) {
+        if ( $this->shouldReport( $exception ) ) {
             
             if ( app()->bound( 'bugsnapper' ) ) {
 
@@ -28,7 +26,7 @@ class BugSnapperHandler extends Handler
 
             }
 
-        }*/
+        }
 
         return parent::report( $exception );
 
